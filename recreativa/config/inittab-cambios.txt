@@ -1,0 +1,7 @@
+# Cambios en /etc/inittab (copia original en /etc/inittab.bak)
+1:2345:respawn:/sbin/getty --noclear --autologin recreativa 38400 tty1   # autologin
+2:2345:respawn:/sbin/getty 38400 tty2                                     # consola de emergencia
+#3:23:respawn:/sbin/getty 38400 tty3                                     # desactivadas tty3-6
+#4:23:respawn:/sbin/getty 38400 tty4
+#5:23:respawn:/sbin/getty 38400 tty5
+#6:23:respawn:/sbin/getty 38400 tty6
