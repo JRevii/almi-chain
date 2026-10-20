@@ -1,0 +1,55 @@
+# Secretos y credenciales
+.env
+*.env
+!.env.example
+*.pem
+*.key
+*.ppk
+credentials
+.aws/
+secrets/
+
+# Imágenes y discos de máquinas virtuales
+*.iso
+*.vdi
+*.vmdk
+*.vhd
+*.vhdx
+*.ova
+*.ovf
+*.qcow2
+*.sav
+
+# ROMs y ficheros de MAME (copyright)
+roms/
+*.chd
+recreativa/mame/nvram/
+recreativa/mame/cfg/
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!example.tfvars
+crash.log
+.terraform.lock.hcl
+
+# Copias de seguridad reales
+*.bak
+*.dump
+backups/datos/
+
+# Arduino / compilación
+build/
+*.hex
+*.elf
+
+# Sistema y editores
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp
+~$*
