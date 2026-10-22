@@ -21,7 +21,7 @@ resource "aws_security_group" "web" {
   vpc_id      = data.aws_vpc.default.id
 
   ingress {
-    description = "HTTP (redirige a HTTPS y valida Let's Encrypt)"
+    description = "HTTP (redirige a HTTPS y valida Lets Encrypt)"
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
@@ -45,7 +45,7 @@ resource "aws_security_group" "web" {
   }
 
   egress {
-    description = "Salida para actualizaciones, DuckDNS y Let's Encrypt"
+    description = "Salida para actualizaciones, DuckDNS y Lets Encrypt"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
