@@ -1,0 +1,95 @@
+#!/bin/bash
+# Primer arranque de la instancia web de Almi-Chain.
+# Lo genera Terraform (templatefile). Log en /var/log/almichain-setup.log
+set -euo pipefail
+exec > >(tee -a /var/log/almichain-setup.log) 2>&1
+
+DOMAIN="${domain}"
+SUBDOMAIN="${subdomain}"
+EMAIL="${email}"
+WEBROOT=/var/www/almichain
+
+echo "== 1. Paquetes =="
+export DEBIAN_FRONTEND=noninteractive
+apt-get update
+apt-get -y upgrade
+apt-get -y install nginx certbot python3-certbot-nginx dnsutils curl
+
+echo "== 2. DuckDNS: token solo legible por root =="
+install -d -m 700 /etc/duckdns
+printf '%s' "${duckdns_token}" > /etc/duckdns/token
+chmod 600 /etc/duckdns/token
+cat > /usr/local/bin/duckdns-update <<'EOF'
+#!/bin/bash
+# Sin ip=: DuckDNS usa la IP pública desde la que llega la petición (la Elastic IP)
+curl -fsS "https://www.duckdns.org/update?domains=SUBDOMAIN_PH&token=$(cat /etc/duckdns/token)&ip=" -o /var/log/duckdns.last
+EOF
+sed -i "s/SUBDOMAIN_PH/$SUBDOMAIN/" /usr/local/bin/duckdns-update
+chmod 700 /usr/local/bin/duckdns-update
+echo "*/5 * * * * root /usr/local/bin/duckdns-update" > /etc/cron.d/duckdns
+
+echo "== 3. Nginx con página provisional =="
+install -d -o www-data -g www-data "$WEBROOT"
+cat > "$WEBROOT/index.html" <<'EOF'
+<!doctype html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Almi-Chain</title></head>
+<body><h1>Almi-Chain</h1><p>Web en construcción. Desplegada con Terraform en AWS.</p></body></html>
+EOF
+chown -R www-data:www-data "$WEBROOT"
+
+cat > /etc/nginx/sites-available/almichain <<EOF
+server {
+    listen 80;
+    listen [::]:80;
+    server_name $DOMAIN;
+    root $WEBROOT;
+    index index.html;
+
+    server_tokens off;
+
+    # Rendimiento (lo que proponía Lighthouse): compresión y caché
+    gzip on;
+    gzip_types text/css application/javascript image/svg+xml;
+
+    # Cabeceras de seguridad (las de web/README.md)
+    add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: https://tile.openstreetmap.org; font-src 'self'; connect-src 'self'; form-action 'none'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    add_header Permissions-Policy "geolocation=(self), camera=(), microphone=()" always;
+    add_header Strict-Transport-Security "max-age=31536000" always;
+
+    location / {
+        try_files \$uri \$uri/ =404;
+    }
+
+    # Caché de 30 días con "expires" y SIN add_header aquí dentro:
+    # un add_header en el location anularía las cabeceras de seguridad de arriba
+    location ~* \.(css|js|woff2|svg|png|webp|jpg)\$ {
+        expires 30d;
+    }
+}
+EOF
+ln -sf /etc/nginx/sites-available/almichain /etc/nginx/sites-enabled/almichain
+rm -f /etc/nginx/sites-enabled/default
+nginx -t && systemctl reload nginx
+
+echo "== 4. Esperar a que la Elastic IP esté asociada y el dominio apunte a ella =="
+for i in $(seq 1 60); do
+  TOKEN=$(curl -s -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 60")
+  MYIP=$(curl -s -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/public-ipv4 || true)
+  /usr/local/bin/duckdns-update || true
+  DNSIP=$(dig +short "$DOMAIN" @1.1.1.1 | tail -n1)
+  echo "Intento $i: IP instancia=$MYIP DNS=$DNSIP"
+  if [ -n "$MYIP" ] && [ "$MYIP" = "$DNSIP" ]; then break; fi
+  sleep 20
+done
+
+echo "== 5. Certificado HTTPS (Let's Encrypt) y redirección de HTTP a HTTPS =="
+certbot --nginx -d "$DOMAIN" --non-interactive --agree-tos -m "$EMAIL" --redirect \
+  || echo "AVISO: certbot ha fallado; repetir a mano: sudo certbot --nginx -d $DOMAIN --redirect"
+
+# Renovación automática: la instala el paquete certbot (certbot.timer)
+systemctl enable --now certbot.timer || true
+
+echo "== Listo: https://$DOMAIN =="
