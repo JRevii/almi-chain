@@ -8,7 +8,7 @@ Todas las fotos están recortadas a su proporción y convertidas a WebP (calidad
 | `nosotros.webp` | Cocinero sirviendo en la cocina | _pendiente_ | _pendiente_ |
 | `plato-1.webp` | Merluza en salsa pil-pil con brócoli | _pendiente_ | _pendiente_ |
 | `plato-2.webp` | Pichón asado | _pendiente_ | _pendiente_ |
-| `plato-3.svg` | Txangurro: **sigue provisional** (la foto encontrada tenía marca de agua con copyright) | — | — |
+| `plato-3.webp` | Txangurro gratinado en su caparazón | _pendiente_ | _pendiente_ |
 | `plato-4.webp` | Torrija con helado y caramelo | _pendiente_ | _pendiente_ |
 | `galeria-1.webp` | Comedor con barra iluminada | _pendiente_ | _pendiente_ |
 | `galeria-2.webp` | Copa de vino blanco sobre mármol | _pendiente_ | _pendiente_ |
