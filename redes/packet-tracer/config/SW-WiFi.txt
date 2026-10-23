@@ -1,0 +1,36 @@
+! =====================================================================
+! SW-WiFi · Cisco 2960 · switch de la red Wi-Fi de clientes
+! Conexiones: R1 Gi0/0/2 -> Gig0/1 · AP-Principal en Fa0/1 · AP-Repetidor en Fa0/2
+! ANTES DE PEGAR: cambia CLAVE_ENABLE y CLAVE_CONSOLA
+! =====================================================================
+hostname SW-WiFi
+enable secret CLAVE_ENABLE
+service password-encryption
+no ip domain-lookup
+banner motd # Acceso restringido. Solo personal autorizado de Almi-Chain. #
+!
+interface vlan 1
+ ip address 10.13.20.5 255.255.255.0
+ no shutdown
+ip default-gateway 10.13.20.1
+!
+! Puertos de los AP: modo acceso. Sin port-security: por el AP pasan
+! las MAC de todos los móviles conectados
+interface range FastEthernet0/1 - 2
+ switchport mode access
+!
+! Puertos sin usar: apagados (nadie puede enchufarse)
+interface range FastEthernet0/3 - 24 , GigabitEthernet0/2
+ description Libre - apagado
+ shutdown
+!
+line con 0
+ password CLAVE_CONSOLA
+ login
+ exec-timeout 5 0
+! Sin administración remota: solo por consola
+line vty 0 15
+ transport input none
+!
+end
+write memory
