@@ -11,8 +11,8 @@ set -euo pipefail
 [ "$(id -u)" -eq 0 ] || { echo "Ejecuta con sudo: sudo bash $0"; exit 1; }
 
 ADMIN="${SUDO_USER:-adminsrv}"
-DOMINIO="odoo.almichain.lan"
-IP_SERVIDOR="10.13.10.10"
+# shellcheck source=red.conf
+. "$(dirname "$0")/red.conf"     # IP_SERVIDOR, DOMINIO
 CA_DIR="/root/ca"                  # clave privada de la CA: solo root
 SSL_DIR="/etc/ssl/almichain"       # lo monta el contenedor de Nginx (solo lectura)
 

@@ -42,6 +42,10 @@ echo "== 3. Copiar el stack a $STACK"
 install -d -m 750 "$STACK"
 cp -r "$REPO/docker/." "$STACK/"
 chmod 755 "$STACK/initdb" && chmod 644 "$STACK/initdb/"*.sh
+# shellcheck source=red.conf
+. "$(dirname "$0")/red.conf"
+echo "IP_SERVIDOR=$IP_SERVIDOR" > "$STACK/.env"      # IP en la que Nginx publica 80 y 443
+chmod 640 "$STACK/.env"
 dc pull
 
 echo "== 4. Secretos (generados al azar, solo en este servidor)"
@@ -93,6 +97,8 @@ print(open(sys.argv[1]).read().replace('__ADMIN__', open(sys.argv[2]).read().str
 EOF
   dc run --rm odoo odoo -d "$BD" -i "$MODULOS" --stop-after-init --no-http
 fi
+# Solo su dueño (odoo) puede conectarse a la BD de Odoo; local_app no entra
+dc exec -T -u postgres db psql -qc "REVOKE CONNECT ON DATABASE $BD FROM PUBLIC;"
 
 echo "== 8. Arrancar todo"
 dc up -d
@@ -105,6 +111,6 @@ echo
 curl -s -o /dev/null -w "HTTP  -> %{http_code} (tiene que ser 301)\n" http://odoo.almichain.lan/
 curl -s -o /dev/null -w "HTTPS -> %{http_code} (tiene que ser 200)\n" https://odoo.almichain.lan/web/login
 echo
-echo "Listo. Odoo: https://odoo.almichain.lan · usuario admin"
+echo "Listo. Odoo: https://$DOMINIO ($IP_SERVIDOR) · usuario admin"
 echo "Contraseñas en $SECRETOS (sudo cat ...): odoo-admin.txt, odoo-master.txt. Pásalas a KeePassXC."
 echo "Siguiente paso: sudo bash 05-copias.sh"
