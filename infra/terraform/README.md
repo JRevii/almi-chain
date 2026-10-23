@@ -9,6 +9,8 @@ Internet ──HTTPS──► almichain.duckdns.org ──► Elastic IP ──�
 
 Un solo `terraform apply` crea el servidor, lo configura, saca el certificado HTTPS y publica la carpeta [`web/`](../../web).
 
+La explicación completa (decisiones, seguridad, pruebas, costes y preguntas de la defensa) está en [`docs/infra/despliegue_aws.md`](../../docs/infra/despliegue_aws.md).
+
 ## Qué crea
 
 | Recurso | Para qué |
