@@ -7,7 +7,10 @@
 set -euo pipefail
 [ "$(id -u)" -eq 0 ] || { echo "Ejecuta con sudo: sudo bash $0"; exit 1; }
 
-ADMIN="${SUDO_USER:-adminsrv}"   # usuario administrador (el del instalador)
+# Administrador: el usuario que lanzó sudo; si se ejecuta desde una sesión de root, adminsrv
+ADMIN="${SUDO_USER:-}"
+if [ -z "$ADMIN" ] || [ "$ADMIN" = "root" ]; then ADMIN="adminsrv"; fi
+id "$ADMIN" >/dev/null 2>&1 || { echo "No existe el usuario $ADMIN. Crea el administrador o ejecuta con sudo desde él."; exit 1; }
 # shellcheck source=red.conf
 . "$(dirname "$0")/red.conf"     # IP_SERVIDOR, RED_LAN, PUERTA_ENLACE, DOMINIO
 NOMBRE="srv-odoo"
