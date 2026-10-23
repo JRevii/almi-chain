@@ -1,8 +1,8 @@
 #!/bin/bash
 # =====================================================================
 # 02-raid.sh · Disco redundante (RAID 1) para los datos
-# Crea /dev/md0 en espejo con dos discos y lo monta en /srv/datos.
-# La base de datos (PostgreSQL) y los adjuntos de Odoo se guardan ahí.
+# Crea /dev/md0 en espejo con los discos A y B y lo monta en /srv/datos.
+# Ahí van los volúmenes de Docker: datos de PostgreSQL y adjuntos de Odoo.
 # Uso:  sudo bash 02-raid.sh            (discos por defecto: sdb y sdc)
 #       sudo bash 02-raid.sh sdX sdY    (si en tu VM tienen otro nombre)
 # =====================================================================
@@ -40,16 +40,15 @@ echo "UUID=$UUID $DATOS ext4 defaults,noatime,nofail 0 2" >> /etc/fstab
 systemctl daemon-reload
 mount "$DATOS"
 
-echo "== 4. Llevar los datos de PostgreSQL y de Odoo al RAID (montajes bind)"
-for dir in postgresql odoo; do
-  mkdir -p "$DATOS/$dir" "/var/lib/$dir"
-  echo "$DATOS/$dir /var/lib/$dir none bind,nofail,x-systemd.requires-mounts-for=$DATOS 0 0" >> /etc/fstab
-done
+echo "== 4. Carpetas para los volúmenes de Docker"
+mkdir -p "$DATOS/postgres" "$DATOS/odoo"
+# Docker no arranca hasta que el RAID esté montado: así nunca escribe los datos en el disco del sistema
+mkdir -p /etc/systemd/system/docker.service.d
+printf '[Unit]\nRequiresMountsFor=%s\n' "$DATOS" > /etc/systemd/system/docker.service.d/raid.conf
 systemctl daemon-reload
-mount /var/lib/postgresql
-mount /var/lib/odoo
 
 echo
 echo "Listo. Estado del RAID (tiene que acabar en [UU]; la primera sincronización tarda unos minutos):"
 cat /proc/mdstat
-findmnt "$DATOS"; findmnt /var/lib/postgresql; findmnt /var/lib/odoo
+findmnt "$DATOS"
+ls -l "$DATOS"

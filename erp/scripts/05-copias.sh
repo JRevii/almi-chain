@@ -1,9 +1,9 @@
 #!/bin/bash
 # =====================================================================
-# 05-copias.sh · Plan de copias de seguridad con restic
-# Usa un tercer disco (por defecto sdd), APARTE del RAID: si el RAID
-# se estropea o alguien borra datos, la copia sigue a salvo.
-# Instala la copia diaria (02:30) y hace la primera copia.
+# 05-copias.sh · Plan de copias de seguridad con restic + cron
+# Usa el disco C (por defecto sdd), APARTE del RAID: si el RAID se
+# estropea o alguien borra datos, la copia sigue a salvo.
+# Programa la copia diaria (02:30) con cron y hace la primera.
 # Uso:  sudo bash 05-copias.sh          (disco por defecto: sdd)
 #       sudo bash 05-copias.sh sdX
 # =====================================================================
@@ -15,10 +15,11 @@ SCRIPTS="$DIR/../../backups/scripts"
 DISCO="/dev/${1:-sdd}"
 COPIAS="/srv/copias"
 SECRETOS="/root/secretos"
+LOG="/var/log/almichain-copia.log"
 export RESTIC_REPOSITORY="$COPIAS/restic"
 export RESTIC_PASSWORD_FILE="$SECRETOS/restic.txt"
 
-echo "== 1. Disco de copias ($DISCO)"
+echo "== 1. Disco C de copias ($DISCO)"
 if mountpoint -q "$COPIAS"; then
   echo "$COPIAS ya está montado."
 else
@@ -38,33 +39,41 @@ fi
 chmod 700 "$COPIAS"
 
 echo "== 2. restic y repositorio cifrado"
-DEBIAN_FRONTEND=noninteractive apt-get -y install restic
+DEBIAN_FRONTEND=noninteractive apt-get -y install restic cron
 install -d -m 700 "$SECRETOS"
 if [ ! -s "$RESTIC_PASSWORD_FILE" ]; then
-  openssl rand -base64 32 | tr -dc 'A-Za-z0-9' | cut -c1-32 > "$RESTIC_PASSWORD_FILE"
+  openssl rand -base64 48 | tr -dc 'A-Za-z0-9' | cut -c1-32 > "$RESTIC_PASSWORD_FILE"
   chmod 600 "$RESTIC_PASSWORD_FILE"
 fi
-if [ ! -f "$RESTIC_REPOSITORY/config" ]; then
-  restic init
-fi
+[ -f "$RESTIC_REPOSITORY/config" ] || restic init
 
-echo "== 3. Scripts y copia diaria automática"
-install -m 750 "$SCRIPTS/copia.sh"             /usr/local/sbin/almichain-copia
-install -m 750 "$SCRIPTS/restaurar_prueba.sh"  /usr/local/sbin/almichain-restaurar-prueba
-install -m 644 "$SCRIPTS/almichain-copia.service" /etc/systemd/system/
-install -m 644 "$SCRIPTS/almichain-copia.timer"   /etc/systemd/system/
-systemctl daemon-reload
-systemctl enable --now almichain-copia.timer
+echo "== 3. Scripts y copia diaria con cron (02:30)"
+install -m 750 "$SCRIPTS/copia.sh"            /usr/local/sbin/almichain-copia
+install -m 750 "$SCRIPTS/restaurar_prueba.sh" /usr/local/sbin/almichain-restaurar-prueba
+cat > /etc/cron.d/almichain-copia <<EOF
+# Almi-Chain: copia de seguridad diaria (restic) a las 02:30
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+30 2 * * * root /usr/local/sbin/almichain-copia >> $LOG 2>&1
+EOF
+chmod 644 /etc/cron.d/almichain-copia
+cat > /etc/logrotate.d/almichain <<EOF
+$LOG /var/log/almichain-restauracion.log {
+    monthly
+    rotate 12
+    compress
+    missingok
+    notifempty
+}
+EOF
+systemctl enable --now cron
 
 echo "== 4. Primera copia"
-systemctl start almichain-copia.service
-journalctl -u almichain-copia.service -n 15 --no-pager
+/usr/local/sbin/almichain-copia 2>&1 | tee -a "$LOG"
 restic snapshots
 
 echo
-echo "Listo. Próxima copia:"
-systemctl list-timers almichain-copia.timer --no-pager
-echo
+echo "Listo. La copia se hará sola todos los días a las 02:30 (registro: $LOG)."
 echo "IMPORTANTE: guarda en KeePassXC la contraseña de $RESTIC_PASSWORD_FILE."
 echo "Sin ella, las copias NO se pueden recuperar."
 echo "Prueba de restauración:  sudo almichain-restaurar-prueba"
