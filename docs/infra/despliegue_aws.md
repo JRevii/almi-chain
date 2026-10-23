@@ -81,7 +81,8 @@ Al **primer arranque** (`user_data.sh.tftpl`) el servidor se configura solo:
 | La web carga por `https://almichain.duckdns.org` con las fotos reales | ✅ 22/10 | [`docs/web/capturas/aws_01…05`](../web/capturas) |
 | Revisión por el profesor | ✅ 22/10: lo vio funcionando y le pareció correcto | — |
 | HTTPS con certificado válido: el navegador muestra «La conexión es segura» en `almichain.duckdns.org` | ✅ 23/10 | ![candado](capturas/aws_04_https_candado_navegador.png) |
-| Cabeceras de seguridad y puertos (`curl -I`, `nmap`) | ⏳ pendiente de capturar con el laboratorio encendido | Comandos en [`infra/terraform/README.md`](../../infra/terraform/README.md) |
+| Cabeceras de seguridad (`curl -I https://almichain.duckdns.org`): `200 OK`, `Content-Security-Policy`, `Strict-Transport-Security`, `X-Content-Type-Options`, `Referrer-Policy` y `Permissions-Policy` | ✅ 23/10 | ![curl](capturas/aws_05_curl_cabeceras_seguridad.png) |
+| Puertos abiertos (`nmap`, desde otra red) | ⏳ opcional, pendiente | Comando en [`infra/terraform/README.md`](../../infra/terraform/README.md) |
 | Reproducibilidad (`destroy` y `apply`) | ⏳ opcional, pendiente | — |
 
 ### Incidencia durante el despliegue
