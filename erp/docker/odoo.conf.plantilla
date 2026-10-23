@@ -1,0 +1,31 @@
+[options]
+; Plantilla. 04-odoo-docker.sh la copia a /opt/almichain/odoo.conf y rellena
+; las dos marcas __...__ con secretos generados al azar (ese fichero NO va a Git).
+
+; --- Base de datos: contenedor "db", usuario sin superusuario, una sola BD ---
+db_host = db
+db_port = 5432
+db_user = odoo
+db_password = __PG_ODOO__
+db_name = almichain
+dbfilter = ^almichain$
+; Sin pantalla de gestión de bases de datos (nadie puede borrarlas ni copiarlas desde la web)
+list_db = False
+; Contraseña maestra cifrada (pbkdf2)
+admin_passwd = __MASTER_HASH__
+
+; --- Detrás de Nginx ---
+proxy_mode = True
+http_port = 8069
+gevent_port = 8072
+
+; --- Rendimiento para una VM de 2 CPU y 4 GB ---
+workers = 2
+max_cron_threads = 1
+limit_memory_soft = 1073741824
+limit_memory_hard = 1610612736
+limit_time_cpu = 600
+limit_time_real = 1200
+
+data_dir = /var/lib/odoo
+log_level = info
