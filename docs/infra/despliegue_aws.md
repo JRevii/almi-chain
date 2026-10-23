@@ -80,7 +80,8 @@ Al **primer arranque** (`user_data.sh.tftpl`) el servidor se configura solo:
 | `terraform apply` | `Apply complete! Resources: 5 added`. Salidas: IP pública, URL y comando SSH | ![apply](capturas/aws_02_terraform_apply_completo.png) |
 | La web carga por `https://almichain.duckdns.org` con las fotos reales | ✅ 22/10 | [`docs/web/capturas/aws_01…05`](../web/capturas) |
 | Revisión por el profesor | ✅ 22/10: lo vio funcionando y le pareció correcto | — |
-| Cabeceras de seguridad, certificado y puertos (`curl -I`, `openssl`, `nmap`) | ⏳ pendiente de capturar con el laboratorio encendido | Comandos en [`infra/terraform/README.md`](../../infra/terraform/README.md) |
+| HTTPS con certificado válido: el navegador muestra «La conexión es segura» en `almichain.duckdns.org` | ✅ 23/10 | ![candado](capturas/aws_04_https_candado_navegador.png) |
+| Cabeceras de seguridad y puertos (`curl -I`, `nmap`) | ⏳ pendiente de capturar con el laboratorio encendido | Comandos en [`infra/terraform/README.md`](../../infra/terraform/README.md) |
 | Reproducibilidad (`destroy` y `apply`) | ⏳ opcional, pendiente | — |
 
 ### Incidencia durante el despliegue
