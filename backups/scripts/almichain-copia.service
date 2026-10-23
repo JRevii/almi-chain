@@ -1,0 +1,11 @@
+[Unit]
+Description=Almi-Chain: copia de seguridad diaria (restic)
+Wants=network-online.target
+After=postgresql.service
+RequiresMountsFor=/srv/copias /srv/datos
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/almichain-copia
+Nice=10
+IOSchedulingClass=idle
