@@ -1,22 +1,21 @@
 #!/bin/bash
 # =====================================================================
 # 01-base.sh · Puesta a punto y seguridad básica del servidor
-# Ubuntu Server 24.04 LTS · VM Servidor-Odoo · 10.13.10.10
+# Ubuntu Server 24.04 LTS · VM Servidor-Odoo · IP en red.conf
 # Uso (como el administrador creado al instalar):  sudo bash 01-base.sh
 # =====================================================================
 set -euo pipefail
 [ "$(id -u)" -eq 0 ] || { echo "Ejecuta con sudo: sudo bash $0"; exit 1; }
 
 ADMIN="${SUDO_USER:-adminsrv}"   # usuario administrador (el del instalador)
-IP_SERVIDOR="10.13.10.10"
-RED_LAN="10.13.10.0/24"          # única red desde la que se puede entrar
+# shellcheck source=red.conf
+. "$(dirname "$0")/red.conf"     # IP_SERVIDOR, RED_LAN, PUERTA_ENLACE, DOMINIO
 NOMBRE="srv-odoo"
-DOMINIO="odoo.almichain.lan"
 
 echo "== 1. Comprobaciones"
 ip -4 addr | grep -q "inet $IP_SERVIDOR/" || {
   echo "La IP no es $IP_SERVIDOR. Ponla fija en el instalador o en /etc/netplan (ver erp/README.md)."; exit 1; }
-ping -c1 -W3 1.1.1.1 >/dev/null || { echo "Sin salida a internet: revisa la Red NAT de VirtualBox."; exit 1; }
+ping -c1 -W3 1.1.1.1 >/dev/null || { echo "Sin salida a internet: revisa el adaptador puente y la puerta de enlace."; exit 1; }
 
 echo "== 2. Nombre, hora y resolución local"
 hostnamectl set-hostname "$NOMBRE"
@@ -67,10 +66,6 @@ ufw --force enable
 
 echo "== 7. fail2ban: bloquea IP tras 5 intentos fallidos de SSH"
 cat > /etc/fail2ban/jail.d/almichain.local <<'EOF'
-[DEFAULT]
-# 10.13.10.1 es la puerta de la Red NAT: por ahí entra el portátil del administrador
-ignoreip = 127.0.0.1/8 ::1 10.13.10.1
-
 [sshd]
 enabled  = true
 backend  = systemd
