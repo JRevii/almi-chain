@@ -53,3 +53,7 @@ desktop.ini
 .idea/
 *.swp
 ~$*
+
+# Python
+__pycache__/
+*.pyc
