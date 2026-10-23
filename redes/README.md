@@ -4,9 +4,12 @@ Contratación de la línea WAN, esquema de conectividad, plano de red y cableado
 
 | Archivo | Qué es |
 | --- | --- |
+| [`packet-tracer/esquema_conectividad.png`](packet-tracer/esquema_conectividad.png) | Esquema de conectividad general: operador, local, VirtualBox, internet y AWS |
 | `packet-tracer/almichain.pkt` | Proyecto de Packet Tracer (vista lógica configurada + vista física) |
 | [`packet-tracer/plano_local.png`](packet-tracer/plano_local.png) | Plano del local: ubicación de equipos, cableado y cobertura Wi-Fi. Es la imagen de fondo de la vista física |
 | [`packet-tracer/config/`](packet-tracer/config) | Configuración de cada router y switch, lista para pegar en la CLI |
+
+![Esquema de conectividad](packet-tracer/esquema_conectividad.png)
 
 ![Plano del local](packet-tracer/plano_local.png)
 
