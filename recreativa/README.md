@@ -12,6 +12,7 @@ Máquina virtual de VirtualBox que imita el equipo de la recreativa: **1 núcleo
 | `scripts/02-ssh.sh` | Instalación de SSH, con el arreglo del grupo `_ssh` |
 | `scripts/03-mame.sh` | Xorg mínimo + MAME + carpeta de ROMs |
 | `scripts/04-optimizar.sh` | Optimización: `mame.ini`, autologin, arranque directo, GRUB y limpieza |
+| `scripts/05-seguridad.sh` | Mejora propuesta: usuario `adminrec` para administrar y SSH sin root (no aplicada) |
 | `scripts/medir.sh` | Recoge las medidas de rendimiento en un `.txt` |
 | `config/` | Ficheros de configuración que acaban en la VM |
 | `medidas/` | Resultados de las pruebas de rendimiento |
@@ -101,17 +102,15 @@ sudo reboot     # tiene que aparecer el menú de MAME directamente
 
 ## 6. Seguridad (mínimos privilegios)
 
-- Se trabaja con el usuario `recreativa`, que solo usa `sudo` cuando hace falta.
-- La parte gráfica se abre sin ser root (`xserver-xorg-legacy` + `config/Xwrapper.config`).
-- SSH solo escucha en 127.0.0.1 del anfitrión, así que nadie de la red puede conectarse.
-- **Pendiente:** poner a root una contraseña segura (`sudo passwd root`) y guardarla en KeePassXC; decidir si SSH se queda y, si se queda, desactivar el login de root.
+- MAME y la parte gráfica se ejecutan con el usuario `recreativa`, sin ser root (`xserver-xorg-legacy` + `config/Xwrapper.config`).
+- SSH solo es accesible desde el propio anfitrión (reenvío NAT en 127.0.0.1), así que nadie de la red puede conectarse.
+- Solo queda abierta una consola de emergencia (tty2), que pide usuario y contraseña.
 
-## Pendiente
+**Mejora propuesta para un equipo real:** `recreativa` mantiene `sudo` porque se usó para instalar y configurar. En una máquina en un local, lo correcto sería administrarla con un usuario aparte (`adminrec`), quitar `sudo` a `recreativa` y desactivar el login de root por SSH. Está preparado en [`scripts/05-seguridad.sh`](scripts/05-seguridad.sh).
 
-- [ ] Contraseña de root segura y decisión sobre SSH
-- [ ] (Opcional) Medir «antes jugando» con la instantánea `02`
-- [ ] Añadir los ficheros reales de la VM (ver abajo)
-- [ ] Arcade stick con Arduino (tareas 44 y 45) → carpeta [`../arcade-stick/`](../arcade-stick/)
+## Relacionado
+
+- Arcade stick con Arduino (tareas 44 y 45) → carpeta [`../arcade-stick/`](../arcade-stick/)
 
 ### Sacar los ficheros reales de la VM
 
