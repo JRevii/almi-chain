@@ -66,7 +66,7 @@ El enunciado pide una web **unidireccional** (solo informa), **atractiva y respo
 | Validación del HTML | 0 errores | ✅ 0 errores con html-validate; ⏳ pendiente la captura del validador del W3C | — |
 | Lighthouse en local (móvil) | ≥ 90 | ✅ Rendimiento 99 · Accesibilidad 100 · Buenas prácticas 100 · SEO 100 | `evidencias/lighthouse_local_movil.html` |
 | Lighthouse en local (escritorio) | ≥ 90 | ✅ 100 · 100 · 100 · 100 | `evidencias/lighthouse_local_escritorio.html` |
-| Lighthouse de la web publicada (con Jon) | ≥ 90 | ⏳ 9–10 nov | — |
+| Lighthouse de la web publicada, con PageSpeed Insights sobre `https://almichain.duckdns.org` (Jon) | ≥ 90 | ✅ 25/10 · Móvil: Rendimiento 99 · Accesibilidad 100 · Buenas prácticas 100 · SEO 100. Ordenador: 100 · 100 · 100 · 100 | `evidencias/pagespeed_publicada_movil.png`, `evidencias/pagespeed_publicada_escritorio.png` |
 | Web publicada en AWS: carga por `https://almichain.duckdns.org` con las fotos reales | Candado y página completa, sin imágenes provisionales | ✅ 22/10 | `capturas/aws_01_portada_https.png`, `aws_02_nosotros.png`, `aws_03_platos_slideshow.png` |
 | Web publicada: formulario de muestra | Muestra el aviso y no envía nada | ✅ 22/10 | `capturas/aws_04_reservas_formulario_muestra.png` |
 | Web publicada: mapa con los 4 locales | Aparecen los 4 marcadores sobre OpenStreetMap | ✅ 22/10 | `capturas/aws_05_mapa_locales.png` |
