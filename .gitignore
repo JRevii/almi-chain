@@ -35,7 +35,10 @@ recreativa/mame/cfg/
 crash.log
 .terraform.lock.hcl
 
-# Copias de seguridad reales
+# Copias de seguridad reales (incluidas las de configuración de routers: llevan contraseñas)
+*.bin
+*.cfg
+config.dat
 *.bak
 *.dump
 backups/datos/

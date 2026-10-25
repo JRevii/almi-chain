@@ -6,7 +6,6 @@ Las bases de datos del servidor (`almichain`, la de Odoo, y `almichain_local`, l
 | --- | --- |
 | [`scripts/copia.sh`](scripts/copia.sh) | Copia diaria. Se instala como `/usr/local/sbin/almichain-copia` y la lanza `/etc/cron.d/almichain-copia` a las 02:30 |
 | [`scripts/restaurar_prueba.sh`](scripts/restaurar_prueba.sh) | Prueba de restauración. Se instala como `/usr/local/sbin/almichain-restaurar-prueba` |
-| `conf.bin` | Copia de la configuración del router del aula |
 
 ## 1. RAID 1
 
@@ -17,6 +16,8 @@ Las bases de datos del servidor (`almichain`, la de Odoo, y `almichain_local`, l
 ```
 
 Si un disco falla, todo sigue funcionando con el otro. Docker no arranca si el RAID no está montado. Para ver el estado: `cat /proc/mdstat` o `sudo mdadm --detail /dev/md0`.
+
+> **La copia de configuración del router no se sube a GitHub:** contiene la contraseña de administración y la clave del Wi-Fi. Se guarda en KeePassXC como adjunto.
 
 > **Un RAID no es una copia.** Si alguien borra una factura, se borra en los dos discos a la vez. Para eso está el plan de copias.
 
