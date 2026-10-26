@@ -87,3 +87,10 @@ echo "Listo. Comprobación rápida:"
 ufw status verbose | head -12
 sshd -T | grep -E '^(permitrootlogin|allowusers|passwordauthentication) '
 fail2ban-client status sshd | head -3 || true
+if [ "$PASS" = "yes" ]; then
+  echo
+  echo "PENDIENTE: SSH sigue aceptando contraseña (prueba 7 fallaría)."
+  echo "  1. Desde tu PC: ssh-copy-id $ADMIN@$IP_SERVIDOR"
+  echo "  2. Comprueba:   ssh -o PasswordAuthentication=no $ADMIN@$IP_SERVIDOR"
+  echo "  3. Vuelve a ejecutar: sudo bash $0"
+fi
