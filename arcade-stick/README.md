@@ -9,7 +9,7 @@ Mando arcade con un joystick y 4 botones, controlado por un **Arduino Leonardo**
 | [`mando_arcade/mando_arcade.ino`](mando_arcade/mando_arcade.ino) | Código del Arduino |
 | [`img/montaje_desde_arriba.png`](img/montaje_desde_arriba.png) | Esquema de conexiones |
 | [`img/mando_fisico.jpg`](img/mando_fisico.jpg) | Foto del montaje real (prototipo en caja de cartón) |
-| `capturas/` | Evidencias de las pruebas |
+| `capturas/` | Evidencias de las pruebas (fotos y vídeos) |
 
 ## 1. Material
 
@@ -76,11 +76,11 @@ Mando arcade con un joystick y 4 botones, controlado por un **Arduino Leonardo**
 | # | Prueba | Resultado esperado | Estado | Evidencia |
 | --- | --- | --- | --- | --- |
 | 1 | Revisión del montaje y funcionamiento por el profesor | Funciona | ✅ Validado por el profesor | — |
-| 2 | Comprobador de teclado (por ejemplo, una web de *keyboard tester*): pulsar las 8 entradas | Cada entrada marca su tecla | ⏳ | `capturas/stick_01_teclas.png` |
-| 3 | Diagonal + botón a la vez | Se marcan las tres teclas a la vez | ⏳ | `capturas/stick_02_simultaneas.png` |
+| 2 | Probador de teclado en el navegador: pulsar las 8 entradas | Cada entrada marca su tecla | ✅ 26/10: se marcan las 4 flechas y las teclas Z, X, C y V | [vídeo](capturas/stick_01_probador_teclado.mp4) |
+| 3 | Diagonal + botón a la vez | Se marcan las tres teclas a la vez | Opcional | — |
 | 4 | Jugar a Gridlee en la VM recreativa (instantánea `03 - optimizada`) | El juego responde al joystick y a los botones | ✅ Validado por el profesor en clase | ![Gridlee con el arcade stick](capturas/stick_03_mame_gridlee.jpg) |
-| 5 | Otro emulador o programa (por ejemplo RetroArch) | Responde igual, sin configurar drivers | ⏳ | `capturas/stick_04_otro_emulador.png` |
-| 6 | Remapear un botón en MAME (*Tab → Input*) | El botón hace la nueva acción | ⏳ | `capturas/stick_05_remapeo.png` |
+| 5 | Otro programa: el juego del dinosaurio de Chrome (`chrome://dino`) | Responde igual, sin configurar drivers | ✅ 26/10: joystick arriba salta y abajo se agacha | [vídeo](capturas/stick_04_chrome_dino.mp4) |
+| 6 | Remapear un botón en MAME (*Tab → Input*) | El botón hace la nueva acción | Opcional | — |
 
 ## 8. Preguntas que pueden hacer en la defensa
 
