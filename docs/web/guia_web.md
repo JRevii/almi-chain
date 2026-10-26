@@ -14,7 +14,7 @@ El enunciado pide una web **unidireccional** (solo informa), **atractiva y respo
 
 - Un editor (VS Code) y un navegador moderno.
 - Python 3, para probarla en local con `python3 -m http.server`.
-- El boceto elegido: concepto **Latón** (ver los bocetos en el Drive del equipo).
+- El boceto elegido: concepto **Latón** (ver `docs/bocetos/`).
 
 ## 3. Decisiones y justificación
 
@@ -63,7 +63,7 @@ El enunciado pide una web **unidireccional** (solo informa), **atractiva y respo
 | Slideshow: clic, flechas ↑↓ y Pausar | Cambia el plato y la foto; se puede parar | ✅ | — (hacer vídeo corto) |
 | Formulario de muestra | No envía nada y muestra el aviso | ✅ | — |
 | Geolocalización (simulada en Getxo) | "El más cercano es Getxo, a unos 3,1 km" | ✅ | — |
-| Validación del HTML | 0 errores | ✅ 0 errores con html-validate; ⏳ pendiente la captura del validador del W3C | — |
+| Validación del HTML (W3C) | 0 errores | ✅ Con la URL publicada (26/10/2026): 0 errores y 0 avisos. Subiendo el archivo salían 8 avisos de la CSP (ver apartado 8) | `capturas/w3c_validacion_publicada.png`, `capturas/w3c_validacion.png` |
 | Lighthouse en local (móvil) | ≥ 90 | ✅ Rendimiento 99 · Accesibilidad 100 · Buenas prácticas 100 · SEO 100 | `evidencias/lighthouse_local_movil.html` |
 | Lighthouse en local (escritorio) | ≥ 90 | ✅ 100 · 100 · 100 · 100 | `evidencias/lighthouse_local_escritorio.html` |
 | Lighthouse de la web publicada, con PageSpeed Insights sobre `https://almichain.duckdns.org` (Jon) | ≥ 90 | ✅ 25/10 · Móvil: Rendimiento 99 · Accesibilidad 100 · Buenas prácticas 100 · SEO 100. Ordenador: 100 · 100 · 100 · 100 | `evidencias/pagespeed_publicada_movil.png`, `evidencias/pagespeed_publicada_escritorio.png` |
@@ -103,10 +103,14 @@ El enunciado pide una web **unidireccional** (solo informa), **atractiva y respo
 - **¿Por qué no Bootstrap o WordPress?** Para una web de una página añadiría peso y superficie de ataque (WordPress necesita PHP y una base de datos) sin aportar nada. Con HTML estático, el servidor solo entrega archivos.
 - **¿Cómo se comprobó la accesibilidad?** Con el contraste calculado con la fórmula de la WCAG, Lighthouse (100) y probando la página solo con teclado.
 
+*Más preguntas, con respuestas cortas, en `defensa_web.md`.*
+
 ## 8. Problemas encontrados y solución
 
 - **Leaflet usa una imagen `data:` para las teselas vacías**, que la CSP bloqueaba. Solución: añadir `data:` a `img-src`, solo para imágenes.
 - **Fondo gris del mapa antes de cargar las teselas.** El selector era `.map .leaflet-container`, pero la clase está en el propio `#map`. Solución: `.map.leaflet-container`.
+
+- **Avisos de la CSP en el validador del W3C.** Al subir `index.html` como archivo, el validador da 0 errores pero 8 avisos del tipo *"Resource violates Content Security Policy"* para `styles.css`, `main.js` y las imágenes. Pasa porque un archivo subido suelto no tiene dominio, así que `'self'` (nuestro dominio) no coincide con nada. En el servidor real, CSS, JS e imágenes vienen del mismo dominio y la CSP los permite (Lighthouse da 100 en Buenas prácticas, sin errores en la consola). Comprobado el 26/10/2026: al validar la URL publicada (https://almichain.duckdns.org/) sale *"No errors or warnings to show"*.
 
 ## 9. Fuentes
 
