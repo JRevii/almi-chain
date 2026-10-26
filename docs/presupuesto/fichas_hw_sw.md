@@ -30,7 +30,7 @@ El presupuesto detallado, sin IVA y con el IVA aparte, está en `presupuesto_loc
 
 El enunciado de 2022-2023 pide Windows 10, pero **Windows 10 dejó de tener soporte el 14/10/2025**. Desde entonces solo recibe parches de seguridad pagando las actualizaciones ampliadas (ESU): para empresas cuestan **61 $** el primer año (terminó el 13/10/2026), **122 $** el segundo y **244 $** el tercero, por equipo.
 
-Por eso el equipo decidió usar **Windows 11** en el gerente y en los TPV:
+Por eso el equipo decidió usar **Windows 11** en el gerente y en los TPV (validado por el profesor el 26/10/2026):
 - **Seguridad por defecto:** sigue recibiendo actualizaciones gratis. Un TPV que cobra a clientes no puede llevar un sistema sin parches.
 - **Sin coste extra:** los equipos presupuestados ya lo traen, el del gerente con Windows 11 Pro y los TPV con Windows 11 IoT Enterprise LTSC (soporte hasta 2034 y pensado para equipos de función fija como un TPV). Así nos ahorramos el ESU.
 
