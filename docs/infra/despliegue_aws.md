@@ -83,7 +83,23 @@ Al **primer arranque** (`user_data.sh.tftpl`) el servidor se configura solo:
 | HTTPS con certificado válido: el navegador muestra «La conexión es segura» en `almichain.duckdns.org` | ✅ 23/10 | ![candado](capturas/aws_04_https_candado_navegador.png) |
 | Cabeceras de seguridad (`curl -I https://almichain.duckdns.org`): `200 OK`, `Content-Security-Policy`, `Strict-Transport-Security`, `X-Content-Type-Options`, `Referrer-Policy` y `Permissions-Policy` | ✅ 23/10 | ![curl](capturas/aws_05_curl_cabeceras_seguridad.png) |
 | Puertos abiertos (`nmap`, desde otra red) | ⏳ opcional, pendiente | Comando en [`infra/terraform/README.md`](../../infra/terraform/README.md) |
-| Reproducibilidad (`destroy` y `apply`) | ⏳ opcional, pendiente | — |
+| **Reproducibilidad** (`destroy` y `apply` desde cero) | ✅ 26/10: se destruyen los 5 recursos y se vuelven a crear en **1 min 45 s**, con una IP nueva y un certificado nuevo, y la web vuelve igual. Detalle en el apartado 6.1 | ![apply](capturas/aws_12_apply_completo_1m45s.png) |
+
+### 6.1 Prueba de reproducibilidad: `destroy` + `apply` (26/10/2026)
+
+El enunciado pide un **despliegue reproducible**. La prueba es borrar toda la infraestructura y volver a crearla con un solo comando, sin tocar nada a mano.
+
+| Paso | Qué se hace | Resultado | Evidencia |
+| --- | --- | --- | --- |
+| 1 | `terraform state list` | Terraform gestiona la Elastic IP, su asociación, la instancia, el grupo de seguridad y la subida de la web | ![state](capturas/aws_06_state_list_antes.png) |
+| 2 | `terraform destroy` | Plan: `0 to add, 0 to change, 5 to destroy`. Se confirma con `yes` | ![destroy](capturas/aws_07_destroy_plan.png) ![confirmación](capturas/aws_08_destroy_confirmacion.png) |
+| 3 | Consola de EC2 | La instancia `almichain-web` aparece como **Terminada** | ![terminada](capturas/aws_09_consola_instancia_terminada.png) |
+| 4 | `time terraform apply` | `Destroy complete! Resources: 5 destroyed`, y el nuevo plan: `5 to add, 0 to change, 0 to destroy` | ![apply](capturas/aws_10_destroy_completo_y_apply.png) ![plan](capturas/aws_11_apply_plan_5_recursos.png) |
+| 5 | Fin del `apply` | `Apply complete! Resources: 5 added` en **1 min 45 s**. Nueva IP pública: `18.235.191.250` (antes `100.51.195.30`) | ![completo](capturas/aws_12_apply_completo_1m45s.png) |
+| 6 | Certificado (`openssl s_client`) | Emitido por Let's Encrypt el **26/10/2026 a las 06:31 GMT**: es nuevo, lo ha pedido el servidor recién creado | ![certificado](capturas/aws_13_certificado_nuevo.png) |
+| 7 | Navegador → `https://almichain.duckdns.org` | La web carga igual que antes | ![web](capturas/aws_14_web_recreada.png) |
+
+**Qué demuestra:** la IP cambió y nadie tocó DuckDNS ni el certificado a mano. El propio servidor actualizó el dominio, esperó a que apuntara a él y pidió el certificado. Toda la infraestructura está descrita en código, así que cualquiera del equipo puede reconstruirla en menos de dos minutos.
 
 ### Incidencia durante el despliegue
 
