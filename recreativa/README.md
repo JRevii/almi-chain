@@ -16,7 +16,7 @@ Máquina virtual de VirtualBox que imita el equipo de la recreativa: **1 núcleo
 | `scripts/medir.sh` | Recoge las medidas de rendimiento en un `.txt` |
 | `config/` | Ficheros de configuración que acaban en la VM |
 | `medidas/` | Resultados de las pruebas de rendimiento |
-| `capturas/` | Capturas del proceso |
+| `capturas/` | Capturas del proceso (ver el apartado 7) |
 
 > No se suben al repositorio contraseñas, ROMs ni el disco `.vdi`. La ROM de prueba (Gridlee) es legal y gratuita: se descarga de mamedev.org.
 
@@ -107,6 +107,29 @@ sudo reboot     # tiene que aparecer el menú de MAME directamente
 - Solo queda abierta una consola de emergencia (tty2), que pide usuario y contraseña.
 
 **Mejora propuesta para un equipo real:** `recreativa` mantiene `sudo` porque se usó para instalar y configurar. En una máquina en un local, lo correcto sería administrarla con un usuario aparte (`adminrec`), quitar `sudo` a `recreativa` y desactivar el login de root por SSH. Está preparado en [`scripts/05-seguridad.sh`](scripts/05-seguridad.sh).
+
+## 7. Capturas del proceso
+
+| Paso | Captura |
+| --- | --- |
+| Menú de arranque de la ISO: `antiX-26.1 x64-core (sysvinit)` | [rec_01](capturas/rec_01_menu_iso.png) |
+| Sesión live, como root, para lanzar `cli-installer` | [rec_02](capturas/rec_02_sesion_live.png) |
+| Disco nuevo: reparticionar | [rec_03](capturas/rec_03_reparticionar.png) |
+| Incidencia: la pregunta sale en español, pero solo acepta `y`/`n` | [rec_04](capturas/rec_04_incidencia_respuesta_ingles.png) |
+| Tabla de particiones `dos` (MBR), porque la VM arranca en modo BIOS | [rec_05](capturas/rec_05_tabla_mbr.png) |
+| Una partición `sda1` de 10 GB, Linux (83), de arranque | [rec_06](capturas/rec_06_particion_sda1.png) |
+| ext4, sin `/home` aparte | [rec_07](capturas/rec_07_ext4_sin_home.png) |
+| GRUB en el MBR (opción 1); en la partición raíz no arranca | [rec_08](capturas/rec_08_grub_en_mbr.png) |
+| Solo el idioma `es_ES.UTF-8` | [rec_09](capturas/rec_09_idioma_es.png) |
+| Teclado español | [rec_10](capturas/rec_10_teclado_es.png) |
+| Fin de la instalación: equipo y usuario `recreativa` | [rec_11](capturas/rec_11_fin_instalacion.png) |
+| Incidencia: vuelve a salir la ISO porque seguía montada | [rec_12](capturas/rec_12_incidencia_iso_montada.png) |
+| Red NAT funcionando (`ping -c 3 debian.org`) | [rec_13](capturas/rec_13_red_ping.png) |
+| `sudo`, actualización y zona horaria `Europe/Madrid` | [rec_14](capturas/rec_14_sudo_zona_horaria.png) |
+| Incidencia: falla la instalación de SSH (`dpkg` y `_ssh`) | [rec_15](capturas/rec_15_incidencia_ssh_dpkg.png) |
+| Dependencias de OpenSSH y arranque con sysvinit (`cat /proc/1/comm`) | [rec_16](capturas/rec_16_ssh_dependencias_sysvinit.png) |
+
+**Pendientes de añadir:** SSH funcionando (`sshd is running`), regla de reenvío de puertos 127.0.0.1:2222 → 22, `mame -bench` sin optimizar, Gridlee funcionando, MAME arrancando solo al encender y `sar` jugando.
 
 ## Relacionado
 
