@@ -89,14 +89,16 @@ El segundo router se coloca al fondo del comedor (ver el plano). Solo lleva corr
 
 ## 6. Pruebas
 
+La profesora solo pide el esquema en Packet Tracer, y ya lo ha validado (prueba 9). Las pruebas 1 a 7 son **comprobaciones opcionales**: sirven para enseñar en la defensa que la configuración funciona en el simulador, pero no forman parte de lo que se entrega.
+
 | # | Prueba | Resultado esperado | Captura |
 | --- | --- | --- | --- |
-| 1 | `ipconfig` en el móvil, cerca del AP-Repetidor | IP `10.13.20.1xx` y puerta de enlace `10.13.20.1` | ⏳ |
-| 2 | Desde el móvil, `ping 203.0.113.10` y abrir `http://203.0.113.10` en el navegador | Responde y carga la web: hay salida a internet | ⏳ |
-| 3 | Desde el móvil, `ping 10.13.10.10` | **Falla**: la Wi-Fi de clientes está aislada | ⏳ |
-| 4 | Desde el TPV 1, `ping 10.13.10.10` y `ping 203.0.113.10` | Responden los dos | ⏳ |
-| 5 | Desde el PC anfitrión, `ssh -l admin 10.13.10.1` | Pide la contraseña y entra | ⏳ |
-| 6 | Desde el portátil del cliente, `ssh -l admin 10.13.20.1` | **Rechazado** | ⏳ |
-| 7 | En R1: `show ip nat translations`, `show ip dhcp binding` y `show access-lists` | Aparecen las traducciones, las IP repartidas y los bloqueos de la ACL | ⏳ |
+| 1 | `ipconfig` en el móvil, cerca del AP-Repetidor | IP `10.13.20.1xx` y puerta de enlace `10.13.20.1` | Opcional |
+| 2 | Desde el móvil, `ping 203.0.113.10` y abrir `http://203.0.113.10` en el navegador | Responde y carga la web: hay salida a internet | Opcional |
+| 3 | Desde el móvil, `ping 10.13.10.10` | **Falla**: la Wi-Fi de clientes está aislada | Opcional |
+| 4 | Desde el TPV 1, `ping 10.13.10.10` y `ping 203.0.113.10` | Responden los dos | Opcional |
+| 5 | Desde el PC anfitrión, `ssh -l admin 10.13.10.1` | Pide la contraseña y entra | Opcional |
+| 6 | Desde el portátil del cliente, `ssh -l admin 10.13.20.1` | **Rechazado** | Opcional |
+| 7 | En R1: `show ip nat translations`, `show ip dhcp binding` y `show access-lists` | Aparecen las traducciones, las IP repartidas y los bloqueos de la ACL | Opcional |
 | 8 | WDS con los routers físicos del aula: un móvil conectado al repetidor navega | Navega y recibe IP del router principal | ⏳ |
 | 9 | **Revisión de la profesora:** proyecto de Packet Tracer (`almichain.pkt`), esquema, plano y configuración | Le parece correcto | ✅ 26/10: validado por la profesora |
