@@ -65,6 +65,21 @@ for pedido in records:
    - Instala `almichain-ca.crt` como entidad raíz de confianza.
    - Abre `https://odoo.almichain.lan`.
 
+## Configuración de Odoo (26/10/2026)
+
+Configuración funcional hecha desde la interfaz web, con el usuario administrador.
+
+| Paso | Qué se ha hecho | Estado | Evidencia |
+| --- | --- | --- | --- |
+| Impuestos | Activos solo los necesarios: **IVA 10% (Bienes) · Ventas** (hostelería), IVA 21% (Bienes) · Ventas (general) y 10% IVA (bienes corrientes) · Compras. Los demás impuestos del plan español quedan desactivados para que nadie elija uno equivocado | ✅ | [captura](capturas/odoo_01_impuestos_activos.png) |
+| Productos de prueba | *Café* (1,60 €) y *Txangurro* (22,00 €), con IVA 10% (Bienes) y disponibles en el TPV. La carta completa se importa después desde [`datos/productos.csv`](datos/productos.csv) | ✅ | ⏳ captura de la lista |
+| Punto de venta «Restaurante» | **Impresión automática del recibo** y **encabezado y pie personalizados** (`Almi-Chain · Cocina vasca de temporada · Bilbao` / `¡Gracias por su visita!`) | ✅ | ⏳ captura de los ajustes guardados |
+| Autofacturación por QR | **Desactivada:** el QR enlaza al portal de Odoo, que solo es accesible dentro del local (`odoo.almichain.lan`), y la factura ya se crea sola con la regla automática | ✅ | ⏳ (misma captura) |
+| Regla *TPV: factura automática de cada venta* | Ver el código en el apartado de instalación | ⏳ | — |
+| Carta, clientes y usuarios por rol | Importar los CSV de `datos/` y crear Gerente y Barra (solo TPV) | ⏳ Alejandro | — |
+
+> **Por qué IVA 10% (Bienes):** la localización española solo trae activo el 10 % de ventas como «Bienes». Servir comida es técnicamente una prestación de servicios, también al 10 %. El porcentaje y el cálculo son los correctos.
+
 ## Seguridad aplicada
 
 | Capa | Medida |
