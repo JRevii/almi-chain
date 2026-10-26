@@ -39,8 +39,8 @@ Si un disco falla, todo sigue funcionando con el otro. Docker no arranca si el R
 
 | # | Prueba | Cómo | Resultado esperado | Evidencia |
 | --- | --- | --- | --- | --- |
-| 11 | RAID sano | `cat /proc/mdstat` | `[2/2] [UU]` | ⏳ |
-| 12 | **Fallo de un disco** | Comandos de abajo | `[_U]` y Odoo sigue funcionando. Al reponer el disco vuelve a `[UU]` | ⏳ |
+| 11 | RAID sano | `cat /proc/mdstat` | `[2/2] [UU]` | ✅ 26/10 · `sdb` y `sdc` *active sync*, estado *clean* · [captura](../erp/capturas/srv_11_raid_sano.png) |
+| 12 | **Fallo de un disco** | Comandos de abajo | `[_U]` y Odoo sigue funcionando. Al reponer el disco vuelve a `[UU]` | ✅ 26/10 · `sdb` marcado `(F)` y RAID en `[_U]` ([captura](../erp/capturas/srv_12a_raid_degradado.png)); repuesto y reconstruido a `[UU]` en menos de 2 min ([captura](../erp/capturas/srv_12b_raid_reconstruido.png)). Falta una captura de Odoo funcionando durante el fallo |
 | 13 | Copia automática | Al día siguiente: `sudo tail /var/log/almichain-copia.log` | «Copia terminada correctamente» a las 02:30 | ⏳ |
 | 14 | **Restauración** | Vende algo en el TPV, ejecuta `sudo almichain-copia` y luego `sudo almichain-restaurar-prueba` | `RESULTADO: RESTAURACIÓN CORRECTA` | ⏳ |
 
