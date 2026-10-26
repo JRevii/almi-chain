@@ -99,3 +99,4 @@ El segundo router se coloca al fondo del comedor (ver el plano). Solo lleva corr
 | 6 | Desde el portátil del cliente, `ssh -l admin 10.13.20.1` | **Rechazado** | ⏳ |
 | 7 | En R1: `show ip nat translations`, `show ip dhcp binding` y `show access-lists` | Aparecen las traducciones, las IP repartidas y los bloqueos de la ACL | ⏳ |
 | 8 | WDS con los routers físicos del aula: un móvil conectado al repetidor navega | Navega y recibe IP del router principal | ⏳ |
+| 9 | **Revisión de la profesora:** proyecto de Packet Tracer (`almichain.pkt`), esquema, plano y configuración | Le parece correcto | ✅ 26/10: validado por la profesora |
