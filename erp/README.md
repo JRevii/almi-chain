@@ -33,7 +33,7 @@ La guía paso a paso, desde crear la VM hasta las pruebas, está en el documento
 
 1. **VM:** 2 CPU, 4 GB, adaptador puente a la red de clase. Discos SATA: 25 GB (sistema), 10 + 10 GB (A y B, RAID), 20 GB (C, copias).
 2. **Ubuntu Server 24.04:** IP fija `192.168.1.50/24`, puerta de enlace `192.168.1.1`, DNS `192.168.1.1,1.1.1.1`. LVM solo en el disco de 25 GB, ampliado al máximo. Usuario `adminsrv` y OpenSSH.
-3. **Desde el portátil:** `ssh-copy-id adminsrv@192.168.1.50` y `ssh adminsrv@192.168.1.50`.
+3. **Desde el portátil, ANTES de `01-base.sh`:** crea la clave (`ssh-keygen -t ed25519`, con frase de paso guardada en KeePassXC), cópiala con `ssh-copy-id adminsrv@192.168.1.50` y comprueba que entras sin contraseña con `ssh -o PasswordAuthentication=no adminsrv@192.168.1.50`. Si `01-base.sh` no encuentra la clave, deja la contraseña activada (ver [incidencia 1](#incidencias)).
 4. **En el servidor:**
 
 ```bash
@@ -61,9 +61,19 @@ for pedido in records:
 ```
 
 6. **En cada equipo cliente:**
-   - Añade `192.168.1.50 odoo.almichain.lan` al fichero `hosts`.
-   - Instala `almichain-ca.crt` como entidad raíz de confianza.
+   - Añade `192.168.1.50 odoo.almichain.lan` al fichero `hosts` (Windows: `C:\Windows\System32\drivers\etc\hosts` como administrador; Linux: `echo "192.168.1.50 odoo.almichain.lan" | sudo tee -a /etc/hosts`). Sin esto, el navegador da `DNS_PROBE_FINISHED_NXDOMAIN`.
+   - Copia el certificado **público** de la CA (`scp adminsrv@192.168.1.50:almichain-ca.crt .`; nunca la `.key`) e instálalo como entidad raíz de confianza. Windows: doble clic → *Instalar certificado* → *Entidades de certificación raíz de confianza*. Chrome en Linux no usa el almacén del sistema: `chrome://certificate-manager` → *Local certificates* → *Installed by you* → *Trusted certificates* → *Import*. Sin esto sale `NET::ERR_CERT_AUTHORITY_INVALID`.
    - Abre `https://odoo.almichain.lan`.
+
+7. **BD del local (`almichain_local`):** las tablas de Alejandro están en [`../bd/scripts/Scripts_postgre/02_tablas.sql`](../bd/scripts/Scripts_postgre/02_tablas.sql). En este servidor se cargan en `almichain_local` con su dueño `local_app`, **nunca** en `almichain`, que es la BD de Odoo:
+
+```bash
+sudo docker compose -f /opt/almichain/docker-compose.yml exec -T db \
+  psql -v ON_ERROR_STOP=1 -U local_app -d almichain_local < ~/almi-chain/bd/scripts/Scripts_postgre/02_tablas.sql
+sudo docker compose -f /opt/almichain/docker-compose.yml exec db psql -U local_app -d almichain_local -c '\dt'
+```
+
+   > Los comentarios de `02_tablas.sql` y `03_permisos.sql` usan la BD `almichain` y los roles `almichain_owner`/`almichain_app`. En este servidor esos nombres no aplican: `03_permisos.sql` **no se ejecuta** tal cual, porque daría acceso a la BD de Odoo. Pendiente de acordar con Alejandro.
 
 ## Configuración de Odoo (26/10/2026)
 
@@ -103,13 +113,21 @@ Configuración funcional hecha desde la interfaz web, con el usuario administrad
 | 3 | `sudo ufw status verbose` | `deny (incoming)`. 22/80/443 solo desde `192.168.1.0/24` | ✅ 26/10 · [captura](capturas/srv_03_ufw.png) |
 | 3b | Desde otro equipo de la LAN: `nmap -sV 192.168.1.50` | Solo 22 (OpenSSH), 80 (Nginx) y 443 abiertos; el resto filtrados | ✅ 26/10: 997 puertos filtrados. PostgreSQL (5432) y Odoo (8069) no aparecen · [captura](capturas/srv_03b_nmap.png) |
 | 4 | Navegador → `https://odoo.almichain.lan` | Candado sin avisos | ✅ 26/10 · «La conexión es segura» · [captura](capturas/srv_04_candado.png) |
-| 5 | `curl -I http://…` y `curl -I https://…/web/login` | `301`. Cabeceras de seguridad | ⏳ |
-| 6 | `/web/database/manager` | «The database manager has been disabled» | ⏳ |
-| 7 | `ssh root@…` y `ssh -o PubkeyAuthentication=no adminsrv@…` | `Permission denied` | ⚠️ 26/10 · root denegado ([captura](capturas/srv_07a_ssh_root_denegado.png)), pero el servidor **pide contraseña**: la autenticación por contraseña sigue activa. Pendiente de corregir y repetir |
-| 8 | `psql -U postgres -c '\du'` y `psql -U local_app -d almichain` | `odoo` solo «Create DB». `local_app` sin acceso | ⏳ |
+| 5 | `curl -I http://…` y `curl -I https://…/web/login` | `301`. Cabeceras de seguridad | ✅ 26/10 · HTTP → `301` a HTTPS y `Server: nginx` sin versión ([captura](capturas/srv_05a_http_301_sin_version.png)); HTTPS con HSTS, `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy` y cookie `Secure; HttpOnly; SameSite=Lax` ([captura](capturas/srv_05b_https_cabeceras.png), cookie difuminada). Ver [incidencia 2](#incidencias) |
+| 6 | `/web/database/manager` | «The database manager has been disabled» | ✅ 26/10 · desde un PC de la LAN, sin avisos de certificado · [captura](capturas/srv_06_gestor_bd_desactivado.png) |
+| 7 | `ssh root@…` y `ssh -o PubkeyAuthentication=no adminsrv@…` | `Permission denied` | ✅ 26/10 (repetida tras corregir la [incidencia 1](#incidencias)) · login con clave y contraseña prohibida ([captura](capturas/srv_07d_login_con_clave.png)); `sshd -T`: `permitrootlogin no`, `passwordauthentication no`, `allowusers adminsrv` ([captura](capturas/srv_07b_sshd_config.png)); root y contraseña → `Permission denied (publickey)` sin pedir contraseña ([captura](capturas/srv_07c_ssh_rechazado.png)) |
+| 8 | `psql -U postgres -c '\du'` y `psql -U local_app -d almichain` | `odoo` solo «Create DB». `local_app` sin acceso | ✅ 26/10 · `odoo` solo «Create DB», `local_app` sin atributos y `permission denied for database "almichain"` · [captura](capturas/srv_08_postgres_roles.png) |
 | 9 | **Venta en TPV → factura** | Pedido facturado y factura publicada con número e IVA 10 % | ⏳ |
 | 10 | Importar CSV y exportar a XLSX | Sin errores | ⏳ |
-| 11-14 | RAID, fallo de un disco, copia y restauración | 11 y 12 ✅ 26/10 · 13 y 14 ⏳ · ver [`../backups/`](../backups) |
+| 11-14 | RAID, fallo de un disco, copia y restauración | 11 y 12 ✅ 26/10 · 13 y 14 ⏳: `05-copias.sh` aún no se ha ejecutado (ver [incidencia 3](#incidencias)) · ver [`../backups/`](../backups) |
 | 15 | `sudo fail2ban-client status sshd` | Jaula activa | ✅ 26/10 · [captura](capturas/srv_15_fail2ban.png) |
 
 Capturas en `erp/capturas/`.
+
+## Incidencias
+
+| # | Qué pasó | Causa | Solución |
+| --- | --- | --- | --- |
+| 1 | La prueba 7 fallaba: el servidor pedía contraseña por SSH | `01-base.sh` se ejecutó antes de copiar la clave de `adminsrv`, así que dejó `PasswordAuthentication yes`. Además, alguien había añadido a mano `AllowUsers root` en `/etc/ssh/sshd_config.d/10-almichain.conf` (no lo bloqueaba `PermitRootLogin no`, pero sobraba) | Copia de seguridad del fichero, clave ed25519 con `ssh-copy-id`, comprobación con `ssh -o PasswordAuthentication=no`, quitar `AllowUsers root`, `PasswordAuthentication no`, `sshd -t` y `systemctl reload ssh` sin cerrar la sesión abierta. Volver a lanzar `01-base.sh` hace lo mismo, y ahora el script avisa al final si la contraseña sigue activa. `50-cloud-init.conf` también dice `yes`, pero no manda: sshd se queda con el primer valor y `10-` se lee antes |
+| 2 | `curl -I http://…` mostraba `Server: nginx/1.28.3` | `server_tokens off` solo estaba en el bloque del 443 | Añadido también al bloque del 80 en [`docker/nginx/odoo.conf`](docker/nginx/odoo.conf). En un servidor ya montado: editar `/opt/almichain/nginx/odoo.conf` y `docker compose restart nginx` (no basta `reload`: `sed -i` crea un fichero nuevo y el contenedor seguiría viendo el viejo) |
+| 3 | No existe `/srv/copias` y no hay cron de copias | `05-copias.sh` no se llegó a ejecutar: `sdd` (20 GB) está vacío y sin montar ([captura](capturas/srv_11c_discos_lsblk.png)) | Pendiente: `sudo bash 05-copias.sh` y después las pruebas 13 y 14 |
