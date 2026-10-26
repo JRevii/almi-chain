@@ -2,13 +2,14 @@
 
 Mando arcade con un joystick y 4 botones, controlado por un **Arduino Leonardo** que el ordenador reconoce como un **teclado USB**. No necesita drivers ni configuración, así que funciona en cualquier emulador y en cualquier sistema operativo. Las teclas se pueden cambiar en el código o en el propio emulador.
 
-![Mando montado](img/mando_fisico.jpg)
+![Arcade stick terminado](img/mando_terminado.jpg)
 
 | Archivo | Qué es |
 | --- | --- |
 | [`mando_arcade/mando_arcade.ino`](mando_arcade/mando_arcade.ino) | Código del Arduino |
 | [`img/montaje_desde_arriba.png`](img/montaje_desde_arriba.png) | Esquema de conexiones |
-| [`img/mando_fisico.jpg`](img/mando_fisico.jpg) | Foto del montaje real (prototipo en caja de cartón) |
+| [`img/mando_terminado.jpg`](img/mando_terminado.jpg) | Foto del mando terminado |
+| [`img/mando_fisico.jpg`](img/mando_fisico.jpg) | Foto del montaje por dentro (prototipo en caja de cartón) |
 | `capturas/` | Evidencias de las pruebas (fotos y vídeos) |
 
 ## 1. Material
