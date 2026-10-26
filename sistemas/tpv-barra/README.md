@@ -30,3 +30,14 @@ Objetivo: al cobrar en el TPV, el ticket sale solo por la impresora térmica, si
 | Ticket de prueba desde Windows | Se leen las tildes, el € y el código de barras | ⏳ | `capturas/imp_ticket_prueba.jpg` |
 | Venta en el TPV → ticket automático | El ticket sale solo al validar el pago | ⏳ | `capturas/imp_ticket_odoo.jpg` |
 
+Resultado
+La impresora Samsung ML-2165 ha quedado operativa dentro de la máquina virtual del TPV.
+
+Se verificó:
+
+Reconocimiento USB en VirtualBox.
+Instalación correcta del controlador.
+Impresión desde Windows.
+Impresión desde Odoo TPV.
+La impresión de tickets funciona correctamente.
+
