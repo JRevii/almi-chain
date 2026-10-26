@@ -5,10 +5,12 @@ Documento final del reto y diagramas de arquitectura (en `diagramas/`).
 | Documento | Contenido |
 | --- | --- |
 | [`infra/despliegue_aws.md`](infra/despliegue_aws.md) | Web en AWS con Terraform, Nginx, DuckDNS y HTTPS |
+| [`bocetos/bocetos.md`](bocetos/bocetos.md) | Bocetos de la web (diseño conceptual) y PDF con las opciones valoradas |
 | [`web/guia_web.md`](web/guia_web.md) | Diseño, código y pruebas de la web |
 | [`necesidades/necesidades-comunicacion.md`](necesidades/necesidades-comunicacion.md) | Inventario, redes y tráfico del local |
 | [`presupuesto/fichas_hw_sw.md`](presupuesto/fichas_hw_sw.md) | Fichas de hardware y software de un local |
 | [`presupuesto/presupuesto_local_plano.xlsx`](presupuesto/presupuesto_local_plano.xlsx) | Presupuesto de un local según el plano de cableado y Wi-Fi |
+| [`digitalizacion/digitalizacion.md`](digitalizacion/digitalizacion.md) | Tecnologías habilitadoras digitales y cómo transforman el restaurante |
 
 ## Pasos para reproducir
 
