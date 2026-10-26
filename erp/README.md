@@ -101,6 +101,7 @@ Configuración funcional hecha desde la interfaz web, con el usuario administrad
 | 1 | `sudo docker compose ps` (en `/opt/almichain`) | `db` healthy, `odoo` y `nginx` running | ✅ 26/10 · [captura](capturas/srv_01_docker_ps.png). Nginx publicado solo en `192.168.1.50`; Odoo y PostgreSQL sin publicar |
 | 2 | `sudo ss -tlnp` | Solo 22, y 80/443 en `192.168.1.50`. Ni 5432 ni 8069 | ✅ 26/10 · [captura](capturas/srv_02_puertos.png) |
 | 3 | `sudo ufw status verbose` | `deny (incoming)`. 22/80/443 solo desde `192.168.1.0/24` | ✅ 26/10 · [captura](capturas/srv_03_ufw.png) |
+| 3b | Desde otro equipo de la LAN: `nmap -sV 192.168.1.50` | Solo 22 (OpenSSH), 80 (Nginx) y 443 abiertos; el resto filtrados | ✅ 26/10: 997 puertos filtrados. PostgreSQL (5432) y Odoo (8069) no aparecen · [captura](capturas/srv_03b_nmap.png) |
 | 4 | Navegador → `https://odoo.almichain.lan` | Candado sin avisos | ✅ 26/10 · «La conexión es segura» · [captura](capturas/srv_04_candado.png) |
 | 5 | `curl -I http://…` y `curl -I https://…/web/login` | `301`. Cabeceras de seguridad | ⏳ |
 | 6 | `/web/database/manager` | «The database manager has been disabled» | ⏳ |
