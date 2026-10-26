@@ -83,17 +83,17 @@ for pedido in records:
 
 | # | Prueba | Resultado esperado | Evidencia |
 | --- | --- | --- | --- |
-| 1 | `sudo docker compose ps` (en `/opt/almichain`) | `db` healthy, `odoo` y `nginx` running | ⏳ |
-| 2 | `sudo ss -tlnp` | Solo 22, y 80/443 en `192.168.1.50`. Ni 5432 ni 8069 | ⏳ |
-| 3 | `sudo ufw status verbose` | `deny (incoming)`. 22/80/443 solo desde `192.168.1.0/24` | ⏳ |
-| 4 | Navegador → `https://odoo.almichain.lan` | Candado sin avisos | ⏳ |
+| 1 | `sudo docker compose ps` (en `/opt/almichain`) | `db` healthy, `odoo` y `nginx` running | ✅ 26/10 · [captura](capturas/srv_01_docker_ps.png). Nginx publicado solo en `192.168.1.50`; Odoo y PostgreSQL sin publicar |
+| 2 | `sudo ss -tlnp` | Solo 22, y 80/443 en `192.168.1.50`. Ni 5432 ni 8069 | ✅ 26/10 · [captura](capturas/srv_02_puertos.png) |
+| 3 | `sudo ufw status verbose` | `deny (incoming)`. 22/80/443 solo desde `192.168.1.0/24` | ✅ 26/10 · [captura](capturas/srv_03_ufw.png) |
+| 4 | Navegador → `https://odoo.almichain.lan` | Candado sin avisos | ✅ 26/10 · «La conexión es segura» · [captura](capturas/srv_04_candado.png) |
 | 5 | `curl -I http://…` y `curl -I https://…/web/login` | `301`. Cabeceras de seguridad | ⏳ |
 | 6 | `/web/database/manager` | «The database manager has been disabled» | ⏳ |
-| 7 | `ssh root@…` y `ssh -o PubkeyAuthentication=no adminsrv@…` | `Permission denied` | ⏳ |
+| 7 | `ssh root@…` y `ssh -o PubkeyAuthentication=no adminsrv@…` | `Permission denied` | ⚠️ 26/10 · root denegado ([captura](capturas/srv_07a_ssh_root_denegado.png)), pero el servidor **pide contraseña**: la autenticación por contraseña sigue activa. Pendiente de corregir y repetir |
 | 8 | `psql -U postgres -c '\du'` y `psql -U local_app -d almichain` | `odoo` solo «Create DB». `local_app` sin acceso | ⏳ |
 | 9 | **Venta en TPV → factura** | Pedido facturado y factura publicada con número e IVA 10 % | ⏳ |
 | 10 | Importar CSV y exportar a XLSX | Sin errores | ⏳ |
-| 11-14 | RAID, fallo de un disco, copia y restauración | Ver [`../backups/`](../backups) | ⏳ |
-| 15 | `sudo fail2ban-client status sshd` | Jaula activa | ⏳ |
+| 11-14 | RAID, fallo de un disco, copia y restauración | 11 y 12 ✅ 26/10 · 13 y 14 ⏳ · ver [`../backups/`](../backups) |
+| 15 | `sudo fail2ban-client status sshd` | Jaula activa | ✅ 26/10 · [captura](capturas/srv_15_fail2ban.png) |
 
 Capturas en `erp/capturas/`.
