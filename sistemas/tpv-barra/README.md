@@ -2,9 +2,16 @@
 
 Hardware, software y presupuesto de los 2 TPV Windows; cuentas restringidas (mínimos privilegios) e instalación de la impresora de tickets.
 
-## Pasos para reproducir
+Pasos para reproducir
 
-_Pendiente._
+1. Arrancar la máquina virtual del TPV.
+2. Conectar la impresora Samsung ML-2165 mediante USB.
+3. Verificar que Windows detecta la impresora.
+4. Abrir Odoo.
+5. Acceder al módulo Punto de Venta.
+6. Realizar una venta de prueba.
+7. Validar el pago.
+8. Comprobar la impresión del ticket.
 
 ## Impresora de tickets: impresión automática (Jon)
 
