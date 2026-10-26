@@ -2,30 +2,59 @@
 
 VM con 1 núcleo y 1 GB de RAM (965 MB útiles), sin swap. Medidas tomadas con `uptime`, `free -m`, `ps`, `df -h`, `sar` (paquete sysstat) y `mame -bench`, mediante [`../scripts/medir.sh`](../scripts/medir.sh).
 
-## Antes y después
+## 1. Resultado: el juego va sobrado con 1 núcleo y 1 GB
 
-| Medida | Antes (sin optimizar) | Después (optimizada) |
+Medido con la versión optimizada y **Gridlee en marcha**:
+
+| Medida | Resultado | Qué significa |
 | --- | --- | --- |
-| Momento de la medida | Recién arrancada, sin X ni MAME | Recién arrancada, con el menú de MAME abierto |
-| Tiempo hasta medir (`uptime`) | 52 s | 62 s (incluye abrir X y MAME solos) |
-| RAM usada | 162 MB de 965 | 389 MB (320 de caché) |
-| RAM disponible | 803 MB | 575 MB |
-| Swap | 0 | 0 |
-| Procesos | 85 | 92 (X + MAME, con 4 consolas menos) |
+| CPU media (`sar`, 60 s) | **20,3 %** (14,75 % usuario y 5,42 % sistema) | Queda un 79,7 % de CPU libre |
+| RAM de MAME (RSS) | **364 MB** | Cabe de sobra en 1 GB |
+| RAM disponible | 575 MB | Sin necesidad de swap |
+| Swap | 0 | Requisito del profesor: no se usa |
+| `mame -bench 60 gridlee` | **1353–1613 %** | Emula entre 13 y 16 veces más rápido de lo necesario (100 % = velocidad de la máquina original) |
+| Juego | Sin tirones ni cortes de sonido | Prueba de uso real |
+
+## 2. Estado del sistema en cada fase
+
+Estas dos columnas **no son una comparación directa**: se tomaron en momentos distintos (la primera sin MAME abierto y la segunda con el menú de MAME abierto). Sirven para ver cuánto ocupa cada parte.
+
+| Medida | Sistema base, sin MAME abierto | Optimizada, con el menú de MAME abierto |
+| --- | --- | --- |
+| Tiempo desde el arranque (`uptime`) | 52 s | 62 s |
+| RAM usada | 162 MB | 389 MB (320 de caché) |
+| Procesos | 85 | 92 (X y MAME suman procesos; hay 4 consolas menos) |
 | Servicios activos | 5 (dbus, opensysusers, seatd, ssh, udev) | Los mismos 5 |
 | Disco usado | 2,3 GB (25 %) | 3,0 GB (33 %, por MAME y su ROM) |
-| `mame -bench` (velocidad emulada) | 1613 % | 1353 % (medido con otro MAME abierto) |
 
-## Jugando a Gridlee (optimizada)
+La diferencia de RAM es MAME funcionando, no un empeoramiento. El sistema base ya era mínimo (antiX core con 5 servicios), así que la optimización no se centra en quitar servicios, sino en preparar la máquina para jugar.
 
-- **CPU media (`sar`): 20,3 %**: 14,75 % usuario y 5,42 % sistema, con un 79,7 % libre.
-- **RAM de MAME (RSS): 364 MB.**
-- Sin tirones ni cortes de sonido; queda margen de sobra de CPU y de RAM.
+## 3. Qué se ha optimizado
 
-## Cómo interpretarlo (para la defensa)
+| Cambio | Efecto |
+| --- | --- |
+| Arranque directo a MAME (autologin, `startx` y `.xinitrc`) | Al encender, la máquina va sola al juego, sin escritorio ni usuario y contraseña |
+| 4 consolas de texto desactivadas (tty3–tty6) | 4 procesos menos |
+| `GRUB_TIMEOUT=1` | Arranque más rápido |
+| `video soft` y `autoframeskip` | Vídeo estable sin aceleración 3D y sin ralentizaciones |
+| `samplerate 22050` | Sonido más ligero para un solo núcleo |
+| `skip_gameinfo` | Sin pantallas de aviso al cargar el juego |
+| Sin swap | La RAM sobra, como muestra el apartado 1 |
 
-- La columna «antes» se tomó sin MAME abierto, así que la RAM no es comparable 1 a 1. Lo que sube es MAME funcionando, no un empeoramiento.
-- `mame -bench` no usa vídeo ni sonido, y el segundo valor se midió con otra instancia de MAME abierta, por eso baja. Los dos valores están muy por encima del 100 %, que es la velocidad real de la máquina original.
-- La mejora está en el uso real: arranque directo al juego, menos consolas, sin pantallas de aviso y con vídeo y sonido ajustados a un solo núcleo, todo sin swap.
+## 4. Medida comparable antes / después (pendiente)
 
-Los ficheros en bruto (`medidas-antes.txt`, `medidas-despues.txt`, `medidas-jugando.txt`) se añaden a esta carpeta al sacarlos de la VM.
+Para que la mejora quede medida en las mismas condiciones, se repiten las mediciones con las instantáneas de VirtualBox:
+
+| Medida | `02 - MAME sin optimizar` | `03 - optimizada` |
+| --- | --- | --- |
+| Tiempo desde encender hasta poder jugar (cronómetro) | ⏳ | ⏳ |
+| `sh medir.sh antes-jugando` / `despues-jugando` (Gridlee en marcha) | ⏳ | ⏳ |
+| `mame -bench 60 gridlee` sin ningún otro MAME abierto (`pgrep mame` vacío) | ⏳ | ⏳ |
+
+## 5. Cómo interpretarlo (para la defensa)
+
+- **El requisito se cumple:** con 1 núcleo y 1 GB, Gridlee usa el 20 % de la CPU y 364 MB, sin swap ni tirones.
+- **`mame -bench`** mide la emulación sin vídeo ni sonido. Más del 100 % significa que va más rápido que la máquina original. El valor más bajo (1353 %) se tomó con otra instancia de MAME abierta, por eso no se usa para comparar.
+- **La mejora principal es de uso:** la máquina arranca sola en el juego, con vídeo y sonido ajustados a un solo núcleo. El tiempo hasta poder jugar es la medida que mejor lo demuestra (apartado 4).
+
+Los ficheros en bruto (`medidas-*.txt`) se añaden a esta carpeta al sacarlos de la VM.
