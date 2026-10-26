@@ -82,7 +82,17 @@ Mando arcade con un joystick y 4 botones, controlado por un **Arduino Leonardo**
 | 5 | Otro emulador o programa (por ejemplo RetroArch) | Responde igual, sin configurar drivers | ⏳ | `capturas/stick_04_otro_emulador.png` |
 | 6 | Remapear un botón en MAME (*Tab → Input*) | El botón hace la nueva acción | ⏳ | `capturas/stick_05_remapeo.png` |
 
-## 8. Preguntas que pueden hacer en la defensa
+## 8. Problemas encontrados y soluciones
+
+| Problema | Causa | Solución |
+| --- | --- | --- |
+| `Keyboard` subrayado en rojo al compilar | Placa no seleccionada como Leonardo o biblioteca sin instalar | *Herramientas → Placa → Arduino Leonardo* e instalar `Keyboard` desde el gestor de bibliotecas |
+| Error `butterfly_recv(...) failed` al subir | El Leonardo no entra a tiempo en el cargador; en Ubuntu, ModemManager ocupa el puerto `ttyACM` | Pulsar RESET dos veces al ver «Uploading…», revisar el puerto y `sudo systemctl stop ModemManager` |
+| Del joystick solo funcionaba «derecha» | El hilo GND del joystick estaba en el pin 2 y una dirección en la columna (−) | Intercambiar esos dos cables |
+| Arriba e izquierda cambiadas | Los microinterruptores del joystick están girados respecto a la palanca | Intercambiar 3 y 5 en `pines[]`, sin tocar cables |
+| En Gridlee ningún botón disparaba | MAME dispara con Ctrl izquierdo y los botones envían `Z`, `X`, `C`, `V` | Asignar el disparo en *Tab → Input (este juego)* o cambiar la tecla en `teclas[]` (`KEY_LEFT_CTRL`) |
+
+## 9. Preguntas que pueden hacer en la defensa
 
 - **¿Por qué no un Arduino Uno?** Porque no tiene USB nativo y no puede hacerse pasar por teclado sin cambiar su firmware.
 - **¿Por qué no hay resistencias?** Porque se usan las internas del chip con `INPUT_PULLUP`.
