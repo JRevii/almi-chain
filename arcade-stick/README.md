@@ -78,7 +78,7 @@ Mando arcade con un joystick y 4 botones, controlado por un **Arduino Leonardo**
 | 1 | Revisión del montaje y funcionamiento por el profesor | Funciona | ✅ Validado por el profesor | — |
 | 2 | Comprobador de teclado (por ejemplo, una web de *keyboard tester*): pulsar las 8 entradas | Cada entrada marca su tecla | ⏳ | `capturas/stick_01_teclas.png` |
 | 3 | Diagonal + botón a la vez | Se marcan las tres teclas a la vez | ⏳ | `capturas/stick_02_simultaneas.png` |
-| 4 | Jugar a Gridlee en la VM recreativa | El juego responde al joystick y a los botones | ⏳ | `capturas/stick_03_mame.png` o vídeo |
+| 4 | Jugar a Gridlee en la VM recreativa (instantánea `03 - optimizada`) | El juego responde al joystick y a los botones | ✅ Validado por el profesor en clase | ![Gridlee con el arcade stick](capturas/stick_03_mame_gridlee.jpg) |
 | 5 | Otro emulador o programa (por ejemplo RetroArch) | Responde igual, sin configurar drivers | ⏳ | `capturas/stick_04_otro_emulador.png` |
 | 6 | Remapear un botón en MAME (*Tab → Input*) | El botón hace la nueva acción | ⏳ | `capturas/stick_05_remapeo.png` |
 
