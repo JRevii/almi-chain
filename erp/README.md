@@ -82,9 +82,9 @@ Configuración funcional hecha desde la interfaz web, con el usuario administrad
 | Paso | Qué se ha hecho | Estado | Evidencia |
 | --- | --- | --- | --- |
 | Impuestos | Activos solo los necesarios: **IVA 10% (Bienes) · Ventas** (hostelería), IVA 21% (Bienes) · Ventas (general) y 10% IVA (bienes corrientes) · Compras. Los demás impuestos del plan español quedan desactivados para que nadie elija uno equivocado | ✅ | [captura](capturas/odoo_01_impuestos_activos.png) |
-| Productos de prueba | *Café* (1,60 €) y *Txangurro* (22,00 €), con IVA 10% (Bienes) y disponibles en el TPV. La carta completa se importa después desde [`datos/productos.csv`](datos/productos.csv) | ✅ | ⏳ captura de la lista |
-| Punto de venta «Restaurante» | **Impresión automática del recibo** y **encabezado y pie personalizados** (`Almi-Chain · Cocina vasca de temporada · Bilbao` / `¡Gracias por su visita!`) | ✅ | ⏳ captura de los ajustes guardados |
-| Autofacturación por QR | **Desactivada:** el QR enlaza al portal de Odoo, que solo es accesible dentro del local (`odoo.almichain.lan`), y la factura ya se crea sola con la regla automática | ✅ | ⏳ (misma captura) |
+| Productos de prueba | *Cafe*: 1,50 € + IVA 10% (Bienes) = **1,65 €**. Antes llevaba el 21 % (1,82 €) y se corrigió el 27/10: en hostelería es el 10 %. La carta completa se importa después desde [`datos/productos.csv`](datos/productos.csv) | ✅ 27/10 | [ticket](capturas/odoo_03_ticket_logo_iva10.png) |
+| Empresa y ticket | Empresa **Almi-Chain** con su logo (versión en negro para imprimir), que sale en la cabecera del ticket en lugar de «Your logo». **Impresión automática del recibo** activada (validada por el profesor, ver [TPV](../sistemas/tpv-barra/README.md#pruebas)) | ✅ 27/10 | [ticket](capturas/odoo_03_ticket_logo_iva10.png) |
+| Autofacturación por QR | **Se deja activada:** el ticket lleva el QR «¿Necesita una factura?» con un código, por si un cliente quiere factura completa con sus datos. El enlace va a `odoo.almichain.lan`, así que solo funciona desde la red del local | ✅ | [ticket](capturas/odoo_03_ticket_logo_iva10.png) |
 | Regla *TPV: factura automática de cada venta* | Ver el código en el apartado de instalación | ⏳ | — |
 | Carta, clientes y usuarios por rol | Importar los CSV de `datos/` y crear Gerente y Barra (solo TPV) | ⏳ Alejandro | — |
 
