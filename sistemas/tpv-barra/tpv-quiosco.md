@@ -53,10 +53,10 @@ Pasos:
 
 Antes y después:
 
-![Aviso antes de instalar](capturas/12-aviso-certificado.png)
+_Captura pendiente de subir: `capturas/12-aviso-certificado.png` (aviso antes de instalar)._
 ![Detalles del certificado](capturas/13-certificado-detalles.png)
 ![CA en el almacén de confianza](capturas/05-certificado-confianza.png)
-![HTTPS sin aviso](capturas/14-edge-https-sin-aviso.png)
+_Captura pendiente de subir: `capturas/14-edge-https-sin-aviso.png` (https sin aviso)._
 
 ## 5. Modo quiosco
 
@@ -83,8 +83,8 @@ Para comprobarlo, el cajero intentó crear un producto y Odoo lo denegó (error 
 Los productos los crea un administrador de Odoo. Edge no debe guardar la contraseña del cajero.
 
 ![Usuario del cajero](capturas/18-odoo-usuario-cajero.png)
-![Acceso denegado al cajero](capturas/20-odoo-cajero-sin-permiso.png)
-![TPV conectado a Odoo](capturas/15-tpv-conectado-odoo.png)
+_Captura pendiente de subir: `capturas/20-odoo-cajero-sin-permiso.png` (acceso denegado al cajero)._
+![TPV conectado a Odoo](capturas/19-odoo-tpv-cajero.png)
 
 ## 7. Impresora
 
@@ -99,10 +99,10 @@ Pasos:
 
 **Problema encontrado:** con el controlador USB 3.0 (xHCI) el dispositivo "Compatibilidad con impresoras USB" daba el error "Código 10: este dispositivo no puede iniciar". **Solución:** cambiar el controlador de la VM a USB 1.1 (OHCI), que no necesita el Extension Pack y basta para una impresora. COMPLETAR: confirmar que con ese cambio quedó funcionando.
 
-Impresión desde el TPV: COMPLETAR (qué ocurre al cobrar con el usuario `tpv`: diálogo de impresión, impresión directa o nada).
+Impresión desde el TPV (27/10): al validar el pago, Odoo abre el **diálogo de impresión** de Edge con la Samsung ML-2160 Series seleccionada, y al pulsar *Imprimir* sale el ticket ([vídeo](capturas/imp_01_venta_e_impresion.mp4)). La impresión sin diálogo está en el [README](README.md#impresora-de-tickets).
 
-![Error Código 10](capturas/09c-error-codigo10.png)
-![Impresora predeterminada](capturas/09-impresora-predeterminada.png)
+![Impresora en el Administrador de dispositivos](capturas/09c-administrador-dispositivos.png)
+_Captura pendiente de subir: `capturas/09-impresora-predeterminada.png` (impresora predeterminada)._
 
 ## 8. Pruebas de restricción
 
@@ -118,7 +118,7 @@ Se hacen con el usuario `tpv` dentro del quiosco.
 | Instalar un programa | Pide credenciales de administrador | COMPLETAR |
 | Cambiar de usuario o cerrar sesión desde dentro | Solo con Ctrl-Alt-Supr | COMPLETAR |
 
-![Pruebas de restricción](capturas/08-prueba-no-salir.png)
+_Captura pendiente de subir: `capturas/08-prueba-no-salir.png` (pruebas de restricción)._
 
 ## 9. Riesgos y desviaciones
 
