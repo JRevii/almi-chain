@@ -2,7 +2,8 @@
 # Mínimos privilegios. Ejecutar como root, en dos pasos:
 #   sh 05-seguridad.sh 1   -> crea adminrec con sudo
 #   (comprobar que adminrec puede usar sudo)
-#   sh 05-seguridad.sh 2   -> quita sudo a recreativa, contraseña de root y SSH sin root
+#   sh 05-seguridad.sh 2   -> quita sudo a recreativa, recorta los permisos sin contraseña
+#                             de antiX, contraseña de root y SSH sin root
 set -e
 case "$1" in
 1)
@@ -15,6 +16,17 @@ case "$1" in
 2)
   id -nG adminrec | grep -qw sudo || { echo "adminrec no está en el grupo sudo. Paro."; exit 1; }
   deluser recreativa sudo
+  # antiX da de serie a todo el grupo users 13 comandos como root SIN contraseña
+  # (instalador, fdisk, red...). Solo se dejan apagar y reiniciar.
+  cp /etc/sudoers.d/antixers /root/antixers.bak
+  cat > /etc/sudoers.d/antixers <<'EOS'
+# Recreativa: solo apagar y reiniciar sin contraseña (mínimo privilegio)
+%users ALL=(root) NOPASSWD: /sbin/halt
+%users ALL=(root) NOPASSWD: /sbin/poweroff
+%users ALL=(root) NOPASSWD: /sbin/reboot
+EOS
+  chmod 440 /etc/sudoers.d/antixers
+  visudo -c || { cp /root/antixers.bak /etc/sudoers.d/antixers; echo "sudoers con error: restaurado. Paro."; exit 1; }
   echo "-- Lo que puede hacer recreativa con sudo ahora:"
   sudo -l -U recreativa || true
   echo "-- Nueva contraseña de root (guárdala en KeePassXC):"
