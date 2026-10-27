@@ -12,7 +12,7 @@ Máquina virtual de VirtualBox que imita el equipo de la recreativa: **1 núcleo
 | `scripts/02-ssh.sh` | Instalación de SSH, con el arreglo del grupo `_ssh` |
 | `scripts/03-mame.sh` | Xorg mínimo + MAME + carpeta de ROMs |
 | `scripts/04-optimizar.sh` | Optimización: `mame.ini`, autologin, arranque directo, GRUB y limpieza |
-| `scripts/05-seguridad.sh` | Mejora propuesta: usuario `adminrec` para administrar y SSH sin root (no aplicada) |
+| `scripts/05-seguridad.sh` | Mínimos privilegios: usuario `adminrec`, `recreativa` sin `sudo`, permisos de antiX recortados y SSH sin root (aplicado el 27/10) |
 | `scripts/medir.sh` | Recoge las medidas de rendimiento en un `.txt` |
 | `config/` | Ficheros de configuración que acaban en la VM |
 | `medidas/` | Resultados de las pruebas de rendimiento |
@@ -106,7 +106,17 @@ sudo reboot     # tiene que aparecer el menú de MAME directamente
 - SSH solo es accesible desde el propio anfitrión (reenvío NAT en 127.0.0.1), así que nadie de la red puede conectarse.
 - Solo queda abierta una consola de emergencia (tty2), que pide usuario y contraseña.
 
-**Mejora propuesta para un equipo real:** `recreativa` mantiene `sudo` porque se usó para instalar y configurar. En una máquina en un local, lo correcto sería administrarla con un usuario aparte (`adminrec`), quitar `sudo` a `recreativa` y desactivar el login de root por SSH. Está preparado en [`scripts/05-seguridad.sh`](scripts/05-seguridad.sh).
+**Aplicado el 27/10/2026** con [`scripts/05-seguridad.sh`](scripts/05-seguridad.sh) (instantánea `04 - mínimos privilegios`):
+
+| Medida | Antes | Después | Captura |
+| --- | --- | --- | --- |
+| Administración | `recreativa` (el usuario que entra solo) tenía `sudo` | Usuario aparte `adminrec`, con `sudo` y contraseña en KeePassXC | [rec_24](capturas/rec_24_seguridad_paso1_adminrec.png) |
+| Permisos sin contraseña de antiX | `/etc/sudoers.d/antixers` daba al grupo `users` 13 comandos como root sin contraseña, entre ellos el instalador (`minstall`), `fdisk` y la red (`ceni`) | Solo `halt`, `poweroff` y `reboot`. Comprobado con `visudo -c` | [rec_27](capturas/rec_27_sudo_solo_apagar_reiniciar.png) |
+| SSH | Entraba `recreativa` | `PermitRootLogin no` y `AllowUsers adminrec`: `recreativa` recibe *Permission denied* | [rec_25](capturas/rec_25_seguridad_paso2_ssh.png) · [rec_26](capturas/rec_26_ssh_recreativa_rechazado.png) |
+| Contraseña de root | La del instalador | Nueva, en KeePassXC | [rec_25](capturas/rec_25_seguridad_paso2_ssh.png) |
+| Arranque | — | Sigue entrando sola en MAME tras reiniciar | [rec_28](capturas/rec_28_mame_e_instantanea_04.png) |
+
+**Incidencia:** `Ctrl + Alt + F2` no cambia de consola dentro de VirtualBox, porque el anfitrión se queda la combinación. Se usa `Ctrl derecho + F2`, o se hace todo por SSH como se hizo aquí.
 
 ## Relacionado
 
@@ -120,5 +130,6 @@ Desde el portátil, en la raíz del repo y con la VM encendida:
 scp -P 2222 recreativa@127.0.0.1:.mame/mame.ini recreativa/config/mame.ini
 scp -P 2222 recreativa@127.0.0.1:/etc/inittab recreativa/config/inittab
 scp -P 2222 'recreativa@127.0.0.1:medidas-*.txt' recreativa/medidas/
+# Desde la instantánea 04, recreativa ya no entra por SSH: usa adminrec@127.0.0.1:/home/recreativa/...
 git add recreativa && git commit -m "feat(recreativa): ficheros reales de la VM" && git push
 ```
