@@ -30,8 +30,8 @@ El usuario estándar, el quiosco, el certificado y la impresión se configuran i
 
 1. **USB a la VM:** con la VM apagada, *Configuración → USB*, controlador **USB 1.1 (OHCI)** y un filtro con la impresora. Con USB 3.0 Windows daba *Código 10* (ver [§7](tpv-quiosco.md#7-impresora)).
 2. **Driver y predeterminada:** con la cuenta de administrador se instala el driver y se pone como **predeterminada**, desactivando que Windows la gestione. Papel: A4 con la ML-2165 del aula; 80 mm con la Epson térmica.
-3. **Odoo:** *Punto de venta → Configuración → Ajustes → Facturas y recibos* → **Impresión automática del recibo**. Al validar el pago, Odoo lanza la impresión solo.
-4. **Sin la ventana de imprimir (pendiente):** Odoo Community sin *IoT Box* imprime a través del navegador, y el navegador muestra su diálogo. Edge lo omite si se abre con `--kiosk-printing`, que envía el ticket directo a la impresora predeterminada:
+3. **Odoo:** *Punto de venta → Configuración → Ajustes → Facturas y recibos* → **Impresión automática del recibo**. Al validar el pago, Odoo lanza la impresión solo, sin pulsar «Imprimir recibo». ✅ **Validado por el profesor el 27/10 como impresión automática.**
+4. **Mejora opcional, sin la ventana de imprimir:** Odoo Community sin *IoT Box* imprime a través del navegador, y el navegador muestra su diálogo. Edge lo omite si se abre con `--kiosk-printing`, que envía el ticket directo a la impresora predeterminada:
    ```
    "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" --kiosk https://192.168.1.50/pos/ui/2 --edge-kiosk-type=fullscreen --kiosk-printing
    ```
@@ -49,7 +49,7 @@ El usuario estándar, el quiosco, el certificado y la impresión se configuran i
 | 5 | Impresora reconocida en la VM | Aparece en el Administrador de dispositivos | ✅ | [captura](capturas/09c-administrador-dispositivos.png) |
 | 6 | **Venta en el TPV → ticket impreso** | El ticket sale por la impresora | ✅ 27/10, con el diálogo de imprimir de por medio | [vídeo](capturas/imp_01_venta_e_impresion.mp4) · [diálogo](capturas/21-odoo-prueba-ticket.png) |
 | 7 | Ticket de prueba desde Windows | Se leen las tildes, el € y el código de barras | ⏳ | — |
-| 8 | **Venta → ticket automático** | Sale solo al validar, sin ventana de imprimir | ⏳ ver el paso 4 de la impresora | — |
+| 8 | **Venta → impresión automática** | Al validar el pago, Odoo lanza la impresión del ticket solo | ✅ 27/10 · validado por el profesor | [vídeo](capturas/imp_01_venta_e_impresion.mp4) |
 
 ## Capturas
 

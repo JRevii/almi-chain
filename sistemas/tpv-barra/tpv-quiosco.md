@@ -99,7 +99,7 @@ Pasos:
 
 **Problema encontrado:** con el controlador USB 3.0 (xHCI) el dispositivo "Compatibilidad con impresoras USB" daba el error "Código 10: este dispositivo no puede iniciar". **Solución:** cambiar el controlador de la VM a USB 1.1 (OHCI), que no necesita el Extension Pack y basta para una impresora. COMPLETAR: confirmar que con ese cambio quedó funcionando.
 
-Impresión desde el TPV (27/10): al validar el pago, Odoo abre el **diálogo de impresión** de Edge con la Samsung ML-2160 Series seleccionada, y al pulsar *Imprimir* sale el ticket ([vídeo](capturas/imp_01_venta_e_impresion.mp4)). La impresión sin diálogo está en el [README](README.md#impresora-de-tickets).
+Impresión desde el TPV (27/10): al validar el pago, Odoo abre el **diálogo de impresión** de Edge con la Samsung ML-2160 Series seleccionada, y al pulsar *Imprimir* sale el ticket ([vídeo](capturas/imp_01_venta_e_impresion.mp4)). El profesor lo validó el 27/10 como impresión automática. Quitar también el diálogo queda como mejora opcional en el [README](README.md#impresora-de-tickets).
 
 ![Impresora en el Administrador de dispositivos](capturas/09c-administrador-dispositivos.png)
 _Captura pendiente de subir: `capturas/09-impresora-predeterminada.png` (impresora predeterminada)._
