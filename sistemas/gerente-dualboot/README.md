@@ -27,6 +27,8 @@ Responsable: Sendoa · Fecha: 22–26 de octubre de 2026 · Montado en una VM de
 
 El enunciado pide Windows 10, pero **Windows 10 dejó de tener soporte el 14 de octubre de 2025**: ya no recibe parches de seguridad. En una empresa real no se instalaría un sistema sin soporte en el equipo del gerente, que maneja datos económicos. Por eso se usa Windows 11 Pro, que además permite BitLocker y directivas de grupo (`gpedit.msc`).
 
+> ✅ **Validado por el profesor (26/10/2026):** Windows 11 en lugar de Windows 10 es válido para el reto.
+
 ## 2. Máquina virtual
 
 | Parámetro | Valor | Motivo |
