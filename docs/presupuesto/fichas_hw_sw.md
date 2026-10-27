@@ -30,9 +30,11 @@ El presupuesto detallado, sin IVA y con el IVA aparte, está en `presupuesto_loc
 
 El enunciado de 2022-2023 pide Windows 10, pero **Windows 10 dejó de tener soporte el 14/10/2025**. Desde entonces solo recibe parches de seguridad pagando las actualizaciones ampliadas (ESU): para empresas cuestan **61 $** el primer año (terminó el 13/10/2026), **122 $** el segundo y **244 $** el tercero, por equipo.
 
-Por eso el equipo decidió usar **Windows 11** en el gerente y en los TPV (validado por el profesor el 26/10/2026):
+Por eso, en la compra real, el equipo decidió usar **Windows 11** en el gerente y en los TPV:
 - **Seguridad por defecto:** sigue recibiendo actualizaciones gratis. Un TPV que cobra a clientes no puede llevar un sistema sin parches.
 - **Sin coste extra:** los equipos presupuestados ya lo traen, el del gerente con Windows 11 Pro y los TPV con Windows 11 IoT Enterprise LTSC (soporte hasta 2034 y pensado para equipos de función fija como un TPV). Así nos ahorramos el ESU.
+
+**En el reto (máquinas virtuales del aula):** el gerente se montó con **Windows 11 Pro** (validado por el profesor el 26/10/2026). El TPV se montó con **Windows 10 Pro**, porque así se hizo la VM en el aula; el usuario estándar, el quiosco y el certificado se configuran igual en las dos versiones. En la compra real, los TPV ya traen Windows 11 IoT Enterprise LTSC.
 
 ---
 
@@ -48,7 +50,7 @@ Por eso el equipo decidió usar **Windows 11** en el gerente y en los TPV (valid
 | **Monitor** | AOC 24B2XH de 23,8″, IPS Full HD |
 | **Precio** | 962,60 € + 90,99 € |
 
-**Software:** Windows 11 Pro y Ubuntu Desktop 24.04 LTS en arranque dual con GRUB, Microsoft Edge y Firefox, el navegador para entrar en Odoo y KeePassXC.
+**Software:** Windows 11 Pro y Ubuntu Desktop 26.04 LTS en arranque dual con GRUB, Microsoft Edge y Firefox, el navegador para entrar en Odoo y KeePassXC.
 
 **Por qué:** el i5 y los 16 GB sobran para ofimática y Odoo durante años. 512 GB dan para dos sistemas (unos 250 GB cada uno). La garantía y los repuestos de una gama profesional (ThinkCentre) son mejores que los de un equipo doméstico.
 
@@ -66,7 +68,7 @@ Por eso el equipo decidió usar **Windows 11** en el gerente y en los TPV (valid
 | **Sistema incluido** | Windows 11 IoT Enterprise LTSC |
 | **Precio** | 708,48 € cada uno |
 
-**Software:** Windows 11 (Pro en el reto; IoT Enterprise LTSC en la compra real), Edge en **modo quiosco** abriendo el TPV de Odoo por HTTPS, el certificado del servidor instalado como de confianza y el driver de la impresora Epson.
+**Software:** Windows 10 Pro en la VM del reto; Windows 11 IoT Enterprise LTSC en la compra real, Edge en **modo quiosco** abriendo el TPV de Odoo por HTTPS, el certificado del servidor instalado como de confianza y el driver de la impresora Epson.
 
 **Por qué:** un TPV todo en uno ocupa poco en la barra y aguanta grasa y golpes mejor que un PC con monitor. La pantalla táctil es más rápida para el camarero. Como Odoo funciona en el navegador, no hace falta más potencia.
 
@@ -170,8 +172,8 @@ Así queda la red según el plano: la fibra entra en el **rack** del despacho de
 
 | Software | Dónde | Licencia | Por qué |
 |---|---|---|---|
-| Windows 11 Pro / Windows 11 IoT Enterprise LTSC | Gerente, TPV | Incluida con el equipo (OEM) | Con soporte, a diferencia de Windows 10 |
-| Ubuntu Desktop / Server 24.04 LTS | Gerente, servidor | Libre (GPL) | Soporte hasta 2029 |
+| Windows 11 Pro / Windows 11 IoT Enterprise LTSC | Gerente, TPV | Incluida con el equipo (OEM) | Con soporte, a diferencia de Windows 10 (en el reto, la VM del TPV usa Windows 10 Pro) |
+| Ubuntu Desktop 26.04 LTS / Ubuntu Server 24.04 LTS | Gerente / servidor | Libre (GPL) | Soporte de 5 años (hasta 2031 y 2029) |
 | Odoo Community | Servidor | Libre (LGPL) | ERP y TPV en uno (lo justifica Alejandro) |
 | PostgreSQL | Servidor | Libre (licencia PostgreSQL) | Base de datos que usa Odoo |
 | Docker / Docker Compose | Servidor | Libre (Apache 2.0) | Despliegue reproducible |

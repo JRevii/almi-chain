@@ -2,6 +2,15 @@
 
 Hardware, software y presupuesto de los 2 TPV Windows; cuentas restringidas (mínimos privilegios) e instalación de la impresora de tickets.
 
+> **Sistema y equipos del reto frente a la compra real**
+>
+> | | En el reto (VM del aula) | En la compra real ([presupuesto](../../docs/presupuesto/fichas_hw_sw.md)) |
+> | --- | --- | --- |
+> | TPV | **Una** VM con **Windows 10 Pro**; el segundo TPV sería un clon | 2 TPV todo en uno 10POS con **Windows 11 IoT Enterprise LTSC** |
+> | Impresora | **Samsung ML-2165** (láser, la disponible en el aula) | 2 **Epson TM-T20III** térmicas de 80 mm |
+>
+> El usuario estándar, el modo quiosco, el certificado y la impresión automática se configuran igual en las dos versiones de Windows y con cualquier impresora instalada como predeterminada.
+
 Pasos para reproducir
 
 1. Arrancar la máquina virtual del TPV.
@@ -15,9 +24,9 @@ Pasos para reproducir
 
 ## Impresora de tickets: impresión automática (Jon)
 
-Objetivo: al cobrar en el TPV, el ticket sale solo por la impresora térmica, sin que el camarero pulse nada.
+Objetivo: al cobrar en el TPV, el ticket sale solo por la impresora predeterminada, sin que el camarero pulse nada.
 
-1. **Impresora:** por USB al PC que ejecuta la VM del TPV. En VirtualBox (con la VM apagada): *Configuración → USB*, controlador USB 2.0 o 3.0 y un **filtro** con la impresora, para que pase sola a la VM. En Windows, instalar el driver **con la cuenta de administrador** (el usuario de la barra no tiene permisos), ponerla como **predeterminada**, papel de **80 mm** y márgenes mínimos.
+1. **Impresora:** por USB al PC que ejecuta la VM del TPV. En VirtualBox (con la VM apagada): *Configuración → USB*, controlador USB 2.0 o 3.0 y un **filtro** con la impresora, para que pase sola a la VM. En Windows, instalar el driver **con la cuenta de administrador** (el usuario de la barra no tiene permisos), ponerla como **predeterminada** y márgenes mínimos (con la Epson térmica, papel de **80 mm**; con la ML-2165 del aula, A4).
 2. **Odoo:** *Punto de venta → Configuración → Ajustes → Facturas y recibos* → **Impresión automática del recibo** y encabezado y pie personalizados.
 3. **Navegador sin diálogo de imprimir:** Odoo Community sin *IoT Box* imprime a través del navegador. Para que no salga la ventana de "Imprimir", Edge se abre con `--kiosk-printing`, que envía el ticket directamente a la impresora predeterminada. Acceso directo para el usuario de la barra, al iniciar sesión:
    ```
