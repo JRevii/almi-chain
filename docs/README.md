@@ -6,6 +6,7 @@ Documento final del reto y diagramas de arquitectura (en `diagramas/`).
 | --- | --- |
 | [`diagramas/esquema_definitivo.png`](diagramas/esquema_definitivo.png) | Esquema de la arquitectura completa |
 | [`diagramas/reparto_y_gantt.png`](diagramas/reparto_y_gantt.png) | Reparto de tareas y Gantt |
+| [`Comparativa y contratación de la línea WAN.pdf`](<Comparativa y contratación de la línea WAN.pdf>) | Comparativa de fibra y elección de la línea WAN |
 | [`infra/despliegue_aws.md`](infra/despliegue_aws.md) | Web en AWS con Terraform, Nginx, DuckDNS y HTTPS |
 | [`bocetos/bocetos.md`](bocetos/bocetos.md) | Bocetos de la web (diseño conceptual) y PDF con las opciones valoradas |
 | [`web/guia_web.md`](web/guia_web.md) | Diseño, código y pruebas de la web |
