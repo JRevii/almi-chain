@@ -1,0 +1,104 @@
+== 2026-10-29 09:53:20 · Copia remota 
+repository 1dc222a1 opened (version 2, compression level auto)
+repository 6243e12b opened (version 2, compression level auto)
+[0:00] 100.00%  3 / 3 index files loaded
+[0:00]          0 index files loaded
+
+snapshot e4cee73b of [/var/backups/almichain /srv/datos/odoo/filestore /opt/almichain /etc/ssl/almichain /root/ca /etc/mdadm/mdadm.conf /etc/fstab /etc/ufw /etc/ssh/sshd_config.d] at 2026-10-29 09:44:57.215267468 +0100 CET)
+  copy started, this may take a while...
+[0:03] 100.00%  4 / 4 packs copied
+snapshot 3cb7001b saved
+
+snapshot 76f0e3dc of [/var/backups/almichain /srv/datos/odoo/filestore /opt/almichain /etc/ssl/almichain /root/ca /etc/mdadm/mdadm.conf /etc/fstab /etc/ufw /etc/ssh/sshd_config.d] at 2026-10-27 10:21:46.513747714 +0100 CET)
+  copy started, this may take a while...
+[0:01] 100.00%  2 / 2 packs copied
+snapshot d2c7dbd9 saved
+
+snapshot 1e6be61a of [/var/backups/almichain /srv/datos/odoo/filestore /opt/almichain /etc/ssl/almichain /root/ca /etc/mdadm/mdadm.conf /etc/fstab /etc/ufw /etc/ssh/sshd_config.d] at 2026-10-27 10:29:06.123802024 +0100 CET)
+  copy started, this may take a while...
+[0:01] 100.00%  2 / 2 packs copied
+snapshot 7c32fca8 saved
+repository 6243e12b opened (version 2, compression level auto)
+Applying Policy: keep 7 daily, 4 weekly, 6 monthly snapshots
+keep 3 snapshots:
+ID        Time                 Host        Tags        Reasons           Paths
+--------------------------------------------------------------------------------------------------
+d2c7dbd9  2026-10-27 10:21:46  srv-odoo    diaria      daily snapshot    /etc/fstab
+                                                       weekly snapshot   /etc/mdadm/mdadm.conf
+                                                       monthly snapshot  /etc/ssh/sshd_config.d
+                                                                         /etc/ssl/almichain
+                                                                         /etc/ufw
+                                                                         /opt/almichain
+                                                                         /root/ca
+                                                                         /srv/datos/odoo/filestore
+                                                                         /var/backups/almichain
+
+7c32fca8  2026-10-27 10:29:06  srv-odoo    diaria      daily snapshot    /etc/fstab
+                                                                         /etc/mdadm/mdadm.conf
+                                                                         /etc/ssh/sshd_config.d
+                                                                         /etc/ssl/almichain
+                                                                         /etc/ufw
+                                                                         /opt/almichain
+                                                                         /root/ca
+                                                                         /srv/datos/odoo/filestore
+                                                                         /var/backups/almichain
+
+3cb7001b  2026-10-29 09:44:57  srv-odoo    diaria      daily snapshot    /etc/fstab
+                                                       weekly snapshot   /etc/mdadm/mdadm.conf
+                                                       monthly snapshot  /etc/ssh/sshd_config.d
+                                                                         /etc/ssl/almichain
+                                                                         /etc/ufw
+                                                                         /opt/almichain
+                                                                         /root/ca
+                                                                         /srv/datos/odoo/filestore
+                                                                         /var/backups/almichain
+--------------------------------------------------------------------------------------------------
+3 snapshots
+
+using temporary cache in /tmp/restic-check-cache-56193222
+repository 6243e12b opened (version 2, compression level auto)
+created new cache in /tmp/restic-check-cache-56193222
+create exclusive lock for repository
+load indexes
+[0:00] 100.00%  3 / 3 index files loaded
+check all packs
+check snapshots, trees and blobs
+[0:00] 100.00%  3 / 3 snapshots
+read 5.0% of data packs
+[0:00] 100.00%  1 / 1 packs
+no errors were found
+repository 6243e12b opened (version 2, compression level auto)
+ID        Time                 Host        Tags        Paths
+--------------------------------------------------------------------------------
+d2c7dbd9  2026-10-27 10:21:46  srv-odoo    diaria      /etc/fstab
+                                                       /etc/mdadm/mdadm.conf
+                                                       /etc/ssh/sshd_config.d
+                                                       /etc/ssl/almichain
+                                                       /etc/ufw
+                                                       /opt/almichain
+                                                       /root/ca
+                                                       /srv/datos/odoo/filestore
+                                                       /var/backups/almichain
+
+7c32fca8  2026-10-27 10:29:06  srv-odoo    diaria      /etc/fstab
+                                                       /etc/mdadm/mdadm.conf
+                                                       /etc/ssh/sshd_config.d
+                                                       /etc/ssl/almichain
+                                                       /etc/ufw
+                                                       /opt/almichain
+                                                       /root/ca
+                                                       /srv/datos/odoo/filestore
+                                                       /var/backups/almichain
+
+3cb7001b  2026-10-29 09:44:57  srv-odoo    diaria      /etc/fstab
+                                                       /etc/mdadm/mdadm.conf
+                                                       /etc/ssh/sshd_config.d
+                                                       /etc/ssl/almichain
+                                                       /etc/ufw
+                                                       /opt/almichain
+                                                       /root/ca
+                                                       /srv/datos/odoo/filestore
+                                                       /var/backups/almichain
+--------------------------------------------------------------------------------
+3 snapshots
+== 2026-10-29 09:53:40 · Copia remota terminada correctamente

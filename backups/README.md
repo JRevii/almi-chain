@@ -94,10 +94,19 @@ RESTIC_REPOSITORY=s3:s3.us-east-1.amazonaws.com/almichain-copias-XXXX/restic
 
 | # | Prueba | Cómo | Resultado esperado | Evidencia |
 | --- | --- | --- | --- | --- |
-| 16 | Bucket creado con Terraform | `terraform apply` y consola de S3 | 7 recursos; bucket privado, cifrado y con versionado | ⏳ |
-| 17 | **Copia remota** | `sudo almichain-copia-remota` | Instantáneas copiadas, `restic check` sin errores y «Copia remota terminada correctamente» | ⏳ |
-| 18 | **Restauración desde S3** | `sudo almichain-copia-remota --restaurar` | `RESULTADO: RESTAURACIÓN CORRECTA` leyendo de la nube | ⏳ |
-| 19 | Sin credenciales válidas | Con el lab apagado: `sudo almichain-copia-remota` | Falla con un mensaje claro y no toca la copia local | ⏳ |
+| 16 | Bucket creado con Terraform | `terraform apply` y consola de S3 | 6 recursos; bucket privado, cifrado y con versionado | ✅ 29/10 · `Apply complete! Resources: 6 added`. El bucket se crea con AWS CLI por la SCP del Learner Lab ([incidencia](../infra/terraform-copias/README.md#incidencia-accessdenied-al-crear-el-bucket-con-terraform)) · [captura](../docs/infra/capturas/aws_15_copias_apply.png) |
+| 17 | **Copia remota** | `sudo almichain-copia-remota` | Instantáneas copiadas, `restic check` sin errores y «Copia remota terminada correctamente» | ✅ 29/10 · Las 3 instantáneas locales copiadas a S3 (repositorio `6243e12b`, distinto del local `1dc222a1`), retención aplicada y `restic check` sin errores · [registro](registros/copia_remota_2026-10-29.txt) |
+| 18 | **Restauración desde S3** | `sudo almichain-copia-remota --restaurar` | `RESULTADO: RESTAURACIÓN CORRECTA` leyendo de la nube | ✅ 29/10 · Instantánea `3cb7001b` restaurada desde S3 en una BD aparte: 18 pedidos del TPV, 10 contactos, 7 productos y 480 adjuntos, iguales que en producción · [captura](../erp/capturas/srv_18_restauracion_s3.png) |
+| 19 | Sin credenciales válidas | Con el lab apagado: `sudo almichain-copia-remota` | Falla con un mensaje claro y no toca la copia local | ✅ 29/10 · Con el lab apagado: «ERROR: no se puede abrir el repositorio de S3. ¿Learner Lab apagado o credenciales caducadas?» y sale sin tocar nada · [captura](../erp/capturas/srv_19_sin_credenciales.png) |
+
+### Incidencias de la copia remota
+
+| Qué pasó | Causa | Solución |
+| --- | --- | --- |
+| `terraform apply` fallaba con `AccessDenied` en `s3:GetBucketObjectLockConfiguration` | SCP de AWS Academy | Bucket con AWS CLI y el resto con Terraform ([detalle](../infra/terraform-copias/README.md#incidencia-accessdenied-al-crear-el-bucket-con-terraform)) |
+| `[default]: command not found` | El script cargaba `aws-s3.env` con `source` y el bloque del Learner Lab no es Bash | El script lee el fichero línea a línea y solo exporta las 4 variables esperadas, sin ejecutar nada |
+| `client.BucketExists: 400 Bad Request` | El token de sesión se estropeó al pegarlo a mano en `nano` | Copiar `~/.aws/credentials` del portátil al servidor con `scp` y añadir la línea `RESTIC_REPOSITORY` |
+| La clave del repositorio remoto salió en pantalla al pegar varios comandos a la vez | Se ejecutó el `cat` de la clave | Como el repositorio aún no existía, se borró la clave y se generó otra al repetir `--iniciar`. Lección: los comandos con secretos, de uno en uno |
 
 ## 5. Recuperación real (sustituye la BD de producción)
 
