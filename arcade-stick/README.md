@@ -41,10 +41,12 @@ Mando arcade con un joystick y 4 botones, controlado por un **Arduino Leonardo**
 | Joystick abajo | 4 | Flecha abajo |
 | Joystick izquierda | 5 | Flecha izquierda |
 | Joystick derecha | 2 | Flecha derecha |
-| Botón 1 (rojo) | 9 | `Z` |
-| Botón 2 (rojo) | 8 | `X` |
-| Botón 3 (azul) | 7 | `C` |
-| Botón 4 (azul) | 6 | `V` |
+| Botón 1 (rojo) | 9 | `Ctrl` izquierdo: botón 1 de MAME |
+| Botón 2 (rojo) | 8 | `Alt` izquierdo: botón 2 de MAME |
+| Botón 3 (azul) | 7 | `5`: **moneda** |
+| Botón 4 (azul) | 6 | `1`: **start**. Mantenido 2 s, `Esc`: salir al menú |
+
+Son las teclas que MAME usa **por defecto**, así que el mando funciona en cualquier juego sin configurar nada. La **doble dirección** (diagonales) funciona porque el código mantiene pulsadas dos flechas a la vez.
 
 - Cada entrada va a **su pin** por un lado y a **GND** por el otro. Todas las GND se juntan en la columna (−) de la protoboard, y un único cable negro la une al GND del Leonardo.
 - No se usan resistencias ni 5V: el código activa la resistencia interna de cada pin (`INPUT_PULLUP`).
@@ -56,6 +58,7 @@ Mando arcade con un joystick y 4 botones, controlado por un **Arduino Leonardo**
 2. **Bucle:** recorre las 8 entradas sin parar. Si una cambia de estado, envía `Keyboard.press()` al pulsar y `Keyboard.release()` al soltar. Así se pueden mantener pulsadas varias a la vez (por ejemplo, diagonal + botón).
 3. **Antirrebote de 10 ms:** un pulsador mecánico «rebota» y da varios cambios en milisegundos. Solo se acepta un cambio si han pasado 10 ms desde el anterior.
 4. **`delay(2000)` al arrancar:** deja 2 segundos antes de empezar a enviar teclas, para poder volver a subir el sketch si algo falla (un Leonardo que envía teclas sin parar es difícil de reprogramar).
+5. **Salir manteniendo START:** al pulsar B4 se apunta la hora (`millis()`). Si sigue pulsado 2 segundos, el código suelta el `1` y envía un `Esc` una sola vez. Así un solo botón hace dos funciones, sin añadir hardware.
 
 ## 5. Pasos para reproducirlo
 
@@ -64,7 +67,7 @@ Mando arcade con un joystick y 4 botones, controlado por un **Arduino Leonardo**
 3. Abre `mando_arcade/mando_arcade.ino` y súbelo.
 4. Pruébalo en cualquier programa: cada botón tiene que escribir su tecla.
 5. **En la recreativa (VirtualBox):** con la VM apagada, *Configuración → USB → USB 1.1 (OHCI)* y añade un filtro para el dispositivo *Arduino Leonardo*. Al arrancar, la VM lo recibe como teclado. Con USB 1.1 basta, porque un teclado es un dispositivo de baja velocidad.
-6. **En MAME:** las flechas ya mueven el joystick. Los botones se asignan en *Tab → Input (este juego)*. Para tener moneda y *start* sin teclado, se puede cambiar en el código, por ejemplo, el botón 3 por la tecla `'5'` (moneda) y el 4 por `'1'` (*start*).
+6. **En MAME:** no hay que configurar nada. Las flechas mueven al jugador, B1 y B2 son los botones de acción, B3 mete una moneda, B4 es *start* y, manteniéndolo 2 segundos, se sale del juego al menú. Si se quiere otra distribución, se cambia en *Tab → Input (este juego)* o en la tabla `teclas[]` del código.
 
 ## 6. Seguridad y mínimo privilegio
 
@@ -77,11 +80,12 @@ Mando arcade con un joystick y 4 botones, controlado por un **Arduino Leonardo**
 | # | Prueba | Resultado esperado | Estado | Evidencia |
 | --- | --- | --- | --- | --- |
 | 1 | Revisión del montaje y funcionamiento por el profesor | Funciona | ✅ Validado por el profesor | — |
-| 2 | Probador de teclado en el navegador: pulsar las 8 entradas | Cada entrada marca su tecla | ✅ 26/10: se marcan las 4 flechas y las teclas Z, X, C y V | [vídeo](capturas/stick_01_probador_teclado.mp4) |
-| 3 | Diagonal + botón a la vez | Se marcan las tres teclas a la vez | Opcional | — |
+| 2 | Probador de teclado en el navegador: pulsar las 8 entradas | Cada entrada marca su tecla | ✅ 26/10, con la versión anterior del código (Z, X, C y V): se marcan las 4 flechas y los 4 botones | [vídeo](capturas/stick_01_probador_teclado.mp4) |
+| 3 | Diagonal + botón a la vez (doble dirección) | Se marcan las tres teclas a la vez | ⏳ | `capturas/stick_06_diagonal.png` |
 | 4 | Jugar a Gridlee en la VM recreativa (instantánea `03 - optimizada`) | El juego responde al joystick y a los botones | ✅ Validado por el profesor en clase | ![Gridlee con el arcade stick](capturas/stick_03_mame_gridlee.jpg) |
 | 5 | Otro programa: el juego del dinosaurio de Chrome (`chrome://dino`) | Responde igual, sin configurar drivers | ✅ 26/10: joystick arriba salta y abajo se agacha | [vídeo](capturas/stick_04_chrome_dino.mp4) |
 | 6 | Remapear un botón en MAME (*Tab → Input*) | El botón hace la nueva acción | Opcional | — |
+| 7 | **Moneda, start y salir** en Gridlee: B3 mete crédito, B4 empieza la partida y mantener B4 2 s vuelve al menú | Funciona sin configurar MAME | ⏳ | `capturas/stick_07_moneda_start.mp4` |
 
 ## 8. Preguntas que pueden hacer en la defensa
 
