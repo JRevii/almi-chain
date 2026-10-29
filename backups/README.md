@@ -33,7 +33,7 @@ Si un disco falla, todo sigue funcionando con el otro. Docker no arranca si el R
 | Comprobación | `restic check` en cada copia y una prueba de restauración completa al mes |
 | Clave | `/root/secretos/restic.txt` y KeePassXC. **Sin ella, la copia no se puede recuperar** |
 
-**Mejora para un restaurante real:** guardar además una copia fuera del local (regla 3-2-1). `restic copy` puede llevarla a un disco USB o a un bucket S3.
+**Copia fuera del local (regla 3-2-1):** además, `restic copy` lleva las copias a un bucket de AWS S3. Ver el [apartado 4](#4-copia-remota-en-aws-s3).
 
 ## 3. Pruebas
 
@@ -53,7 +53,53 @@ sudo mdadm /dev/md0 --add /dev/sdb         # disco "nuevo"
 watch cat /proc/mdstat                     # hasta [UU]
 ```
 
-## 4. Recuperación real (sustituye la BD de producción)
+## 4. Copia remota en AWS S3
+
+Tercera copia, **fuera del local**: si el restaurante sufre un incendio o un robo, el RAID y el disco C se pierden a la vez, pero la copia de la nube no. Así se cumple la regla **3-2-1** (3 copias, en 2 soportes distintos y 1 fuera del local).
+
+```
+ RAID 1 (/srv/datos) ──restic, 02:30──► disco C (/srv/copias/restic) ──restic copy, 03:30──► AWS S3 (cifrado)
+```
+
+| Pregunta | Respuesta |
+| --- | --- |
+| Dónde | Bucket S3 privado creado con Terraform: [`infra/terraform-copias/`](../infra/terraform-copias) |
+| Cómo | [`scripts/copia_remota.sh`](scripts/copia_remota.sh) (`/usr/local/sbin/almichain-copia-remota`): `restic copy` del repositorio local al de S3, con la misma retención y `restic check` |
+| Cifrado | Doble: restic cifra con AES-256 antes de subir, con una **clave distinta** a la local, y S3 cifra en reposo. Solo por HTTPS |
+| Cuándo | Cron a las 03:30, después de la copia local. Registro en `/var/log/almichain-copia-remota.log` |
+| Secretos | `/root/secretos/aws-s3.env` (credenciales) y `/root/secretos/restic-remoto.txt` (clave), solo root. La clave, también en KeePassXC |
+| Limitación del Learner Lab | Las credenciales caducan al cerrar la sesión: hay que renovarlas en `aws-s3.env` cada vez, y con el lab apagado la copia falla y lo deja en el registro. En una empresa se usaría un usuario IAM fijo con permiso solo sobre el bucket ([política](../infra/terraform-copias/README.md#limitación-de-aws-academy-y-cómo-sería-en-una-empresa)) |
+
+### Instalación (una vez)
+
+```bash
+# En el servidor, como adminsrv, con el repo actualizado (git pull)
+sudo install -m 750 backups/scripts/copia_remota.sh /usr/local/sbin/almichain-copia-remota
+sudo install -m 600 /dev/null /root/secretos/aws-s3.env
+sudo nano /root/secretos/aws-s3.env      # las 4 líneas de abajo
+sudo almichain-copia-remota --iniciar    # crea el repositorio en S3 y su clave
+echo '30 3 * * * root /usr/local/sbin/almichain-copia-remota >> /var/log/almichain-copia-remota.log 2>&1' | sudo tee /etc/cron.d/almichain-copia-remota
+```
+
+Contenido de `/root/secretos/aws-s3.env` (los valores salen del Learner Lab, *AWS Details → AWS CLI*, y de `terraform output`):
+
+```
+AWS_ACCESS_KEY_ID=...
+AWS_SECRET_ACCESS_KEY=...
+AWS_SESSION_TOKEN=...
+RESTIC_REPOSITORY=s3:s3.us-east-1.amazonaws.com/almichain-copias-XXXX/restic
+```
+
+### Pruebas
+
+| # | Prueba | Cómo | Resultado esperado | Evidencia |
+| --- | --- | --- | --- | --- |
+| 16 | Bucket creado con Terraform | `terraform apply` y consola de S3 | 7 recursos; bucket privado, cifrado y con versionado | ⏳ |
+| 17 | **Copia remota** | `sudo almichain-copia-remota` | Instantáneas copiadas, `restic check` sin errores y «Copia remota terminada correctamente» | ⏳ |
+| 18 | **Restauración desde S3** | `sudo almichain-copia-remota --restaurar` | `RESULTADO: RESTAURACIÓN CORRECTA` leyendo de la nube | ⏳ |
+| 19 | Sin credenciales válidas | Con el lab apagado: `sudo almichain-copia-remota` | Falla con un mensaje claro y no toca la copia local | ⏳ |
+
+## 5. Recuperación real (sustituye la BD de producción)
 
 Antes, haz siempre la prueba de restauración.
 
