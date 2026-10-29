@@ -26,7 +26,19 @@ LOCAL_REPO="/srv/copias/restic"
 LOCAL_CLAVE="$SECRETOS/restic.txt"
 
 [ -r "$ENV_AWS" ] || { echo "ERROR: falta $ENV_AWS (ver backups/README.md)"; exit 1; }
-set -a; . "$ENV_AWS"; set +a          # AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN, RESTIC_REPOSITORY
+# Acepta el bloque tal cual lo da el Learner Lab ([default] y nombres en minúsculas)
+# o con los nombres en mayúsculas. Solo se exportan las variables que se esperan.
+while IFS= read -r linea || [ -n "$linea" ]; do
+  linea="${linea%$'\r'}"
+  case "$linea" in *=*) ;; *) continue ;; esac   # salta [default] y líneas vacías
+  clave="$(printf '%s' "${linea%%=*}" | tr -d '[:space:]' | tr '[:lower:]' '[:upper:]')"
+  valor="${linea#*=}"                            # todo lo que va tras el primer "=" (los tokens pueden acabar en "=")
+  valor="${valor#"${valor%%[![:space:]]*}"}"
+  case "$clave" in
+    AWS_ACCESS_KEY_ID|AWS_SECRET_ACCESS_KEY|AWS_SESSION_TOKEN|RESTIC_REPOSITORY)
+      export "$clave=$valor" ;;
+  esac
+done < "$ENV_AWS"
 : "${RESTIC_REPOSITORY:?Falta RESTIC_REPOSITORY en $ENV_AWS}"
 export RESTIC_PASSWORD_FILE="$CLAVE_REMOTA"
 

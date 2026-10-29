@@ -81,7 +81,7 @@ sudo almichain-copia-remota --iniciar    # crea el repositorio en S3 y su clave
 echo '30 3 * * * root /usr/local/sbin/almichain-copia-remota >> /var/log/almichain-copia-remota.log 2>&1' | sudo tee /etc/cron.d/almichain-copia-remota
 ```
 
-Contenido de `/root/secretos/aws-s3.env` (los valores salen del Learner Lab, *AWS Details → AWS CLI*, y de `terraform output`):
+Contenido de `/root/secretos/aws-s3.env`: se puede pegar tal cual el bloque del Learner Lab (*AWS Details → AWS CLI*, con `[default]` y los nombres en minúsculas) y añadir debajo la línea `RESTIC_REPOSITORY` con el valor de `terraform output`. También vale en mayúsculas:
 
 ```
 AWS_ACCESS_KEY_ID=...
