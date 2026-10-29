@@ -41,20 +41,16 @@ La diferencia de RAM es MAME funcionando, no un empeoramiento. El sistema base y
 | `skip_gameinfo` | Sin pantallas de aviso al cargar el juego |
 | Sin swap | La RAM sobra, como muestra el apartado 1 |
 
-## 4. Medida comparable antes / después (pendiente)
+## 4. Validación
 
-Para que la mejora quede medida en las mismas condiciones, se repiten las mediciones con las instantáneas de VirtualBox:
+✅ **Validado por el profesor el 29/10/2026:** las medidas de los apartados 1 y 2 son suficientes como constancia de las pruebas de rendimiento. No se repite la comparación con las instantáneas `02` y `03`.
 
-| Medida | `02 - MAME sin optimizar` | `03 - optimizada` |
-| --- | --- | --- |
-| Tiempo desde encender hasta poder jugar (cronómetro) | ⏳ | ⏳ |
-| `sh medir.sh antes-jugando` / `despues-jugando` (Gridlee en marcha) | ⏳ | ⏳ |
-| `mame -bench 60 gridlee` sin ningún otro MAME abierto (`pgrep mame` vacío) | ⏳ | ⏳ |
+Si se quisiera ampliar, se mediría lo mismo en las dos instantáneas: el tiempo desde encender hasta poder jugar, `sh medir.sh antes-jugando` / `despues-jugando` con Gridlee en marcha y `mame -bench 60 gridlee` sin otro MAME abierto.
 
 ## 5. Cómo interpretarlo (para la defensa)
 
 - **El requisito se cumple:** con 1 núcleo y 1 GB, Gridlee usa el 20 % de la CPU y 364 MB, sin swap ni tirones.
 - **`mame -bench`** mide la emulación sin vídeo ni sonido. Más del 100 % significa que va más rápido que la máquina original. El valor más bajo (1353 %) se tomó con otra instancia de MAME abierta, por eso no se usa para comparar.
-- **La mejora principal es de uso:** la máquina arranca sola en el juego, con vídeo y sonido ajustados a un solo núcleo. El tiempo hasta poder jugar es la medida que mejor lo demuestra (apartado 4).
+- **La mejora principal es de uso:** la máquina arranca sola en el juego, con vídeo y sonido ajustados a un solo núcleo. Al encender, la máquina va sola al juego sin pasar por escritorio ni contraseña.
 
 Los ficheros en bruto (`medidas-*.txt`) se añaden a esta carpeta al sacarlos de la VM.
