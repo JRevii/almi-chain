@@ -11,9 +11,11 @@
 | Servidor (Odoo + PostgreSQL) | Gerente y TPV; administra el técnico | Despacho | Cable, red de empleados (10.13.10.10) |
 | Máquina recreativa | Clientes | Sala | Red de empleados (10.13.10.40) |
 | Router 1 | Toda la red | Despacho | Fibra del operador |
-| Router 2 (repetidor WDS) | Clientes | Sala | Inalámbrico (WDS) |
+| Router 2 (repetidor) | Clientes | Sala | Inalámbrico (repetidor; ver [`repetidor-wifi.md`](../../redes/routers/repetidor/repetidor-wifi.md)) |
 | Wi-Fi de clientes | Clientes | Local | Wi-Fi, red de clientes aislada |
 | Web corporativa | Público | Nube (AWS) | Internet |
+
+![Inventario de equipos](capturas/01-inventario-equipos.png)
 
 ## 2. Redes y direccionamiento (plan)
 
@@ -33,6 +35,8 @@
 
 Riesgo: la recreativa es de uso público y comparte red con TPV y servidor.
 Mitigación: servicios sobrantes eliminados, nada escuchando.
+
+![Direccionamiento de las redes](capturas/02-direccionamiento-redes.png)
 
 ## 3. Tráfico por equipo
 
@@ -55,3 +59,5 @@ Mitigación: servicios sobrantes eliminados, nada escuchando.
 - PostgreSQL (5432) y Odoo (8069) accesibles desde fuera del servidor.
 - SSH al servidor desde la red de clientes.
 - Acceso desde Internet al servidor local (sin redirección de puertos en el Router 1).
+
+![Tráfico por equipo](capturas/03-trafico-por-equipo.png)

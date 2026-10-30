@@ -65,3 +65,9 @@ Acceso a Internet verificado.
 Ping a equipo de la LAN (192.168.1.175) fallido.
 Se confirma que los clientes del repetidor no tienen acceso a la red interna.
 
+| Captura | Qué muestra |
+| --- | --- |
+| [07-movil-conectado-repetidor](capturas/07-movil-conectado-repetidor.jpg) | Móvil conectado a `TP-Link-Revi` |
+| [08-ping-desde-repetidor](capturas/08-ping-desde-repetidor.jpg) | Pruebas de conexión desde el móvil a `192.168.1.175` |
+| [09-internet-desde-repetidor](capturas/09-internet-desde-repetidor.jpg) | Navegación a internet desde el repetidor |
+
