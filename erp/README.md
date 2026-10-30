@@ -118,7 +118,7 @@ Configuración funcional hecha desde la interfaz web, con el usuario administrad
 | 7 | `ssh root@…` y `ssh -o PubkeyAuthentication=no adminsrv@…` | `Permission denied` | ✅ 26/10 (repetida tras corregir la [incidencia 1](#incidencias)) · login con clave y contraseña prohibida ([captura](capturas/srv_07d_login_con_clave.png)); `sshd -T`: `permitrootlogin no`, `passwordauthentication no`, `allowusers adminsrv` ([captura](capturas/srv_07b_sshd_config.png)); root y contraseña → `Permission denied (publickey)` sin pedir contraseña ([captura](capturas/srv_07c_ssh_rechazado.png)) |
 | 8 | `psql -U postgres -c '\du'` y `psql -U local_app -d almichain` | `odoo` solo «Create DB». `local_app` sin acceso | ✅ 26/10 · `odoo` solo «Create DB», `local_app` sin atributos y `permission denied for database "almichain"` · [captura](capturas/srv_08_postgres_roles.png) |
 | 9 | **Venta en TPV → factura** | Pedido facturado y factura publicada con número e IVA 10 % | ⏳ |
-| 10 | Importar CSV y exportar a XLSX | Sin errores | ⏳ |
+| 10 | Importar CSV y exportar a XLSX | Sin errores | 🟡 29/10 · Exportación de Odoo hecha: [platos.csv](datos/exportacion/platos.csv), [clientes.csv](datos/exportacion/clientes.csv) y [platos.xlsx](datos/exportacion/platos.xlsx). Falta la captura de la importación sin errores |
 | 11-14 | RAID, fallo de un disco, copia y restauración | 11 y 12 ✅ 26/10 · 14 ✅ 27/10 · 13 🟡: copias instaladas el 27/10, falta comprobar la copia automática de las 02:30 · ver [`../backups/`](../backups#3-pruebas) |
 | 15 | `sudo fail2ban-client status sshd` | Jaula activa | ✅ 26/10 · [captura](capturas/srv_15_fail2ban.png) |
 
