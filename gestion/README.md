@@ -10,6 +10,15 @@ Anexos I (contrato de equipo), II (11 pasos) y IX, enlace al tablero Kanban/Gant
 | II · Documento de 11 pasos | — | ⏳ |
 | IX · Seguimiento (Gantt/Kanban) y control de versiones | Gantt planificado: [`../docs/diagramas/reparto_y_gantt.png`](../docs/diagramas/reparto_y_gantt.png) · tablero de Trello: [Lista de tareas](https://trello.com/b/6ad9c97e065249af633349a0/lista-de-tareas) · control de versiones: este repositorio (ramas y PR, ver [`CONTRIBUTING.md`](../CONTRIBUTING.md)) | ✅ 27/10 · [captura del tablero](capturas/trello_tablero.png) |
 
+### Capturas del tablero de Trello
+
+| Captura | Qué muestra |
+| --- | --- |
+| [trello_tablero](capturas/trello_tablero.png) · [02_trello_tablero](capturas/02_trello_tablero.png) | El tablero con sus listas |
+| [03_trello_info_reglas](capturas/03_trello_info_reglas.png) | Tarjetas de información y reglas del equipo |
+| [04_trello_tarjeta_wan](capturas/04_trello_tarjeta_wan.png) | Una tarjeta por dentro: la de la línea WAN |
+| [05_trello_etiquetas](capturas/05_trello_etiquetas.png) | Etiquetas usadas |
+
 ## Planificación
 
 ![Reparto de tareas y Gantt](../docs/diagramas/reparto_y_gantt.png)
