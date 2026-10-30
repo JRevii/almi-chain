@@ -57,3 +57,11 @@ Pendientes de realizar: conexión y ping desde el móvil, velocidad con y sin re
 2. En el repetidor, Quick Setup, Range Extender, elegir esa red comprobando que el BSSID es el del router, y escribir su clave.
 3. Cambiar la contraseña de administrador del repetidor y desactivar WPS.
 4. Hacer las pruebas y guardar las capturas.
+
+Prueba de aislamiento del repetidor:
+
+Dispositivo conectado correctamente al repetidor.
+Acceso a Internet verificado.
+Ping a equipo de la LAN (192.168.1.175) fallido.
+Se confirma que los clientes del repetidor no tienen acceso a la red interna.
+
