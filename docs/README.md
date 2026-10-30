@@ -4,6 +4,7 @@ Documento final del reto y diagramas de arquitectura (en `diagramas/`).
 
 | Documento | Contenido |
 | --- | --- |
+| [`documento_final.md`](documento_final.md) | Documento final del reto: índice y esqueleto que enlaza la guía de cada parte |
 | [`diagramas/esquema_definitivo.png`](diagramas/esquema_definitivo.png) | Esquema de la arquitectura completa |
 | [`diagramas/reparto_y_gantt.png`](diagramas/reparto_y_gantt.png) | Reparto de tareas y Gantt |
 | [`Comparativa y contratación de la línea WAN.pdf`](<Comparativa y contratación de la línea WAN.pdf>) | Comparativa de fibra y elección de la línea WAN |

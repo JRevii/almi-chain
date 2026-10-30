@@ -121,7 +121,7 @@ Así queda la red según el plano: la fibra entra en el **rack** del despacho de
 | SW-Empleados | TP-Link TL-SG108E (8 puertos, gestionable) | Conecta servidor, PC del gerente, TPV 1, TPV 2 y recreativa | 29,99 € |
 | SW-WiFi | TP-Link TL-SG105 (5 puertos) | Conecta el AP principal (red de clientes) | 16,99 € |
 | AP principal | TP-Link Archer C6 AC1200 en modo punto de acceso | Wi-Fi de clientes en el comedor, WPA2-AES, canal 6 | 45,00 € |
-| AP repetidor | TP-Link Archer C6 AC1200 | Repetidor **WDS** al otro lado del comedor, solo con corriente, DHCP desactivado | 45,00 € |
+| AP repetidor | TP-Link Archer C6 AC1200 | **Repetidor** (modo *Range Extender*) al otro lado del comedor, solo con corriente. Repite la Wi-Fi de clientes sin cable | 45,00 € |
 
 **Por qué un router propio:** el router del operador no deja hacer ACL ni separar bien las dos redes. Con R1 controlamos nosotros la red, y si cambiamos de operador solo cambia la ONT.
 
@@ -129,7 +129,9 @@ Así queda la red según el plano: la fibra entra en el **rack** del despacho de
 
 **Seguridad:** WPA2-AES (o WPA3 si los dos AP lo admiten), WPS desactivado, contraseñas de administración cambiadas y DHCP desactivado en el repetidor.
 
-> Pendiente: confirmar con Yeray e Iñigo los modelos de red y que el firmware de los AP admite WDS. Los precios de R1 y de los switches son orientativos.
+**Por qué un repetidor y no WDS:** el enunciado pedía enlazar el segundo router por WDS, pero el router del aula (TP-Link TL-WR841N v14) no tiene esa opción en su firmware, y el profesor indicó usarlo como **repetidor**. El repetidor se conecta por Wi-Fi a la red de clientes del AP principal y vuelve a emitirla, así que amplía la cobertura sin tender cable hasta el otro lado del comedor. Los clientes que se conectan a él siguen en la red de clientes, aislados de los equipos de la empresa. La configuración y las pruebas están en `redes/routers/repetidor/repetidor-wifi.md`.
+
+> Los precios de R1 y de los switches son orientativos.
 
 ## 6. Rack y cableado
 
