@@ -1,0 +1,11 @@
+id,name,sale_ok,purchase_ok,is_storable
+almichain.ingrediente_cafe,Café,False,True,True
+__export__.product_template_22_3e205ab2,Tomate,False,True,True
+almichain.ingrediente_patata,Patata,False,True,True
+almichain.ingrediente_huevos,Huevos,False,True,True
+almichain.ingrediente_bacalao,Bacalao,False,True,True
+almichain.ingrediente_arroz,Arroz,False,True,True
+almichain.ingrediente_aceite,Aceite de oliva,False,True,True
+almichain.ingrediente_leche,Leche,False,True,True
+almichain.ingrediente_azucar,Azúcar,False,True,True
+almichain.ingrediente_cerveza,Cerveza,False,True,True
