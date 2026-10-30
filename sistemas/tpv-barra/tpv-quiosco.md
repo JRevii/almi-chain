@@ -53,10 +53,10 @@ Pasos:
 
 Antes y después:
 
-_Captura pendiente de subir: `capturas/12-aviso-certificado.png` (aviso antes de instalar)._
+
 ![Detalles del certificado](capturas/13-certificado-detalles.png)
 ![CA en el almacén de confianza](capturas/05-certificado-confianza.png)
-_Captura pendiente de subir: `capturas/14-edge-https-sin-aviso.png` (https sin aviso)._
+
 
 ## 5. Modo quiosco
 
@@ -83,7 +83,6 @@ Para comprobarlo, el cajero intentó crear un producto y Odoo lo denegó (error 
 Los productos los crea un administrador de Odoo. Edge no debe guardar la contraseña del cajero.
 
 ![Usuario del cajero](capturas/18-odoo-usuario-cajero.png)
-_Captura pendiente de subir: `capturas/20-odoo-cajero-sin-permiso.png` (acceso denegado al cajero)._
 ![TPV conectado a Odoo](capturas/19-odoo-tpv-cajero.png)
 
 ## 7. Impresora
@@ -102,7 +101,6 @@ Pasos:
 Impresión desde el TPV (27/10): al validar el pago, Odoo abre el **diálogo de impresión** de Edge con la Samsung ML-2160 Series seleccionada, y al pulsar *Imprimir* sale el ticket ([vídeo](capturas/imp_01_venta_e_impresion.mp4)). El profesor lo validó el 27/10 como impresión automática. Quitar también el diálogo queda como mejora opcional en el [README](README.md#impresora-de-tickets).
 
 ![Impresora en el Administrador de dispositivos](capturas/09c-administrador-dispositivos.png)
-_Captura pendiente de subir: `capturas/09-impresora-predeterminada.png` (impresora predeterminada)._
 
 ## 8. Pruebas de restricción
 
@@ -118,7 +116,6 @@ Se hacen con el usuario `tpv` dentro del quiosco.
 | Instalar un programa | Pide credenciales de administrador | COMPLETAR |
 | Cambiar de usuario o cerrar sesión desde dentro | Solo con Ctrl-Alt-Supr | COMPLETAR |
 
-_Captura pendiente de subir: `capturas/08-prueba-no-salir.png` (pruebas de restricción)._
 
 ## 9. Riesgos y desviaciones
 
