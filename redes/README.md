@@ -8,6 +8,7 @@ Contratación de la línea WAN, esquema de conectividad, plano de red y cableado
 | `packet-tracer/almichain.pkt` | Proyecto de Packet Tracer (vista lógica configurada + vista física) |
 | [`packet-tracer/plano_local.png`](packet-tracer/plano_local.png) | Plano del local: ubicación de equipos, cableado y cobertura Wi-Fi. Es la imagen de fondo de la vista física |
 | [`packet-tracer/config/`](packet-tracer/config) | Configuración de cada router y switch, lista para pegar en la CLI |
+| [`routers/wan/`](routers/wan) | Router WAN físico del aula: configuración y capturas |
 | [`../docs/Comparativa y contratación de la línea WAN.pdf`](<../docs/Comparativa y contratación de la línea WAN.pdf>) | Comparativa de ofertas de fibra y elección de la línea WAN (Yeray) |
 
 ![Esquema de conectividad](packet-tracer/esquema_conectividad.png)
