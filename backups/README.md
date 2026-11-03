@@ -28,7 +28,7 @@ Si un disco falla, todo sigue funcionando con el otro. Docker no arranca si el R
 | Qué | `pg_dump` de las dos BD y los usuarios de PostgreSQL, adjuntos de Odoo, stack de Docker (`/opt/almichain`), certificados, CA, RAID, UFW y SSH |
 | Cómo | restic: copia **cifrada** (AES-256), incremental y deduplicada |
 | Dónde | Disco C (`sdd`) en `/srv/copias`, aparte del RAID y solo para root |
-| Cuándo | Cron, todos los días a las 02:30. Registro en `/var/log/almichain-copia.log` |
+| Cuándo | Cron, todos los días a las 02:30, y 5 minutos después de cada arranque por si el servidor estaba apagado a esa hora ([incidencia 5](../erp/README.md#incidencias)). Registro en `/var/log/almichain-copia.log` |
 | Retención | 7 diarias, 4 semanales y 6 mensuales |
 | Comprobación | `restic check` en cada copia y una prueba de restauración completa al mes |
 | Clave | `/root/secretos/restic.txt` y KeePassXC. **Sin ella, la copia no se puede recuperar** |
@@ -41,7 +41,7 @@ Si un disco falla, todo sigue funcionando con el otro. Docker no arranca si el R
 | --- | --- | --- | --- | --- |
 | 11 | RAID sano | `cat /proc/mdstat` | `[2/2] [UU]` | ✅ 26/10 · `sdb` y `sdc` *active sync*, estado *clean* · [captura](../erp/capturas/srv_11_raid_sano.png). Persistente: `ARRAY /dev/md0` en `mdadm.conf`, `/srv/datos` en `fstab` con `nofail`, y `postgres/` y `odoo/` dentro del RAID · [captura](../erp/capturas/srv_11b_raid_persistente.png) |
 | 12 | **Fallo de un disco** | Comandos de abajo | `[_U]` y Odoo sigue funcionando. Al reponer el disco vuelve a `[UU]` | ✅ 26/10 · `sdb` marcado `(F)` y RAID en `[_U]` ([captura](../erp/capturas/srv_12a_raid_degradado.png)); repuesto y reconstruido a `[UU]` en menos de 2 min ([captura](../erp/capturas/srv_12b_raid_reconstruido.png)); Odoo siguió funcionando durante el fallo ([captura](../erp/capturas/srv_12c_odoo_con_raid_degradado.png)) |
-| 13 | Copia automática | Al día siguiente: `sudo tail /var/log/almichain-copia.log` | «Copia terminada correctamente» a las 02:30 | 🟡 27/10 · `05-copias.sh` ejecutado ([incidencia 3](../erp/README.md#incidencias)): `sdd` montado en `/srv/copias` ([captura](../erp/capturas/srv_13a_disco_copias.png)), cron a las 02:30 como root ([captura](../erp/capturas/srv_13b_cron.png)) y primera copia `76f0e3dc` con `restic check` sin errores ([captura](../erp/capturas/srv_13d_primera_copia.png)). Falta ver en el registro la copia automática del 28/10 a las 02:30 |
+| 13 | Copia automática | `sudo grep "Copia terminada" /var/log/almichain-copia.log` y `sudo journalctl -u cron \| grep almichain` | Copia lanzada por cron, sin nadie, y «Copia terminada correctamente» | ✅ 03/11 · Instalada el 27/10: `sdd` en `/srv/copias` ([captura](../erp/capturas/srv_13a_disco_copias.png)), cron ([captura](../erp/capturas/srv_13b_cron.png)) y primera copia `76f0e3dc` ([captura](../erp/capturas/srv_13d_primera_copia.png)). El 03/11 el registro estaba **vacío**: el servidor solo se enciende de día y nunca estaba a las 02:30 ([captura](../erp/capturas/srv_13c_servidor_apagado_de_noche.png), [incidencia 5](../erp/README.md#incidencias)). Con una tarea temporal a las 09:30, `CRON[3134]` lanzó `almichain-copia` solo y terminó a las 09:30:13 con `restic check` sin errores y 4 instantáneas por la retención ([captura](../erp/capturas/srv_13e_cron_automatico.png)). Después se borró la tarea temporal y se añadió la copia al arrancar ([captura](../erp/capturas/srv_13f_cron_al_arrancar.png)) |
 | 14 | **Restauración** | Vende algo en el TPV, ejecuta `sudo almichain-copia` y luego `sudo almichain-restaurar-prueba` | `RESULTADO: RESTAURACIÓN CORRECTA` | ✅ 27/10 · Venta en el TPV y copia manual `1e6be61a`, con `restic check` sin errores ([captura](../erp/capturas/srv_14a_copia_manual.png)). Restaurada en la BD aparte `almichain_restaurada`: 16 pedidos del TPV, 10 contactos, 6 productos y 484 adjuntos, iguales que en producción. Facturas 0 en las dos, porque la factura automática aún no está hecha. La BD de prueba se borra al terminar ([captura](../erp/capturas/srv_14b_restauracion_correcta.png)) |
 
 ```bash
@@ -66,7 +66,7 @@ Tercera copia, **fuera del local**: si el restaurante sufre un incendio o un rob
 | Dónde | Bucket S3 privado creado con Terraform: [`infra/terraform-copias/`](../infra/terraform-copias) |
 | Cómo | [`scripts/copia_remota.sh`](scripts/copia_remota.sh) (`/usr/local/sbin/almichain-copia-remota`): `restic copy` del repositorio local al de S3, con la misma retención y `restic check` |
 | Cifrado | Doble: restic cifra con AES-256 antes de subir, con una **clave distinta** a la local, y S3 cifra en reposo. Solo por HTTPS |
-| Cuándo | Cron a las 03:30, después de la copia local. Registro en `/var/log/almichain-copia-remota.log` |
+| Cuándo | Cron a las 03:30, después de la copia local, y 10 minutos después de cada arranque. Registro en `/var/log/almichain-copia-remota.log` |
 | Secretos | `/root/secretos/aws-s3.env` (credenciales) y `/root/secretos/restic-remoto.txt` (clave), solo root. La clave, también en KeePassXC |
 | Limitación del Learner Lab | Las credenciales caducan al cerrar la sesión: hay que renovarlas en `aws-s3.env` cada vez, y con el lab apagado la copia falla y lo deja en el registro. En una empresa se usaría un usuario IAM fijo con permiso solo sobre el bucket ([política](../infra/terraform-copias/README.md#limitación-de-aws-academy-y-cómo-sería-en-una-empresa)) |
 
@@ -78,7 +78,9 @@ sudo install -m 750 backups/scripts/copia_remota.sh /usr/local/sbin/almichain-co
 sudo install -m 600 /dev/null /root/secretos/aws-s3.env
 sudo nano /root/secretos/aws-s3.env      # las 4 líneas de abajo
 sudo almichain-copia-remota --iniciar    # crea el repositorio en S3 y su clave
-echo '30 3 * * * root /usr/local/sbin/almichain-copia-remota >> /var/log/almichain-copia-remota.log 2>&1' | sudo tee /etc/cron.d/almichain-copia-remota
+printf '%s\n' '30 3 * * * root /usr/local/sbin/almichain-copia-remota >> /var/log/almichain-copia-remota.log 2>&1' \
+  '@reboot root sleep 600 && /usr/local/sbin/almichain-copia-remota >> /var/log/almichain-copia-remota.log 2>&1' \
+  | sudo tee /etc/cron.d/almichain-copia-remota
 ```
 
 Contenido de `/root/secretos/aws-s3.env`: se puede pegar tal cual el bloque del Learner Lab (*AWS Details → AWS CLI*, con `[default]` y los nombres en minúsculas) y añadir debajo la línea `RESTIC_REPOSITORY` con el valor de `terraform output`. También vale en mayúsculas:
