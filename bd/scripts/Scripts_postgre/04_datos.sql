@@ -34,16 +34,16 @@ INSERT INTO locales (nombre, telefono, direccion) VALUES
     ('Almi Casco Viejo', '944000002', 'Plaza de Muestra 3, Bilbao');      -- id 2
 
 INSERT INTO productos (odoo_id, nombre, unidad) VALUES
-    (201, 'Tomate',          'kg'),       -- id 1
-    (202, 'Patata',          'kg'),       -- id 2
-    (203, 'Huevos',          'unidad'),   -- id 3
-    (204, 'Bacalao',         'kg'),       -- id 4
-    (205, 'Arroz',           'kg'),       -- id 5
-    (206, 'Aceite de oliva', 'l'),        -- id 6
-    (207, 'Leche',           'l'),        -- id 7
-    (208, 'Azúcar',          'kg'),       -- id 8
-    (209, 'Cerveza',         'l'),        -- id 9
-    (210, 'Café',            'kg');       -- id 10
+    (22, 'Tomate',          'kg'),       -- id 1
+    (33, 'Patata',          'kg'),       -- id 2
+    (34, 'Huevos',          'unidad'),   -- id 3
+    (35, 'Bacalao',         'kg'),       -- id 4
+    (36, 'Arroz',           'kg'),       -- id 5
+    (37, 'Aceite de oliva', 'l'),        -- id 6
+    (38, 'Leche',           'l'),        -- id 7
+    (39, 'Azúcar',          'kg'),       -- id 8
+    (40, 'Cerveza',         'l'),        -- id 9
+    (32, 'Café',            'kg');       -- id 10
 
 INSERT INTO proveedores (nombre, telefono, correo) VALUES
     ('Huerta del Norte',     '944100001', 'pedidos@huertanorte.example'),      -- id 1
@@ -52,24 +52,24 @@ INSERT INTO proveedores (nombre, telefono, correo) VALUES
     ('Bodega y Cafés Norte', '944100004', 'info@bodegacafes.example');         -- id 4
 
 INSERT INTO clientes (odoo_id, nombre, correo, telefono) VALUES
-    (301, 'Laura Gómez', 'laura.gomez@correo.example', '600000001'),   -- id 1
-    (302, 'Mikel Sáenz', 'mikel.saenz@correo.example', '600000002'),   -- id 2
-    (303, 'Carmen Ortiz', NULL,                        '600000003');   -- id 3 (sin correo)
+    (11, 'Laura Gómez', 'laura.gomez@correo.example', '600000001'),   -- id 1
+    (14, 'Mikel Sáenz', 'mikel.saenz@correo.example', '600000002'),   -- id 2
+    (15, 'Carmen Ortiz', NULL,                        '600000003');   -- id 3 (sin correo)
 
 -- ============================================================
 -- GRUPO 2: tablas con una FK a las anteriores
 -- ============================================================
 
 INSERT INTO platos (odoo_id, nombre, precio, categoria_id) VALUES
-    (101, 'Ensalada de tomate',  6.50, 1),   -- id 1
-    (102, 'Tortilla de patata',  8.00, 1),   -- id 2
-    (103, 'Bacalao al pil-pil', 18.50, 2),   -- id 3
-    (104, 'Arroz meloso',       14.00, 2),   -- id 4
-    (105, 'Arroz con leche',     5.00, 3),   -- id 5
-    (106, 'Flan casero',         4.50, 3),   -- id 6
-    (107, 'Caña de cerveza',     2.50, 4),   -- id 7
-    (108, 'Café con leche',      1.80, 4);   -- id 8
-
+    (7,  'Ensalada de tomate',  6.50, 1),   -- id 1
+    (15, 'Tortilla de patata',  8.00, 1),   -- id 2
+    (16, 'Bacalao al pil-pil', 18.50, 2),   -- id 3
+    (17, 'Arroz meloso',       14.00, 2),   -- id 4
+    (18, 'Arroz con leche',     5.00, 3),   -- id 5
+    (19, 'Flan casero',         4.50, 3),   -- id 6
+    (20, 'Caña de cerveza',     2.50, 4),   -- id 7
+    (21, 'Café con leche',      1.80, 4);   -- id 8
+    
 -- numero 0 = barra de cada local
 INSERT INTO mesas (numero, capacidad, local_id) VALUES
     (0, 8, 1),   -- id 1  barra Almi Centro
@@ -81,11 +81,11 @@ INSERT INTO mesas (numero, capacidad, local_id) VALUES
     (2, 4, 2);   -- id 7
 
 INSERT INTO empleados (odoo_id, nombre, cargo, local_id) VALUES
-    (401, 'Maite Goikoetxea', 'Camarera',  1),   -- id 1
-    (402, 'Jon Arana',        'Camarero',  1),   -- id 2
-    (403, 'Ainhoa Ruiz',      'Camarera',  2),   -- id 3
-    (404, 'Unai Pérez',       'Encargado', 2),   -- id 4
-    (405, 'Iker Larrea',      'Cocinero',  1);   -- id 5 (no hace ventas)
+    (2, 'Maite Goikoetxea', 'Camarera',  1),   -- id 1
+    (7, 'Jon Arana',        'Camarero',  1),   -- id 2
+    (19, 'Ainhoa Ruiz',      'Camarera',  2),   -- id 3
+    (16, 'Unai Pérez',       'Encargado', 2),   -- id 4
+    (10, 'Iker Larrea',      'Cocinero',  1);   -- id 5 (no hace ventas)
 
 -- ============================================================
 -- GRUPO 3: ventas y lineas (septiembre y octubre, dos locales)
