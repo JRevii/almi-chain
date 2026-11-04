@@ -40,7 +40,41 @@ Además, toda la información está en papel o en un solo sitio: si se pierde o 
 
 **Ciberseguridad.** Al digitalizar, la información pasa a ser lo más valioso del restaurante. Por eso la web va por HTTPS, el servidor tiene cortafuegos, los TPV y el gerente usan cuentas sin permisos de administrador, los discos están en espejo (RAID 1) y se hacen copias de seguridad cifradas.
 
-## 4. Cómo cambia el restaurante
+## 4. Alternativas que comparamos y por qué elegimos cada una
+
+Para cada tecnología miramos otras opciones y elegimos según lo que necesita el restaurante: **poco dinero** (es una cadena pequeña), **que funcione aunque falle algo**, **que lo podamos montar y mantener nosotros** y **que no dependa de licencias de pago**.
+
+| Tecnología | Elegida | Alternativas | Por qué la elegida |
+|---|---|---|---|
+| Nube (web) | **AWS** (EC2 + S3, montado con Terraform) | Microsoft Azure, Google Cloud, hosting compartido | El centro nos da **AWS Academy Learner Lab gratis** y es lo que vemos en clase. Con EC2 controlamos el servidor entero (Nginx, HTTPS, cortafuegos) y con S3 guardamos la copia de seguridad fuera del local. Con Terraform el servidor se vuelve a crear con un solo comando. |
+| ERP y TPV | **Odoo Community** | SAP Business One, Holded, un TPV suelto | Es **libre y sin licencias**, trae el **TPV integrado** y se le añaden módulos (inventario, facturación, empleados) según se necesitan. Además lo instalamos en nuestro servidor, así que los datos son del restaurante. |
+| Base de datos | **PostgreSQL** | MySQL / MariaDB, Microsoft SQL Server | **Odoo solo funciona con PostgreSQL**, así que es la opción obligada. Además es libre, muy fiable y es la que **recomienda el profesor**. |
+| Sistema embebido (recreativa) | **Arduino Leonardo** | Encoder USB comercial, Raspberry Pi | Su chip tiene **USB nativo (HID)**: el ordenador lo ve como un teclado sin drivers. Es **personalizable** (las teclas se cambian en el código) y **barato** (unos 25 €). |
+
+**Nube: AWS frente a Azure, Google Cloud o hosting compartido.** Azure y Google Cloud ofrecen lo mismo que AWS (servidores virtuales y almacenamiento) a precios parecidos, así que técnicamente valdrían. Elegimos AWS porque el centro nos da el Learner Lab sin coste y es la nube que estudiamos. Un hosting compartido es más barato, pero no deja configurar el servidor (ni el cortafuegos ni las cabeceras de seguridad), no se puede automatizar con Terraform y no ofrece un sitio como S3 para las copias.
+
+**ERP: Odoo frente a SAP Business One, Holded o un TPV suelto.** SAP Business One es muy completo pero está pensado para empresas más grandes: tiene licencias de pago por usuario y necesita un instalador oficial, demasiado caro para un restaurante. Holded es un programa español en la nube muy fácil de usar, pero se paga una cuota mensual y los datos están en sus servidores, no en los nuestros. Un TPV suelto solo cobra: el inventario y la facturación seguirían en papel o en otro programa, que es justo el problema que queremos resolver. Odoo junta todo en un solo programa y es gratis.
+
+**Base de datos: PostgreSQL frente a MySQL o SQL Server.** MySQL también es libre y muy conocido, y SQL Server es el de Microsoft, de pago a partir de cierto tamaño. Pero la documentación de Odoo indica que solo funciona con PostgreSQL, así que elegir otra base de datos obligaría a cambiar de ERP. Además PostgreSQL es libre y es la que recomienda el profesor.
+
+**Embebido: Arduino Leonardo frente a encoder USB comercial o Raspberry Pi.** Un encoder USB comercial (la placa que traen los kits de mando arcade) es aún más barato y se enchufa sin programar, pero sus teclas vienen fijas y no aprendemos nada de sistemas embebidos. Una Raspberry Pi es un ordenador entero con Linux: cuesta más, tarda en arrancar y para leer cuatro botones y un joystick es demasiado. El Leonardo está en el punto medio: barato, se programa a nuestro gusto y el ordenador lo reconoce como teclado. Un Arduino Uno no serviría, porque no tiene USB nativo.
+
+### Fuentes consultadas
+
+- AWS Academy Learner Lab: https://aws.amazon.com/training/awsacademy/
+- Amazon EC2 y Amazon S3: https://aws.amazon.com/ec2/ · https://aws.amazon.com/s3/
+- Microsoft Azure: https://azure.microsoft.com/es-es/ · Google Cloud: https://cloud.google.com/
+- Terraform (proveedor de AWS): https://registry.terraform.io/providers/hashicorp/aws/latest/docs
+- Odoo Community y TPV (Punto de venta): https://www.odoo.com/es_ES/app/point-of-sale
+- Instalación de Odoo, requisito de PostgreSQL: https://www.odoo.com/documentation/19.0/administration/on_premise/source.html
+- SAP Business One: https://www.sap.com/spain/products/erp/business-one.html
+- Holded: https://www.holded.com/es
+- PostgreSQL: https://www.postgresql.org/about/ · MySQL: https://www.mysql.com/ · SQL Server: https://www.microsoft.com/es-es/sql-server
+- Arduino Leonardo y biblioteca Keyboard: https://docs.arduino.cc/hardware/leonardo/ · https://docs.arduino.cc/language-reference/en/functions/usb/Keyboard/
+- Raspberry Pi: https://www.raspberrypi.com/products/
+- Documentación del propio proyecto: [`infra/terraform`](../../infra/terraform/README.md), [`erp`](../../erp/README.md), [`arcade-stick`](../../arcade-stick/README.md) y [fichas HW/SW](../presupuesto/fichas_hw_sw.md)
+
+## 5. Cómo cambia el restaurante
 
 **Para el cliente**
 - **Menos espera y mejor servicio:** el camarero cobra en el TPV táctil y el ticket sale solo, así que se atiende con más agilidad.
@@ -55,7 +89,7 @@ Además, toda la información está en papel o en un solo sitio: si se pierde o 
 - **Publicidad más barata:** la web da a conocer el restaurante sin pagar anuncios.
 - **La información no se pierde:** está en el servidor, en dos discos y con copias.
 
-## 5. Riesgos y cómo los cubrimos
+## 6. Riesgos y cómo los cubrimos
 
 Al digitalizar, el restaurante depende de la tecnología. Si algo falla, puede quedarse sin cobrar o perder información. Estos son los riesgos y lo que hemos montado contra cada uno:
 
@@ -68,7 +102,7 @@ Al digitalizar, el restaurante depende de la tecnología. Si algo falla, puede q
 | Se cae el local o internet | — | La **web sigue funcionando** porque está en la nube |
 | Contraseñas filtradas | Acceso a todo el sistema | Gestor de contraseñas **KeePassXC**; nunca se suben a GitHub |
 
-## 6. Conclusión
+## 7. Conclusión
 
 Al restaurante le conviene digitalizarse por tres motivos. Primero, **agiliza los procesos**: se cobra antes, se controla el stock al momento y eso **mejora el servicio** al cliente. Segundo, **está protegido ante imprevistos**: con el RAID, las copias de seguridad y el SAI, una avería o un corte de luz no le hacen perder la información. Y tercero, **no se queda anticuado**: con una web en la nube y un sistema de gestión moderno puede competir con otros restaurantes y llegar a clientes nuevos.
 
