@@ -90,6 +90,21 @@ sudo reboot     # tiene que aparecer el menú de MAME directamente
 | `GRUB_TIMEOUT=1` | Arranque más rápido |
 | Sin swap | Requisito del profesor; la RAM sobra (ver medidas) |
 
+### Front-end gráfico: el menú de MAME
+
+Como front-end se usa la **interfaz propia de MAME**, que arranca sola al encender. No se instala un front-end aparte (Attract-Mode, EmulationStation…) porque cada uno ocupa RAM y CPU, y con 1 núcleo y 1 GB lo que sobra se deja para el juego.
+
+| Lo que pide un front-end | Cómo se cumple |
+| --- | --- |
+| Arranque directo, sin escritorio ni contraseña | Autologin en tty1 → `startx` → `.xinitrc` abre MAME |
+| **Selección de juego** | Menú de MAME con la lista de juegos disponibles, filtros (*Available*, *Working*…) y búsqueda, manejable con el arcade stick |
+| **Pantalla completa** | `window 0` en `mame.ini` |
+| Información del juego | Panel lateral con la captura del juego, el año, el fabricante y el estado |
+| Sin pantallas de aviso | `skip_gameinfo 1` |
+| Volver al menú sin teclado | Mantener START 2 segundos en el arcade stick envía `Esc` (ver [`../arcade-stick/`](../arcade-stick/README.md)) |
+
+![Menú de MAME a pantalla completa, con Gridlee seleccionado](capturas/rec_28_mame_e_instantanea_04.png)
+
 ## 5. Incidencias resueltas
 
 | Incidencia | Causa | Solución |

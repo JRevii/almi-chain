@@ -89,13 +89,13 @@ Para cada equipo (gerente, TPV, impresora de tickets, servidor, red, rack y cabl
 
 **Responsable:** Jon · **Fuentes:** [`recreativa/README.md`](../recreativa/README.md) y [`recreativa/medidas/resultados.md`](../recreativa/medidas/resultados.md)
 
-*Resumen pendiente: antiX + MAME en 1 núcleo y 1 GB, optimización y medidas.*
+La recreativa es una máquina virtual con los mismos límites que el equipo real: **1 núcleo, 1 GB de RAM y sin swap**. Lleva **antiX 26.1 core** (5 servicios y unos 160 MB de RAM al arrancar) y **MAME 0.276**, con una ROM legal y gratuita (Gridlee). Al encenderla entra sola en el menú de MAME a pantalla completa, sin escritorio ni contraseña, y ese menú hace de front-end para elegir juego. La optimización ajusta MAME a un solo núcleo (vídeo por software, salto de fotogramas y sonido más ligero), quita consolas sobrantes y acorta el arranque. Jugando, usa un **20,3 % de CPU** y MAME ocupa **364 MB**. Para el mínimo privilegio, el usuario que juega no tiene `sudo`, se administra con otro usuario y SSH no admite root. Las incidencias (instalador, SSH y permisos de antiX) están documentadas con sus capturas.
 
 ## 8. Arcade stick con Arduino
 
 **Responsable:** Jon · **Fuente:** [`arcade-stick/README.md`](../arcade-stick/README.md)
 
-*Resumen pendiente: Arduino Leonardo como teclado USB, compatible con cualquier emulador y personalizable.*
+El arcade stick usa un **Arduino Leonardo**, que tiene USB nativo y el ordenador reconoce como un **teclado USB, sin drivers**. Por eso funciona en MAME y en cualquier otro programa. Se eligió frente al *encoder* USB del kit porque el *encoder* tiene la asignación de botones fija, y el enunciado pide input personalizable. El código usa las resistencias internas (`INPUT_PULLUP`), tiene antirrebote de 10 ms y guarda todas las teclas en una sola tabla, así que cambiar un control es cambiar un valor. Además, se puede remapear desde el propio emulador sin reprogramar. Los botones envían las teclas por defecto de MAME (acción, moneda y start), y mantener start 2 segundos vuelve al menú. Cuesta 58,45 € entre el Arduino y el kit.
 
 ## 9. Página web y hosting en AWS
 
@@ -109,7 +109,7 @@ Para cada equipo (gerente, TPV, impresora de tickets, servidor, red, rack y cabl
 
 Antes de programar la web se hicieron 19 bocetos, que se valoraron con cinco criterios. Ganó el concepto **Latón** (fondo negro y detalles dorados), con un 8,8 sobre 10. La web es unidireccional: solo informa. Es responsiva y accesible, y tiene un slideshow de platos, un mapa de los locales con Leaflet y geolocalización, y un formulario de muestra que no envía datos. Está publicada en https://almichain.duckdns.org con HTTPS. En el validador del W3C da 0 errores y 0 avisos, y en Lighthouse saca entre 99 y 100.
 
-*Resumen pendiente (Jon): EC2 con IP elástica, Terraform, Nginx, Certbot y DuckDNS.*
+El despliegue es **infraestructura como código**: un solo `terraform apply` crea en AWS una **EC2 t3.micro** con Ubuntu, su grupo de seguridad (80 y 443 abiertos, y el 22 solo desde la IP del administrador) y una **IP elástica**, para que la dirección no cambie entre sesiones del laboratorio. Al arrancar, el script de `user-data` instala **Nginx** con compresión y cabeceras de seguridad, da de alta el dominio gratuito en **DuckDNS** y saca el certificado de **Let's Encrypt** con **Certbot**, con redirección de HTTP a HTTPS y renovación automática. Se comprobó que es reproducible destruyéndolo todo y volviéndolo a crear: la web volvió a estar en marcha, con un certificado nuevo, en 1 minuto y 45 segundos. Ninguna credencial está en el repositorio: el token y el estado de Terraform se quedan fuera de Git.
 
 ## 10. ERP + TPV y factura automática
 
