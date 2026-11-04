@@ -14,7 +14,7 @@ Documento final del reto y diagramas de arquitectura (en `diagramas/`).
 | [`necesidades/necesidades-comunicacion.md`](necesidades/necesidades-comunicacion.md) | Inventario, redes y tráfico del local |
 | [`presupuesto/fichas_hw_sw.md`](presupuesto/fichas_hw_sw.md) | Fichas de hardware y software de un local |
 | [`presupuesto/presupuesto_local_plano.xlsx`](presupuesto/presupuesto_local_plano.xlsx) | Presupuesto de un local según el plano de cableado y Wi-Fi |
-| [`digitalizacion/digitalizacion.md`](digitalizacion/digitalizacion.md) | Tecnologías habilitadoras digitales y cómo transforman el restaurante |
+| [`digitalizacion/digitalizacion.md`](digitalizacion/digitalizacion.md) | Tecnologías habilitadoras digitales, comparativa de alternativas y cómo transforman el restaurante |
 
 ## Pasos para reproducir
 
