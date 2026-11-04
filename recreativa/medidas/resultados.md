@@ -45,6 +45,8 @@ La diferencia de RAM es MAME funcionando, no un empeoramiento. El sistema base y
 
 ✅ **Validado por el profesor el 29/10/2026:** las medidas de los apartados 1 y 2 son suficientes como constancia de las pruebas de rendimiento. No se repite la comparación con las instantáneas `02` y `03`.
 
+✅ **Confirmado de nuevo el 04/11/2026 con la rúbrica final** (nivel 5 del criterio de la recreativa: «monitoriza el rendimiento con herramientas adecuadas y deja constancia documentada de las pruebas»).
+
 Si se quisiera ampliar, se mediría lo mismo en las dos instantáneas: el tiempo desde encender hasta poder jugar, `sh medir.sh antes-jugando` / `despues-jugando` con Gridlee en marcha y `mame -bench 60 gridlee` sin otro MAME abierto.
 
 ## 5. Cómo interpretarlo (para la defensa)
