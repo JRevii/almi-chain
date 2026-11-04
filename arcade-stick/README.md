@@ -12,24 +12,43 @@ Mando arcade con un joystick y 4 botones, controlado por un **Arduino Leonardo**
 | [`img/mando_fisico.jpg`](img/mando_fisico.jpg) | Foto del montaje por dentro (prototipo en caja de cartón) |
 | `capturas/` | Evidencias de las pruebas (fotos y vídeos) |
 
-## 1. Material
+## 1. Material y presupuesto
 
-| Pieza | Cantidad | Para qué |
-| --- | --- | --- |
-| Arduino Leonardo (Keyestudio) | 1 | Lee los botones y hace de teclado USB |
-| Joystick arcade tipo Sanwa, con cable plano de 5 hilos | 1 | 4 direcciones + GND |
-| Pulsadores arcade (2 rojos y 2 azules) | 4 | Botones B1 a B4 |
-| Protoboard | 1 | Solo como punto común de GND |
-| Cables dupont macho | ≈ 15 | Conexiones |
-| Cable micro-USB | 1 | Conexión y alimentación desde el PC |
+| Pieza | Cantidad | Para qué | Precio (presupuesto) |
+| --- | --- | --- | --- |
+| Arduino Leonardo (ATmega32U4) | 1 | Lee los botones y hace de teclado USB | 25,40 € |
+| Kit arcade de 1 jugador: joystick de 4 direcciones (5 hilos), pulsadores y cableado | 1 | Joystick y botones B1 a B4 | 33,05 € |
+| Protoboard | 1 | Solo como punto común de GND | Material del aula |
+| Cables dupont macho | ≈ 15 | Conexiones | Material del aula |
+| Cable micro-USB | 1 | Conexión y alimentación desde el PC | Material del aula |
+| **Total** | | | **58,45 €** |
 
-## 2. Por qué un Leonardo y por qué como teclado
+Los precios son los del [presupuesto](../docs/presupuesto/fichas_hw_sw.md#7-máquina-recreativa-y-arcade-stick). En el aula se montó con un Leonardo de Keyestudio (compatible) y el material disponible.
+
+## 2. Por qué un microcontrolador, y por qué como teclado
+
+### 2.1 Tecnología habilitadora: sistemas embebidos frente a alternativas comerciales
+
+El arcade stick es un pequeño **sistema embebido**: un microcontrolador que lee sensores (los pulsadores) y se comunica con otro equipo por USB, como un dispositivo IoT sencillo.
+
+| Opción | Ventajas | Inconvenientes | ¿Cumple el enunciado? |
+| --- | --- | --- | --- |
+| Mando USB comercial | Plug and play | No tiene joystick arcade; no se puede reprogramar | No: el input no es personalizable |
+| *Encoder* USB del kit (*zero delay*) | Incluido en el kit, sin programar | Asignación de botones fija por el fabricante; no se puede cambiar su firmware ni añadir funciones | Solo en parte |
+| **Arduino Leonardo** (elegido) | USB nativo (HID): se reconoce sin drivers. Se programa en C++ con el IDE de Arduino. Las teclas están en una tabla del código | Hay que cablearlo y programarlo | **Sí**: personalizable, documentado y versionado |
+| Arduino Uno | Muy común en clase | Sin USB nativo: no puede hacer de teclado sin cambiar el firmware del chip USB | No sin modificarlo |
+
+Por eso se sustituyó el *encoder* del kit por el Leonardo: el enunciado pide un controlador **compatible con cualquier emulador y con el input personalizable**, y el *encoder* no se puede personalizar.
+
+### 2.2 Por qué como teclado
 
 - **Leonardo (chip ATmega32U4):** tiene USB nativo, así que puede presentarse al ordenador como un dispositivo de entrada (HID). Un Arduino Uno no puede hacerlo sin cambiar su firmware.
 - **Como teclado, y no como mando:** la biblioteca `Keyboard.h` viene incluida en el IDE de Arduino, sin instalar nada. Todos los sistemas y todos los emuladores aceptan un teclado sin drivers. Para un mando arcade, que solo tiene entradas digitales (pulsado o no), un teclado no pierde nada respecto a un mando USB.
-- **Input personalizable** de dos formas:
-  1. En el código: cambiando la tabla `teclas[]`.
-  2. En el emulador: cada uno asigna las teclas a lo que quiera, por ejemplo en MAME con *Tab → Input*.
+
+### 2.3 Input personalizable
+
+1. **Sin reprogramar:** en el emulador, cada uno asigna las teclas a lo que quiera, por ejemplo en MAME con *Tab → Input (este juego)* o en RetroArch con *Ajustes → Entrada*.
+2. **Código parametrizado:** todas las teclas están en una sola tabla, `teclas[]`, y los pines en `pines[]`. Cambiar un control es cambiar un valor de la tabla, sin tocar la lógica.
 
 ## 3. Conexiones
 
@@ -86,9 +105,13 @@ Son las teclas que MAME usa **por defecto**, así que el mando funciona en cualq
 | 5 | Otro programa: el juego del dinosaurio de Chrome (`chrome://dino`) | Responde igual, sin configurar drivers | ✅ 26/10: joystick arriba salta y abajo se agacha | [vídeo](capturas/stick_04_chrome_dino.mp4) |
 | 6 | Remapear un botón en MAME (*Tab → Input*) | El botón hace la nueva acción | Opcional | — |
 | 7 | **Moneda, start y salir** en Gridlee: B3 mete crédito, B4 empieza la partida y mantener B4 2 s vuelve al menú | Funciona sin configurar MAME | ⏳ | `capturas/stick_07_moneda_start.mp4` |
+| 8 | **Cada control por separado** (vídeo): las 4 direcciones, una diagonal, B1, B2, moneda, start y salir | Cada uno hace su acción | ⏳ | `capturas/stick_08_cada_control.mp4` |
+| 9 | **Otro emulador:** RetroArch (u otro), sin configurar drivers | El joystick y los botones responden | ⏳ | `capturas/stick_09_retroarch.png` |
 
 ## 8. Preguntas que pueden hacer en la defensa
 
+- **¿Por qué un Arduino y no el *encoder* USB del kit?** Porque el *encoder* tiene la asignación fija de fábrica y no se puede reprogramar. El enunciado pide input personalizable.
+- **¿Es IoT?** Es un sistema embebido: un microcontrolador que lee sensores y se comunica con otro equipo. Es la misma base que un dispositivo IoT, aunque aquí la comunicación es por USB y no por red.
 - **¿Por qué no un Arduino Uno?** Porque no tiene USB nativo y no puede hacerse pasar por teclado sin cambiar su firmware.
 - **¿Por qué no hay resistencias?** Porque se usan las internas del chip con `INPUT_PULLUP`.
 - **¿Por qué pulsado es `LOW`?** Porque el botón une el pin con GND, y sin pulsar la resistencia interna lo mantiene en `HIGH`.
