@@ -389,7 +389,7 @@ La nueva entrada `0006 ubuntu` queda la primera (`BootOrder: 0006,0003,...`).
 
 Objetivo: que el equipo del gerente no ofrezca nada a la red. El gerente solo navega, imprime y se actualiza, y todo eso es tráfico de **salida**. Por eso en los dos sistemas se desactivan los servicios que no usa y el cortafuegos bloquea todo lo que entra.
 
-Antes de empezar se hizo la instantánea `antes-servicios-reducidos`, para poder volver atrás.
+Antes de empezar se hizo la instantánea «antes de servicios reducidos», para poder volver atrás.
 
 #### Ubuntu
 
@@ -475,7 +475,7 @@ Optimización de distribución: *Configuración → Windows Update → Opciones 
 |---|---|---|---|---|---|
 | ![G17a1](capturas/G17a1-windows-cortafuegos-antes.png) ![G17a2](capturas/G17a2-windows-puertos-antes.png) ![G17a3](capturas/G17a3-windows-servicios-antes.png) | ![G17b](capturas/G17b-windows-servicios-desactivados.png) | ![G17c](capturas/G17c-optimizacion-distribucion.png) | ![G17d](capturas/G17d-windows-tras-reinicio.png) | ![G17e](capturas/G17e-windows-internet-edge.png) | ![G17f](capturas/G17f-escritorio-remoto-cerrado.png) |
 
-Al terminar se hace la instantánea `servicios-reducidos` de la VM.
+Al terminar se hizo la instantánea «servicios reducidos» (04/11/2026, 13:37).
 
 
 ## 12. Lista de capturas
