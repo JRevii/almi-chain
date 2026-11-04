@@ -383,6 +383,100 @@ La nueva entrada `0006 ubuntu` queda la primera (`BootOrder: 0006,0003,...`).
 - **Clave de recuperación de BitLocker** solo en KeePassXC. La primera quedó visible en una captura, así que se regenera (`manage-bde -protectors -delete` + `-add -RecoveryPassword`) y la nueva se guarda solo en KeePassXC.
 - **UAC al máximo**, inicio de sesión con contraseña (sin inicio automático) y telemetría de Windows desactivada.
 - Portapapeles de VirtualBox solo del anfitrión al invitado.
+- **Servicios reducidos y cortafuegos** en los dos sistemas: solo quedan los servicios que el gerente usa y no hay ningún servicio accesible desde la red. Detalle en el [apartado 11.1](#111-servicios-reducidos-y-cortafuegos-04112026).
+
+### 11.1 Servicios reducidos y cortafuegos (04/11/2026)
+
+Objetivo: que el equipo del gerente no ofrezca nada a la red. El gerente solo navega, imprime y se actualiza, y todo eso es tráfico de **salida**. Por eso en los dos sistemas se desactivan los servicios que no usa y el cortafuegos bloquea todo lo que entra.
+
+Antes de empezar se hizo la instantánea «antes de servicios reducidos», para poder volver atrás.
+
+#### Ubuntu
+
+| Servicio desactivado | Para qué sirve | Por qué se quita |
+|---|---|---|
+| `avahi-daemon` (+ socket, **enmascarado**) | Anuncia el equipo en la red local (mDNS) | Era el único servicio escuchando en la red (`0.0.0.0:5353`) |
+| `cups-browsed` | Busca impresoras de red automáticamente | La impresora la instala el técnico a mano |
+| `openvpn` | VPN | No se usa |
+| `sssd` | Unirse a un dominio/LDAP | No hay dominio |
+| `bluetooth` | Bluetooth | La VM no tiene bluetooth |
+| `ModemManager` | Módems 3G/4G | No hay módem |
+
+Se mantienen `cups` (imprimir, solo escucha en `127.0.0.1`), `snapd` (Firefox es un snap), `NetworkManager`, `wpa_supplicant` y `unattended-upgrades` (actualizaciones de seguridad automáticas).
+
+```bash
+# Con el usuario tecnico
+for s in avahi-daemon.service avahi-daemon.socket cups-browsed.service openvpn.service sssd.service bluetooth.service ModemManager.service; do sudo systemctl disable --now "$s"; done
+sudo systemctl mask avahi-daemon.service avahi-daemon.socket   # que nadie lo vuelva a arrancar
+
+# Cortafuegos: bloquear lo que entra, permitir lo que sale
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw logging low
+sudo ufw enable
+
+# Comprobación
+systemctl is-enabled avahi-daemon cups-browsed openvpn sssd bluetooth ModemManager   # masked + disabled
+sudo ufw status verbose                                                             # activo, deny (entrantes)
+sudo ss -tulpn                                                                      # solo 127.0.0.x y ::1
+```
+
+| | Antes | Después |
+|---|---|---|
+| Puertos escuchando hacia la red | 1 (`5353/udp`, avahi) | **0** (todo en `127.0.0.x` / `::1`) |
+| Cortafuegos (ufw) | Inactivo | Activo: `deny` entrantes, `allow` salientes, registro `low` |
+| Tras reiniciar | — | Igual: ufw activo, avahi `inactive`, sin puertos hacia la red |
+
+| Antes | Servicios desactivados | Cortafuegos | Tras reiniciar | Internet y actualizaciones automáticas |
+|---|---|---|---|---|
+| ![G16a1](capturas/G16a1-servicios-antes.png) ![G16a2](capturas/G16a2-servicios-antes.png) ![G16a3](capturas/G16a3-puertos-ufw-antes.png) | ![G16b](capturas/G16b-servicios-desactivados.png) | ![G16c](capturas/G16c-ufw-activo.png) | ![G16d](capturas/G16d-tras-reinicio.png) | ![G16e](capturas/G16e-internet-y-actualizaciones.png) |
+
+#### Windows 11
+
+| Servicio desactivado | Para qué sirve | Por qué se quita |
+|---|---|---|
+| `LanmanServer` (Servidor) | Compartir carpetas (SMB, puerto **445**) | El gerente no comparte nada; es la vía de gusanos como WannaCry |
+| NetBIOS sobre TCP/IP | Nombres NetBIOS (puerto **139**) | Protocolo antiguo, innecesario |
+| `SSDPSRV`, `upnphost` | Descubrimiento UPnP (puerto **2869**) | No se publican dispositivos en la red |
+| `TermService` + reglas del cortafuegos | **Escritorio remoto** | Nadie debe entrar en remoto al equipo del gerente |
+| `lfsvc`, `MapsBroker` | Ubicación y mapas | No se usan; privacidad |
+| `XblAuthManager`, `XblGameSave`, `XboxNetApiSvc`, `XboxGipSvc` | Xbox | Equipo de trabajo |
+| `RetailDemo`, `WMPNetworkSvc`, `SharedAccess`, `bthserv` | Demo de tienda, compartir multimedia, ICS, bluetooth | No se usan |
+| Optimización de distribución (P2P) | Comparte actualizaciones con otros PC (puerto **7680**) | Se desactiva «Permitir descargas desde otros dispositivos» |
+
+`RemoteRegistry` (Registro remoto) ya venía deshabilitado.
+
+```powershell
+# PowerShell como administrador (tecnico)
+$s = 'lfsvc','MapsBroker','XblAuthManager','XblGameSave','XboxNetApiSvc','XboxGipSvc','RetailDemo','WMPNetworkSvc','SharedAccess','TermService','bthserv','LanmanServer','SSDPSRV','upnphost'
+foreach ($n in $s) { Stop-Service $n -Force -ErrorAction SilentlyContinue; Set-Service $n -StartupType Disabled }
+
+# NetBIOS desactivado en los adaptadores
+Get-CimInstance Win32_NetworkAdapterConfiguration -Filter "IPEnabled=true" | Invoke-CimMethod -MethodName SetTcpipNetbios -Arguments @{TcpipNetbiosOptions=2}
+
+# Cortafuegos explícito y con registro de bloqueos
+Set-NetFirewallProfile -All -Enabled True -DefaultInboundAction Block -DefaultOutboundAction Allow -LogBlocked True
+
+# Escritorio remoto cerrado en el sistema y en el cortafuegos
+Set-ItemProperty 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -Name fDenyTSConnections -Value 1
+Disable-NetFirewallRule -Group "@FirewallAPI.dll,-28752"
+```
+
+Optimización de distribución: *Configuración → Windows Update → Opciones avanzadas → Optimización de distribución → Permitir descargas desde otros dispositivos: Desactivado*.
+
+| | Antes | Después (tras reiniciar) |
+|---|---|---|
+| Servicios en marcha | 98 | **79** |
+| Puertos abiertos a la red | 135, 139, 445, 2869, 5040, 7680, 49664–49674 | 135, 5040, 49664–49670 (RPC y plataforma de Windows, bloqueados desde fuera por el cortafuegos) |
+| Cortafuegos | Activo, entrada `NotConfigured` | Activo en los 3 perfiles: entrada `Block`, salida `Allow`, registro de bloqueos |
+| Escritorio remoto | Servicio en manual | Deshabilitado y sin reglas en el cortafuegos |
+
+| Antes | Servicios desactivados | Optimización de distribución | Tras reiniciar | Internet con el cortafuegos | Escritorio remoto cerrado |
+|---|---|---|---|---|---|
+| ![G17a1](capturas/G17a1-windows-cortafuegos-antes.png) ![G17a2](capturas/G17a2-windows-puertos-antes.png) ![G17a3](capturas/G17a3-windows-servicios-antes.png) | ![G17b](capturas/G17b-windows-servicios-desactivados.png) | ![G17c](capturas/G17c-optimizacion-distribucion.png) | ![G17d](capturas/G17d-windows-tras-reinicio.png) | ![G17e](capturas/G17e-windows-internet-edge.png) | ![G17f](capturas/G17f-escritorio-remoto-cerrado.png) |
+
+Al terminar se hizo la instantánea «servicios reducidos» (04/11/2026, 13:37).
+
 
 ## 12. Lista de capturas
 
@@ -411,6 +505,17 @@ La nueva entrada `0006 ubuntu` queda la primera (`BootOrder: 0006,0003,...`).
 | G15a | `G15a-gpedit-bitlocker.png` | ✅ |
 | G15b | `G15b-bitlocker-pide-contrasena.png` | ✅ |
 | G15 | `G15-bitlocker-activado.png` | ✅ |
+| G16a1–a3 | `G16a1-servicios-antes.png`, `G16a2-servicios-antes.png`, `G16a3-puertos-ufw-antes.png` | ✅ |
+| G16b | `G16b-servicios-desactivados.png` | ✅ |
+| G16c | `G16c-ufw-activo.png` | ✅ |
+| G16d | `G16d-tras-reinicio.png` | ✅ |
+| G16e | `G16e-internet-y-actualizaciones.png` | ✅ |
+| G17a1–a3 | `G17a1-windows-cortafuegos-antes.png`, `G17a2-windows-puertos-antes.png`, `G17a3-windows-servicios-antes.png` | ✅ |
+| G17b | `G17b-windows-servicios-desactivados.png` | ✅ |
+| G17c | `G17c-optimizacion-distribucion.png` | ✅ |
+| G17d | `G17d-windows-tras-reinicio.png` | ✅ |
+| G17e | `G17e-windows-internet-edge.png` | ✅ |
+| G17f | `G17f-escritorio-remoto-cerrado.png` | ✅ |
 | INC1–INC12 | `INC*-*.png` | ✅ |
 
 > Antes de subir una captura, comprobar que no aparece ninguna contraseña ni la clave de recuperación de BitLocker.
