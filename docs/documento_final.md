@@ -65,7 +65,7 @@ Para cada equipo (gerente, TPV, impresora de tickets, servidor, red, rack y cabl
 
 **Responsable:** Sendoa · **Fuente:** [`sistemas/gerente-dualboot/README.md`](../sistemas/gerente-dualboot/README.md)
 
-*Resumen pendiente: Windows 11 Pro + Ubuntu, GRUB, usuario sin administrador.*
+El equipo del gerente es una VM de VirtualBox con firmware **EFI, TPM 2.0 y arranque seguro**, 6 GB de RAM, 2 núcleos y un disco de 120 GB. Lleva **Windows 11 Pro** y **Ubuntu 26.04 LTS** en el mismo disco, y al encender **GRUB** deja elegir el sistema. Se usa Windows 11 en lugar de Windows 10 porque este ya no tiene parches de seguridad (validado por el profesor). Los dos sistemas están **cifrados**: BitLocker con contraseña de arranque en Windows y LUKS2 en Ubuntu. En cada uno hay un usuario `tecnico` que administra y un usuario `gerente` **sin permisos de administrador** (estándar en Windows y sin `sudo` en Ubuntu), con el UAC al máximo. El sistema está **endurecido**: se han desactivado los servicios que el gerente no usa (compartir carpetas, Escritorio remoto, UPnP, avahi…), el cortafuegos bloquea todo lo que entra en los dos sistemas y no queda ningún servicio accesible desde la red. En Windows, los servicios en marcha bajan de 98 a 79. Las cinco incidencias (instalación colgada, Windows que no arrancaba, errores de lectura de la ISO, la VM que arrancaba directamente en Windows y la entrada de Ubuntu perdida en el arranque UEFI) están documentadas con su causa, su solución y capturas. Las contraseñas y la clave de recuperación de BitLocker solo están en KeePassXC.
 
 ### 5.2 TPV de barra e impresora de tickets
 
@@ -113,7 +113,7 @@ El despliegue es **infraestructura como código**: un solo `terraform apply` cre
 
 ## 10. ERP + TPV y factura automática
 
-**Responsables:** Sendoa (servidor y factura automática) y Alejandro (configuración de Odoo) · **Fuente:** [`erp/README.md`](../erp/README.md)
+**Responsables:** Sendoa (servidor), Alejandro (configuración de Odoo) e Iñigo y Yeray (factura automática) · **Fuente:** [`erp/README.md`](../erp/README.md)
 
 *Resumen pendiente: Odoo Community + PostgreSQL en Docker, módulos, usuarios por rol, importación de datos y factura automática al vender en el TPV.*
 
@@ -127,7 +127,7 @@ El despliegue es **infraestructura como código**: un solo `terraform apply` cre
 
 **Responsable:** Sendoa · **Fuentes:** [`backups/README.md`](../backups/README.md) y [`infra/terraform-copias/README.md`](../infra/terraform-copias/README.md)
 
-*Resumen pendiente: RAID 1 con mdadm y prueba de failover, copias con restic y cron, copia remota en S3 y prueba de restauración.*
+Las bases de datos del servidor (la de Odoo y la del local) y los adjuntos de Odoo están en un **RAID 1** con `mdadm` sobre dos discos. En la prueba de fallo se marcó un disco como roto: el RAID siguió funcionando con el otro, **Odoo siguió vendiendo** y, al reponer el disco, se reconstruyó solo en menos de 2 minutos. Como un RAID no protege de un borrado, además hay un **plan de copias** con **restic**: copia cifrada (AES-256), incremental y comprobada con `restic check`, en un tercer disco solo para root. La lanza **cron** a las 02:30 y también 5 minutos después de cada arranque, porque el servidor del aula no está encendido de noche (incidencia documentada). Guarda 7 copias diarias, 4 semanales y 6 mensuales. Para cumplir la regla **3-2-1**, otra tarea lleva las copias a un bucket de **AWS S3** creado con Terraform, cifrado y con otra clave. Las copias se han **verificado restaurándolas** en una base de datos aparte, tanto desde el disco local como desde S3, y los pedidos del TPV, los contactos, los productos y los adjuntos coincidían con los de producción. Las claves de restic solo están en el servidor (solo root) y en KeePassXC.
 
 ## 13. Digitalización
 
