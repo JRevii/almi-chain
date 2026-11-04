@@ -1,0 +1,9 @@
+id,name,list_price,available_in_pos,taxes_id/.id
+__export__.product_template_7_ee395187,Ensalada de tomate,6.5,True,72
+almichain.plato_tortilla,Tortilla de patata,8,True,72
+almichain.plato_bacalao,Bacalao al pil-pil,18.5,True,72
+almichain.plato_arroz_meloso,Arroz meloso,14,True,72
+almichain.plato_arroz_leche,Arroz con leche,5,True,72
+almichain.plato_flan,Flan casero,4.5,True,72
+almichain.plato_cana,Caña de cerveza,2.5,True,72
+almichain.plato_cafe,Café con leche,1.8,True,72

@@ -11,7 +11,7 @@ web/
 ├── js/main.js              Menú móvil, slideshow, opiniones, formulario de muestra, mapa y geolocalización
 ├── fonts/                  Cormorant Garamond y Jost (woff2, licencia SIL OFL), servidas desde aquí
 ├── vendor/leaflet/         Leaflet 1.9.4 (mapa), servido desde aquí (licencia BSD-2)
-└── img/                    Imágenes. Ahora son PROVISIONALES (SVG): hay que sustituirlas
+└── img/                    Fotos en WebP; fuente y licencia de cada una en img/CREDITOS.md
 ```
 
 ## Pasos para reproducir
@@ -28,18 +28,9 @@ python3 -m http.server 8000
 # abrir http://localhost:8000
 ```
 
-## Sustituir las fotos provisionales
+## Imágenes
 
-Hay que usar fotos propias o con licencia libre (por ejemplo, de Unsplash o Pexels), anotando la fuente en la documentación. Se recomienda **WebP**, de 150 KB como máximo cada una, con fondo oscuro y luz cálida.
-
-| Archivo actual | Contenido | Proporción |
-|---|---|---|
-| `img/hero.svg` | Mesa preparada, luz cálida | 4:5 (800×1000) |
-| `img/nosotros.svg` | Equipo en la cocina | 3:4 (600×800) |
-| `img/plato-1.svg` … `plato-4.svg` | Kokotxas, pichón, txangurro, torrija | 4:5 (800×1000) |
-| `img/galeria-1.svg` … `galeria-3.svg` | Sala, detalle de mesa, bodega | 3:4 (600×800) |
-
-Si cambias la extensión (`.svg` → `.webp`), cámbiala también en `index.html`, incluidos los atributos `data-img` de los botones del slideshow. Cambia también el texto `alt` si la foto es distinta.
+Las fotos están en WebP, recortadas a su proporción (4:5 o 3:4) y con menos de 150 KB cada una. La fuente y la licencia de cada foto se anotan en [`img/CREDITOS.md`](img/CREDITOS.md). Si se cambia una foto, hay que cambiar también su texto `alt` en `index.html` y, en el slideshow, el atributo `data-img` del botón.
 
 ## Seguridad y mínimo privilegio
 

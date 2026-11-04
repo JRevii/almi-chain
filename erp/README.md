@@ -33,7 +33,7 @@ La guía paso a paso, desde crear la VM hasta las pruebas, está en el documento
 
 1. **VM:** 2 CPU, 4 GB, adaptador puente a la red de clase. Discos SATA: 25 GB (sistema), 10 + 10 GB (A y B, RAID), 20 GB (C, copias).
 2. **Ubuntu Server 24.04:** IP fija `192.168.1.50/24`, puerta de enlace `192.168.1.1`, DNS `192.168.1.1,1.1.1.1`. LVM solo en el disco de 25 GB, ampliado al máximo. Usuario `adminsrv` y OpenSSH.
-3. **Desde el portátil:** `ssh-copy-id adminsrv@192.168.1.50` y `ssh adminsrv@192.168.1.50`.
+3. **Desde el portátil, ANTES de `01-base.sh`:** crea la clave (`ssh-keygen -t ed25519`, con frase de paso guardada en KeePassXC), cópiala con `ssh-copy-id adminsrv@192.168.1.50` y comprueba que entras sin contraseña con `ssh -o PasswordAuthentication=no adminsrv@192.168.1.50`. Si `01-base.sh` no encuentra la clave, deja la contraseña activada (ver [incidencia 1](#incidencias)).
 4. **En el servidor:**
 
 ```bash
@@ -61,9 +61,34 @@ for pedido in records:
 ```
 
 6. **En cada equipo cliente:**
-   - Añade `192.168.1.50 odoo.almichain.lan` al fichero `hosts`.
-   - Instala `almichain-ca.crt` como entidad raíz de confianza.
+   - Añade `192.168.1.50 odoo.almichain.lan` al fichero `hosts` (Windows: `C:\Windows\System32\drivers\etc\hosts` como administrador; Linux: `echo "192.168.1.50 odoo.almichain.lan" | sudo tee -a /etc/hosts`). Sin esto, el navegador da `DNS_PROBE_FINISHED_NXDOMAIN`.
+   - Copia el certificado **público** de la CA (`scp adminsrv@192.168.1.50:almichain-ca.crt .`; nunca la `.key`) e instálalo como entidad raíz de confianza. Windows: doble clic → *Instalar certificado* → *Entidades de certificación raíz de confianza*. Chrome en Linux no usa el almacén del sistema: `chrome://certificate-manager` → *Local certificates* → *Installed by you* → *Trusted certificates* → *Import*. Sin esto sale `NET::ERR_CERT_AUTHORITY_INVALID`.
    - Abre `https://odoo.almichain.lan`.
+
+7. **BD del local (`almichain_local`):** las tablas de Alejandro están en [`../bd/scripts/Scripts_postgre/02_tablas.sql`](../bd/scripts/Scripts_postgre/02_tablas.sql). En este servidor se cargan en `almichain_local` con su dueño `local_app`, **nunca** en `almichain`, que es la BD de Odoo:
+
+```bash
+sudo docker compose -f /opt/almichain/docker-compose.yml exec -T db \
+  psql -v ON_ERROR_STOP=1 -U local_app -d almichain_local < ~/almi-chain/bd/scripts/Scripts_postgre/02_tablas.sql
+sudo docker compose -f /opt/almichain/docker-compose.yml exec db psql -U local_app -d almichain_local -c '\dt'
+```
+
+   > Los comentarios de `02_tablas.sql` y `03_permisos.sql` usan la BD `almichain` y los roles `almichain_owner`/`almichain_app`. En este servidor esos nombres no aplican: `03_permisos.sql` **no se ejecuta** tal cual, porque daría acceso a la BD de Odoo. Pendiente de acordar con Alejandro.
+
+## Configuración de Odoo (26/10/2026)
+
+Configuración funcional hecha desde la interfaz web, con el usuario administrador.
+
+| Paso | Qué se ha hecho | Estado | Evidencia |
+| --- | --- | --- | --- |
+| Impuestos | Activos solo los necesarios: **IVA 10% (Bienes) · Ventas** (hostelería), IVA 21% (Bienes) · Ventas (general) y 10% IVA (bienes corrientes) · Compras. Los demás impuestos del plan español quedan desactivados para que nadie elija uno equivocado | ✅ | [captura](capturas/odoo_01_impuestos_activos.png) |
+| Productos de prueba | *Cafe*: 1,50 € + IVA 10% (Bienes) = **1,65 €**. Antes llevaba el 21 % (1,82 €) y se corrigió el 27/10: en hostelería es el 10 %. La carta completa se importa después desde [`datos/productos.csv`](datos/productos.csv) | ✅ 27/10 | [ticket](capturas/odoo_03_ticket_logo_iva10.png) |
+| Empresa y ticket | Empresa **Almi-Chain** con su logo (versión en negro para imprimir), que sale en la cabecera del ticket en lugar de «Your logo». **Impresión automática del recibo** activada (validada por el profesor, ver [TPV](../sistemas/tpv-barra/README.md#pruebas)) | ✅ 27/10 | [ticket](capturas/odoo_03_ticket_logo_iva10.png) |
+| Autofacturación por QR | **Se deja activada:** el ticket lleva el QR «¿Necesita una factura?» con un código, por si un cliente quiere factura completa con sus datos. El enlace va a `odoo.almichain.lan`, así que solo funciona desde la red del local | ✅ | [ticket](capturas/odoo_03_ticket_logo_iva10.png) |
+| Regla *TPV: factura automática de cada venta* | Ver el código en el apartado de instalación | ⏳ | — |
+| Carta, clientes y usuarios por rol | Importar los CSV de `datos/` y crear Gerente y Barra (solo TPV) | ⏳ Alejandro | — |
+
+> **Por qué IVA 10% (Bienes):** la localización española solo trae activo el 10 % de ventas como «Bienes». Servir comida es técnicamente una prestación de servicios, también al 10 %. El porcentaje y el cálculo son los correctos.
 
 ## Seguridad aplicada
 
@@ -83,17 +108,28 @@ for pedido in records:
 
 | # | Prueba | Resultado esperado | Evidencia |
 | --- | --- | --- | --- |
-| 1 | `sudo docker compose ps` (en `/opt/almichain`) | `db` healthy, `odoo` y `nginx` running | ⏳ |
-| 2 | `sudo ss -tlnp` | Solo 22, y 80/443 en `192.168.1.50`. Ni 5432 ni 8069 | ⏳ |
-| 3 | `sudo ufw status verbose` | `deny (incoming)`. 22/80/443 solo desde `192.168.1.0/24` | ⏳ |
-| 4 | Navegador → `https://odoo.almichain.lan` | Candado sin avisos | ⏳ |
-| 5 | `curl -I http://…` y `curl -I https://…/web/login` | `301`. Cabeceras de seguridad | ⏳ |
-| 6 | `/web/database/manager` | «The database manager has been disabled» | ⏳ |
-| 7 | `ssh root@…` y `ssh -o PubkeyAuthentication=no adminsrv@…` | `Permission denied` | ⏳ |
-| 8 | `psql -U postgres -c '\du'` y `psql -U local_app -d almichain` | `odoo` solo «Create DB». `local_app` sin acceso | ⏳ |
+| 1 | `sudo docker compose ps` (en `/opt/almichain`) | `db` healthy, `odoo` y `nginx` running | ✅ 26/10 · [captura](capturas/srv_01_docker_ps.png). Nginx publicado solo en `192.168.1.50`; Odoo y PostgreSQL sin publicar |
+| 2 | `sudo ss -tlnp` | Solo 22, y 80/443 en `192.168.1.50`. Ni 5432 ni 8069 | ✅ 26/10 · [captura](capturas/srv_02_puertos.png) |
+| 3 | `sudo ufw status verbose` | `deny (incoming)`. 22/80/443 solo desde `192.168.1.0/24` | ✅ 26/10 · [captura](capturas/srv_03_ufw.png) |
+| 3b | Desde otro equipo de la LAN: `nmap -sV 192.168.1.50` | Solo 22 (OpenSSH), 80 (Nginx) y 443 abiertos; el resto filtrados | ✅ 26/10: 997 puertos filtrados. PostgreSQL (5432) y Odoo (8069) no aparecen · [captura](capturas/srv_03b_nmap.png) |
+| 4 | Navegador → `https://odoo.almichain.lan` | Candado sin avisos | ✅ 26/10 · «La conexión es segura» · [captura](capturas/srv_04_candado.png) |
+| 5 | `curl -I http://…` y `curl -I https://…/web/login` | `301`. Cabeceras de seguridad | ✅ 26/10 · HTTP → `301` a HTTPS y `Server: nginx` sin versión ([captura](capturas/srv_05a_http_301_sin_version.png)); HTTPS con HSTS, `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy` y cookie `Secure; HttpOnly; SameSite=Lax` ([captura](capturas/srv_05b_https_cabeceras.png), cookie difuminada). Ver [incidencia 2](#incidencias) |
+| 6 | `/web/database/manager` | «The database manager has been disabled» | ✅ 26/10 · desde un PC de la LAN, sin avisos de certificado · [captura](capturas/srv_06_gestor_bd_desactivado.png) |
+| 7 | `ssh root@…` y `ssh -o PubkeyAuthentication=no adminsrv@…` | `Permission denied` | ✅ 26/10 (repetida tras corregir la [incidencia 1](#incidencias)) · login con clave y contraseña prohibida ([captura](capturas/srv_07d_login_con_clave.png)); `sshd -T`: `permitrootlogin no`, `passwordauthentication no`, `allowusers adminsrv` ([captura](capturas/srv_07b_sshd_config.png)); root y contraseña → `Permission denied (publickey)` sin pedir contraseña ([captura](capturas/srv_07c_ssh_rechazado.png)) |
+| 8 | `psql -U postgres -c '\du'` y `psql -U local_app -d almichain` | `odoo` solo «Create DB». `local_app` sin acceso | ✅ 26/10 · `odoo` solo «Create DB», `local_app` sin atributos y `permission denied for database "almichain"` · [captura](capturas/srv_08_postgres_roles.png) |
 | 9 | **Venta en TPV → factura** | Pedido facturado y factura publicada con número e IVA 10 % | ⏳ |
-| 10 | Importar CSV y exportar a XLSX | Sin errores | ⏳ |
-| 11-14 | RAID, fallo de un disco, copia y restauración | Ver [`../backups/`](../backups) | ⏳ |
-| 15 | `sudo fail2ban-client status sshd` | Jaula activa | ⏳ |
+| 10 | Importar CSV y exportar a XLSX | Sin errores | 🟡 29/10 · Exportación de Odoo hecha: [platos.csv](datos/exportacion/platos.csv), [clientes.csv](datos/exportacion/clientes.csv) y [platos.xlsx](datos/exportacion/platos.xlsx). Falta la captura de la importación sin errores |
+| 11-14 | RAID, fallo de un disco, copia y restauración | 11 y 12 ✅ 26/10 · 14 ✅ 27/10 · 13 ✅ 03/11 (ver [incidencia 5](#incidencias)) · ver [`../backups/`](../backups#3-pruebas) |
+| 15 | `sudo fail2ban-client status sshd` | Jaula activa | ✅ 26/10 · [captura](capturas/srv_15_fail2ban.png) |
 
 Capturas en `erp/capturas/`.
+
+## Incidencias
+
+| # | Qué pasó | Causa | Solución |
+| --- | --- | --- | --- |
+| 1 | La prueba 7 fallaba: el servidor pedía contraseña por SSH | `01-base.sh` se ejecutó antes de copiar la clave de `adminsrv`, así que dejó `PasswordAuthentication yes`. Además, alguien había añadido a mano `AllowUsers root` en `/etc/ssh/sshd_config.d/10-almichain.conf` (no lo bloqueaba `PermitRootLogin no`, pero sobraba) | Copia de seguridad del fichero, clave ed25519 con `ssh-copy-id`, comprobación con `ssh -o PasswordAuthentication=no`, quitar `AllowUsers root`, `PasswordAuthentication no`, `sshd -t` y `systemctl reload ssh` sin cerrar la sesión abierta. Volver a lanzar `01-base.sh` hace lo mismo, y ahora el script avisa al final si la contraseña sigue activa. `50-cloud-init.conf` también dice `yes`, pero no manda: sshd se queda con el primer valor y `10-` se lee antes |
+| 2 | `curl -I http://…` mostraba `Server: nginx/1.28.3` | `server_tokens off` solo estaba en el bloque del 443 | Añadido también al bloque del 80 en [`docker/nginx/odoo.conf`](docker/nginx/odoo.conf). En un servidor ya montado: editar `/opt/almichain/nginx/odoo.conf` y `docker compose restart nginx` (no basta `reload`: `sed -i` crea un fichero nuevo y el contenedor seguiría viendo el viejo) |
+| 3 | No existía `/srv/copias` ni el cron de copias | `05-copias.sh` no se llegó a ejecutar: `sdd` (20 GB) estaba vacío y sin montar ([captura](capturas/srv_11c_discos_lsblk.png)) | ✅ 27/10 · `sudo bash 05-copias.sh` (pide escribir `SI` antes de formatear `sdd`). La clave de restic se guarda en KeePassXC. Después, pruebas 13 y 14 ([`../backups/`](../backups#3-pruebas)) |
+| 4 | En el servidor, `git pull` daba `dubious ownership` y luego `divergent branches` | La copia del repo en `~/almi-chain` se había clonado como root, seguía en la rama antigua `feat/servidor-odoo` (de antes de reorganizar el historial) y tenía un cambio local sin subir en `03-certificados.sh`, ya obsoleto | `sudo chown -R adminsrv:adminsrv ~/almi-chain`, `git restore` del cambio, `git switch main`, `git reset --hard origin/main` y `git config pull.ff only`, para que un `pull` nunca vuelva a mezclar historiales ([captura](capturas/srv_16_repo_servidor_sincronizado.png)). Clonar el repo siempre como `adminsrv`, nunca con `sudo` |
+| 5 | La copia automática no se hacía nunca: `/var/log/almichain-copia.log` vacío (0 bytes) el 03/11 | El cron está a las 02:30 (y la remota a las 03:30), pero la VM del servidor solo se enciende en horario de clase: `last -x` muestra arranques entre las 08:37 y las 13:44 y ningún apagado limpio ([captura](capturas/srv_13c_servidor_apagado_de_noche.png)). En un restaurante el servidor estaría encendido toda la noche | Cron funciona: una tarea temporal a las 09:30 hizo la copia sola ([captura](capturas/srv_13e_cron_automatico.png)). Arreglo: línea `@reboot` que copia 5 min después de arrancar (10 min la remota), además de la de las 02:30. Ya está en [`05-copias.sh`](scripts/05-copias.sh) y en la instalación de la copia remota ([captura](capturas/srv_13f_cron_al_arrancar.png)). Mejora pendiente: apagar la VM con `sudo poweroff`, no cerrando VirtualBox a la fuerza |

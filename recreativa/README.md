@@ -12,11 +12,11 @@ Máquina virtual de VirtualBox que imita el equipo de la recreativa: **1 núcleo
 | `scripts/02-ssh.sh` | Instalación de SSH, con el arreglo del grupo `_ssh` |
 | `scripts/03-mame.sh` | Xorg mínimo + MAME + carpeta de ROMs |
 | `scripts/04-optimizar.sh` | Optimización: `mame.ini`, autologin, arranque directo, GRUB y limpieza |
-| `scripts/05-seguridad.sh` | Mejora propuesta: usuario `adminrec` para administrar y SSH sin root (no aplicada) |
+| `scripts/05-seguridad.sh` | Mínimos privilegios: usuario `adminrec`, `recreativa` sin `sudo`, permisos de antiX recortados y SSH sin root (aplicado el 27/10) |
 | `scripts/medir.sh` | Recoge las medidas de rendimiento en un `.txt` |
 | `config/` | Ficheros de configuración que acaban en la VM |
 | `medidas/` | Resultados de las pruebas de rendimiento |
-| `capturas/` | Capturas del proceso |
+| `capturas/` | Capturas del proceso (ver el apartado 7) |
 
 > No se suben al repositorio contraseñas, ROMs ni el disco `.vdi`. La ROM de prueba (Gridlee) es legal y gratuita: se descarga de mamedev.org.
 
@@ -90,6 +90,21 @@ sudo reboot     # tiene que aparecer el menú de MAME directamente
 | `GRUB_TIMEOUT=1` | Arranque más rápido |
 | Sin swap | Requisito del profesor; la RAM sobra (ver medidas) |
 
+### Front-end gráfico: el menú de MAME
+
+Como front-end se usa la **interfaz propia de MAME**, que arranca sola al encender. No se instala un front-end aparte (Attract-Mode, EmulationStation…) porque cada uno ocupa RAM y CPU, y con 1 núcleo y 1 GB lo que sobra se deja para el juego.
+
+| Lo que pide un front-end | Cómo se cumple |
+| --- | --- |
+| Arranque directo, sin escritorio ni contraseña | Autologin en tty1 → `startx` → `.xinitrc` abre MAME |
+| **Selección de juego** | Menú de MAME con la lista de juegos disponibles, filtros (*Available*, *Working*…) y búsqueda, manejable con el arcade stick |
+| **Pantalla completa** | `window 0` en `mame.ini` |
+| Información del juego | Panel lateral con la captura del juego, el año, el fabricante y el estado |
+| Sin pantallas de aviso | `skip_gameinfo 1` |
+| Volver al menú sin teclado | Mantener START 2 segundos en el arcade stick envía `Esc` (ver [`../arcade-stick/`](../arcade-stick/README.md)) |
+
+![Menú de MAME a pantalla completa, con Gridlee seleccionado](capturas/rec_28_mame_e_instantanea_04.png)
+
 ## 5. Incidencias resueltas
 
 | Incidencia | Causa | Solución |
@@ -106,7 +121,40 @@ sudo reboot     # tiene que aparecer el menú de MAME directamente
 - SSH solo es accesible desde el propio anfitrión (reenvío NAT en 127.0.0.1), así que nadie de la red puede conectarse.
 - Solo queda abierta una consola de emergencia (tty2), que pide usuario y contraseña.
 
-**Mejora propuesta para un equipo real:** `recreativa` mantiene `sudo` porque se usó para instalar y configurar. En una máquina en un local, lo correcto sería administrarla con un usuario aparte (`adminrec`), quitar `sudo` a `recreativa` y desactivar el login de root por SSH. Está preparado en [`scripts/05-seguridad.sh`](scripts/05-seguridad.sh).
+**Aplicado el 27/10/2026** con [`scripts/05-seguridad.sh`](scripts/05-seguridad.sh) (instantánea `04 - mínimos privilegios`):
+
+| Medida | Antes | Después | Captura |
+| --- | --- | --- | --- |
+| Administración | `recreativa` (el usuario que entra solo) tenía `sudo` | Usuario aparte `adminrec`, con `sudo` y contraseña en KeePassXC | [rec_24](capturas/rec_24_seguridad_paso1_adminrec.png) |
+| Permisos sin contraseña de antiX | `/etc/sudoers.d/antixers` daba al grupo `users` 13 comandos como root sin contraseña, entre ellos el instalador (`minstall`), `fdisk` y la red (`ceni`) | Solo `halt`, `poweroff` y `reboot`. Comprobado con `visudo -c` | [rec_27](capturas/rec_27_sudo_solo_apagar_reiniciar.png) |
+| SSH | Entraba `recreativa` | `PermitRootLogin no` y `AllowUsers adminrec`: `recreativa` recibe *Permission denied* | [rec_25](capturas/rec_25_seguridad_paso2_ssh.png) · [rec_26](capturas/rec_26_ssh_recreativa_rechazado.png) |
+| Contraseña de root | La del instalador | Nueva, en KeePassXC | [rec_25](capturas/rec_25_seguridad_paso2_ssh.png) |
+| Arranque | — | Sigue entrando sola en MAME tras reiniciar | [rec_28](capturas/rec_28_mame_e_instantanea_04.png) |
+
+**Incidencia:** `Ctrl + Alt + F2` no cambia de consola dentro de VirtualBox, porque el anfitrión se queda la combinación. Se usa `Ctrl derecho + F2`, o se hace todo por SSH como se hizo aquí.
+
+## 7. Capturas del proceso
+
+| Paso | Captura |
+| --- | --- |
+| Menú de arranque de la ISO: `antiX-26.1 x64-core (sysvinit)` | [rec_01](capturas/rec_01_menu_iso.png) |
+| Sesión live, como root, para lanzar `cli-installer` | [rec_02](capturas/rec_02_sesion_live.png) |
+| Disco nuevo: reparticionar | [rec_03](capturas/rec_03_reparticionar.png) |
+| Incidencia: la pregunta sale en español, pero solo acepta `y`/`n` | [rec_04](capturas/rec_04_incidencia_respuesta_ingles.png) |
+| Tabla de particiones `dos` (MBR), porque la VM arranca en modo BIOS | [rec_05](capturas/rec_05_tabla_mbr.png) |
+| Una partición `sda1` de 10 GB, Linux (83), de arranque | [rec_06](capturas/rec_06_particion_sda1.png) |
+| ext4, sin `/home` aparte | [rec_07](capturas/rec_07_ext4_sin_home.png) |
+| GRUB en el MBR (opción 1); en la partición raíz no arranca | [rec_08](capturas/rec_08_grub_en_mbr.png) |
+| Solo el idioma `es_ES.UTF-8` | [rec_09](capturas/rec_09_idioma_es.png) |
+| Teclado español | [rec_10](capturas/rec_10_teclado_es.png) |
+| Fin de la instalación: equipo y usuario `recreativa` | [rec_11](capturas/rec_11_fin_instalacion.png) |
+| Incidencia: vuelve a salir la ISO porque seguía montada | [rec_12](capturas/rec_12_incidencia_iso_montada.png) |
+| Red NAT funcionando (`ping -c 3 debian.org`) | [rec_13](capturas/rec_13_red_ping.png) |
+| `sudo`, actualización y zona horaria `Europe/Madrid` | [rec_14](capturas/rec_14_sudo_zona_horaria.png) |
+| Incidencia: falla la instalación de SSH (`dpkg` y `_ssh`) | [rec_15](capturas/rec_15_incidencia_ssh_dpkg.png) |
+| Dependencias de OpenSSH y arranque con sysvinit (`cat /proc/1/comm`) | [rec_16](capturas/rec_16_ssh_dependencias_sysvinit.png) |
+
+El funcionamiento y el rendimiento los validó el profesor (ver [`medidas/resultados.md`](medidas/resultados.md#4-validación)); el juego con el arcade stick está en [`../arcade-stick/`](../arcade-stick/README.md#7-pruebas). Las capturas de mínimo privilegio son las `rec_24` a `rec_28` del apartado 6.
 
 ## Relacionado
 
@@ -120,5 +168,6 @@ Desde el portátil, en la raíz del repo y con la VM encendida:
 scp -P 2222 recreativa@127.0.0.1:.mame/mame.ini recreativa/config/mame.ini
 scp -P 2222 recreativa@127.0.0.1:/etc/inittab recreativa/config/inittab
 scp -P 2222 'recreativa@127.0.0.1:medidas-*.txt' recreativa/medidas/
+# Desde la instantánea 04, recreativa ya no entra por SSH: usa adminrec@127.0.0.1:/home/recreativa/...
 git add recreativa && git commit -m "feat(recreativa): ficheros reales de la VM" && git push
 ```

@@ -3,7 +3,7 @@
 # 05-copias.sh · Plan de copias de seguridad con restic + cron
 # Usa el disco C (por defecto sdd), APARTE del RAID: si el RAID se
 # estropea o alguien borra datos, la copia sigue a salvo.
-# Programa la copia diaria (02:30) con cron y hace la primera.
+# Programa la copia diaria (02:30, y al arrancar por si estaba apagado) con cron y hace la primera.
 # Uso:  sudo bash 05-copias.sh          (disco por defecto: sdd)
 #       sudo bash 05-copias.sh sdX
 # =====================================================================
@@ -47,7 +47,7 @@ if [ ! -s "$RESTIC_PASSWORD_FILE" ]; then
 fi
 [ -f "$RESTIC_REPOSITORY/config" ] || restic init
 
-echo "== 3. Scripts y copia diaria con cron (02:30)"
+echo "== 3. Scripts y copia diaria con cron (02:30 y al arrancar)"
 install -m 750 "$SCRIPTS/copia.sh"            /usr/local/sbin/almichain-copia
 install -m 750 "$SCRIPTS/restaurar_prueba.sh" /usr/local/sbin/almichain-restaurar-prueba
 cat > /etc/cron.d/almichain-copia <<EOF
@@ -55,6 +55,8 @@ cat > /etc/cron.d/almichain-copia <<EOF
 SHELL=/bin/bash
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 30 2 * * * root /usr/local/sbin/almichain-copia >> $LOG 2>&1
+# Si el servidor estaba apagado a las 02:30, copia 5 min después de arrancar (da tiempo a Docker y PostgreSQL)
+@reboot root sleep 300 && /usr/local/sbin/almichain-copia >> $LOG 2>&1
 EOF
 chmod 644 /etc/cron.d/almichain-copia
 cat > /etc/logrotate.d/almichain <<EOF
