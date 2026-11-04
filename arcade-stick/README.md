@@ -11,6 +11,7 @@ Mando arcade con un joystick y 4 botones, controlado por un **Arduino Leonardo**
 | [`img/mando_terminado.jpg`](img/mando_terminado.jpg) | Foto del mando terminado |
 | [`img/mando_fisico.jpg`](img/mando_fisico.jpg) | Foto del montaje por dentro (prototipo en caja de cartón) |
 | `capturas/` | Evidencias de las pruebas (fotos y vídeos) |
+| [`mejora-leds-altavoz/`](mejora-leds-altavoz/README.md) | Mejora: LED RGB, LED verde y rojo, altavoz y botón START lateral |
 
 ## 1. Material
 
@@ -83,17 +84,7 @@ Mando arcade con un joystick y 4 botones, controlado por un **Arduino Leonardo**
 | 5 | Otro programa: el juego del dinosaurio de Chrome (`chrome://dino`) | Responde igual, sin configurar drivers | ✅ 26/10: joystick arriba salta y abajo se agacha | [vídeo](capturas/stick_04_chrome_dino.mp4) |
 | 6 | Remapear un botón en MAME (*Tab → Input*) | El botón hace la nueva acción | Opcional | — |
 
-## 8. Problemas encontrados y soluciones
-
-| Problema | Causa | Solución |
-| --- | --- | --- |
-| `Keyboard` subrayado en rojo al compilar | Placa no seleccionada como Leonardo o biblioteca sin instalar | *Herramientas → Placa → Arduino Leonardo* e instalar `Keyboard` desde el gestor de bibliotecas |
-| Error `butterfly_recv(...) failed` al subir | El Leonardo no entra a tiempo en el cargador; en Ubuntu, ModemManager ocupa el puerto `ttyACM` | Pulsar RESET dos veces al ver «Uploading…», revisar el puerto y `sudo systemctl stop ModemManager` |
-| Del joystick solo funcionaba «derecha» | El hilo GND del joystick estaba en el pin 2 y una dirección en la columna (−) | Intercambiar esos dos cables |
-| Arriba e izquierda cambiadas | Los microinterruptores del joystick están girados respecto a la palanca | Intercambiar 3 y 5 en `pines[]`, sin tocar cables |
-| En Gridlee ningún botón disparaba | MAME dispara con Ctrl izquierdo y los botones envían `Z`, `X`, `C`, `V` | Asignar el disparo en *Tab → Input (este juego)* o cambiar la tecla en `teclas[]` (`KEY_LEFT_CTRL`) |
-
-## 9. Preguntas que pueden hacer en la defensa
+## 8. Preguntas que pueden hacer en la defensa
 
 - **¿Por qué no un Arduino Uno?** Porque no tiene USB nativo y no puede hacerse pasar por teclado sin cambiar su firmware.
 - **¿Por qué no hay resistencias?** Porque se usan las internas del chip con `INPUT_PULLUP`.
