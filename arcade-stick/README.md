@@ -11,6 +11,7 @@ Mando arcade con un joystick y 4 botones, controlado por un **Arduino Leonardo**
 | [`img/mando_terminado.jpg`](img/mando_terminado.jpg) | Foto del mando terminado |
 | [`img/mando_fisico.jpg`](img/mando_fisico.jpg) | Foto del montaje por dentro (prototipo en caja de cartón) |
 | `capturas/` | Evidencias de las pruebas (fotos y vídeos) |
+| [`mejora-leds-altavoz/`](mejora-leds-altavoz/README.md) | Mejora: LED RGB, LED verde y rojo, altavoz y botón START lateral |
 
 ## 1. Material
 
