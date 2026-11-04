@@ -103,8 +103,8 @@ La justificación completa está en el [documento de digitalización](../docs/di
 | 4 | Jugar a Gridlee en la VM recreativa (instantánea `03 - optimizada`) | El juego responde al joystick y a los botones | ✅ Validado por el profesor en clase | ![Gridlee con el arcade stick](capturas/stick_03_mame_gridlee.jpg) |
 | 5 | Otro programa: el juego del dinosaurio de Chrome (`chrome://dino`) | Responde igual, sin configurar drivers | ✅ 26/10: joystick arriba salta y abajo se agacha | [vídeo](capturas/stick_04_chrome_dino.mp4) |
 | 6 | Remapear un botón en MAME (*Tab → Input*) | El botón hace la nueva acción | Opcional | — |
-| 7 | **Cada control por separado** (vídeo): las 4 direcciones, una diagonal y B1 a B4 | Cada uno marca su tecla | ⏳ | `capturas/stick_07_cada_control.mp4` |
-| 8 | **Otro emulador: RetroArch**, sin configurar drivers | El joystick y los botones responden en un juego | ⏳ | `capturas/stick_08_retroarch.png` |
+| 7 | **Cada control por separado** (vídeo): las 4 direcciones y B1 a B4 en un probador de teclado | Cada uno marca su tecla | ✅ 04/11: cada control se ilumina en el probador | [vídeo](capturas/stick_07_cada_control.mp4) |
+| 8 | **Otro emulador: RetroArch** (versión web), sin configurar drivers | El joystick y los botones responden en un juego | ✅ 04/11: se juega a un juego tipo *shooter* en primera persona moviéndose y disparando con el stick | [vídeo](capturas/stick_08_retroarch.mp4) |
 
 ## 8. Problemas encontrados y soluciones
 
