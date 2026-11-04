@@ -13,24 +13,44 @@ Mando arcade con un joystick y 4 botones, controlado por un **Arduino Leonardo**
 | `capturas/` | Evidencias de las pruebas (fotos y vídeos) |
 | [`mejora-leds-altavoz/`](mejora-leds-altavoz/README.md) | Mejora: LED RGB, LED verde y rojo, altavoz y botón START lateral |
 
-## 1. Material
+## 1. Material y presupuesto
 
-| Pieza | Cantidad | Para qué |
-| --- | --- | --- |
-| Arduino Leonardo (Keyestudio) | 1 | Lee los botones y hace de teclado USB |
-| Joystick arcade tipo Sanwa, con cable plano de 5 hilos | 1 | 4 direcciones + GND |
-| Pulsadores arcade (2 rojos y 2 azules) | 4 | Botones B1 a B4 |
-| Protoboard | 1 | Solo como punto común de GND |
-| Cables dupont macho | ≈ 15 | Conexiones |
-| Cable micro-USB | 1 | Conexión y alimentación desde el PC |
+| Pieza | Cantidad | Para qué | Precio (presupuesto) |
+| --- | --- | --- | --- |
+| Arduino Leonardo (ATmega32U4) | 1 | Lee los botones y hace de teclado USB | 25,40 € |
+| Kit arcade de 1 jugador: joystick de 4 direcciones (5 hilos), pulsadores y cableado | 1 | Joystick y botones B1 a B4 | 33,05 € |
+| Protoboard | 1 | Solo como punto común de GND | Material del aula |
+| Cables dupont macho | ≈ 15 | Conexiones | Material del aula |
+| Cable micro-USB | 1 | Conexión y alimentación desde el PC | Material del aula |
+| **Total** | | | **58,45 €** |
+
+Los precios son los del [presupuesto](../docs/presupuesto/fichas_hw_sw.md#7-máquina-recreativa-y-arcade-stick). En el aula se montó con un Leonardo de Keyestudio (compatible) y el material disponible.
 
 ## 2. Por qué un Leonardo y por qué como teclado
 
+### 2.1 Frente a las alternativas comerciales
+
+El arcade stick es un pequeño **sistema embebido**: un microcontrolador que lee los pulsadores y se comunica con el PC por USB.
+
+| Opción | Ventajas | Inconvenientes | ¿Cumple el enunciado? |
+| --- | --- | --- | --- |
+| Mando USB comercial | Se enchufa y funciona | No tiene joystick arcade y no se puede reprogramar | No: el input no es personalizable |
+| *Encoder* USB del kit (*zero delay*) | Viene en el kit y no hay que programarlo | La asignación de botones la fija el fabricante; no se puede cambiar | Solo en parte |
+| Raspberry Pi | Muy potente | Es un ordenador entero: más caro, tarda en arrancar y es demasiado para leer 8 entradas | Sí, pero sobredimensionado |
+| **Arduino Leonardo** (elegido) | USB nativo (HID), sin drivers. Barato (≈ 25 €). Las teclas están en una tabla del código | Hay que cablearlo y programarlo | **Sí**: personalizable, documentado y versionado |
+| Arduino Uno | Muy común en clase | Sin USB nativo: no puede hacer de teclado sin cambiar el firmware | No sin modificarlo |
+
+La justificación completa está en el [documento de digitalización](../docs/digitalizacion/digitalizacion.md) (tecnologías habilitadoras: IoT y sistemas embebidos).
+
+### 2.2 Por qué como teclado
+
 - **Leonardo (chip ATmega32U4):** tiene USB nativo, así que puede presentarse al ordenador como un dispositivo de entrada (HID). Un Arduino Uno no puede hacerlo sin cambiar su firmware.
 - **Como teclado, y no como mando:** la biblioteca `Keyboard.h` viene incluida en el IDE de Arduino, sin instalar nada. Todos los sistemas y todos los emuladores aceptan un teclado sin drivers. Para un mando arcade, que solo tiene entradas digitales (pulsado o no), un teclado no pierde nada respecto a un mando USB.
-- **Input personalizable** de dos formas:
-  1. En el código: cambiando la tabla `teclas[]`.
-  2. En el emulador: cada uno asigna las teclas a lo que quiera, por ejemplo en MAME con *Tab → Input*.
+
+### 2.3 Input personalizable
+
+1. **Sin reprogramar:** en el emulador, cada uno asigna las teclas a lo que quiera, por ejemplo en MAME con *Tab → Input (este juego)* o en RetroArch con *Ajustes → Entrada*.
+2. **En el código:** todas las teclas están en una sola tabla, `teclas[]`, y los pines en `pines[]`. Cambiar un control es cambiar un valor de la tabla, sin tocar la lógica.
 
 ## 3. Conexiones
 
@@ -83,8 +103,20 @@ Mando arcade con un joystick y 4 botones, controlado por un **Arduino Leonardo**
 | 4 | Jugar a Gridlee en la VM recreativa (instantánea `03 - optimizada`) | El juego responde al joystick y a los botones | ✅ Validado por el profesor en clase | ![Gridlee con el arcade stick](capturas/stick_03_mame_gridlee.jpg) |
 | 5 | Otro programa: el juego del dinosaurio de Chrome (`chrome://dino`) | Responde igual, sin configurar drivers | ✅ 26/10: joystick arriba salta y abajo se agacha | [vídeo](capturas/stick_04_chrome_dino.mp4) |
 | 6 | Remapear un botón en MAME (*Tab → Input*) | El botón hace la nueva acción | Opcional | — |
+| 7 | **Cada control por separado** (vídeo): las 4 direcciones y B1 a B4 en un probador de teclado | Cada uno marca su tecla | ✅ 04/11: cada control se ilumina en el probador | [vídeo](capturas/stick_07_cada_control.mp4) |
+| 8 | **Otro emulador: RetroArch** (versión web), sin configurar drivers | El joystick y los botones responden en un juego | ✅ 04/11: se juega a un juego tipo *shooter* en primera persona moviéndose y disparando con el stick | [vídeo](capturas/stick_08_retroarch.mp4) |
 
-## 8. Preguntas que pueden hacer en la defensa
+## 8. Problemas encontrados y soluciones
+
+| Problema | Causa | Solución |
+| --- | --- | --- |
+| `Keyboard` subrayado en rojo al compilar | Placa no seleccionada como Leonardo o biblioteca sin instalar | *Herramientas → Placa → Arduino Leonardo* e instalar `Keyboard` desde el gestor de bibliotecas |
+| Error `butterfly_recv(...) failed` al subir | El Leonardo no entra a tiempo en el cargador; en Ubuntu, ModemManager ocupa el puerto `ttyACM` | Pulsar RESET dos veces al ver «Uploading…», revisar el puerto y `sudo systemctl stop ModemManager` |
+| Del joystick solo funcionaba «derecha» | El hilo GND del joystick estaba en el pin 2 y una dirección en la columna (−) | Intercambiar esos dos cables |
+| Arriba e izquierda cambiadas | Los microinterruptores del joystick están girados respecto a la palanca | Intercambiar 3 y 5 en `pines[]`, sin tocar cables |
+| En Gridlee ningún botón disparaba | MAME dispara con Ctrl izquierdo y los botones envían `Z`, `X`, `C`, `V` | Asignar el disparo en *Tab → Input (este juego)* o cambiar la tecla en `teclas[]` (`KEY_LEFT_CTRL`) |
+
+## 9. Preguntas que pueden hacer en la defensa
 
 - **¿Por qué no un Arduino Uno?** Porque no tiene USB nativo y no puede hacerse pasar por teclado sin cambiar su firmware.
 - **¿Por qué no hay resistencias?** Porque se usan las internas del chip con `INPUT_PULLUP`.
