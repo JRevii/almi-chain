@@ -5,6 +5,9 @@
 --   psql -h localhost -U almichain_owner -d almichain -f 00_reset.sql
 
 DROP TABLE IF EXISTS
+    pedidos_suministro,
+    historial_precios,
+    telefonos_local,
     reservas,
     inventarios,
     suministras,

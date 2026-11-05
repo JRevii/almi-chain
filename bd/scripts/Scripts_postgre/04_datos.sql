@@ -15,6 +15,7 @@
 BEGIN;
 
 TRUNCATE TABLE
+    pedidos_suministro, historial_precios, telefonos_local,
     reservas, inventarios, suministras, recetas, lineas_ventas, ventas,
     empleados, mesas, platos, clientes, proveedores, productos, locales, categorias
 RESTART IDENTITY;
@@ -29,9 +30,14 @@ INSERT INTO categorias (nombre) VALUES
     ('Postres'),        -- id 3
     ('Bebidas');        -- id 4
 
-INSERT INTO locales (nombre, telefono, direccion) VALUES
-    ('Almi Centro',      '944000001', 'Calle Ejemplo 12, Bilbao'),        -- id 1
-    ('Almi Casco Viejo', '944000002', 'Plaza de Muestra 3, Bilbao');      -- id 2
+INSERT INTO locales (nombre, calle, numero, codigo_postal, ciudad) VALUES
+    ('Almi Centro',      'Calle Ejemplo',    '12', '48001', 'Bilbao'),   -- id 1
+    ('Almi Casco Viejo', 'Plaza de Muestra', '3',  '48005', 'Bilbao');   -- id 2
+
+INSERT INTO telefonos_local (local_id, telefono) VALUES
+    (1, '944000001'),
+    (1, '944000011'),   -- segundo teléfono del mismo local (atributo multivaluado)
+    (2, '944000002');
 
 INSERT INTO productos (odoo_id, nombre, unidad) VALUES
     (22, 'Tomate',          'kg'),       -- id 1
@@ -69,6 +75,22 @@ INSERT INTO platos (odoo_id, nombre, precio, categoria_id) VALUES
     (19, 'Flan casero',         4.50, 3),   -- id 6
     (20, 'Caña de cerveza',     2.50, 4),   -- id 7
     (21, 'Café con leche',      1.80, 4);   -- id 8
+
+-- Historial de precios: fecha_hasta vacía = precio vigente (el mismo que platos.precio)
+INSERT INTO historial_precios (plato_id, precio, fecha_desde, fecha_hasta) VALUES
+    (1,  6.00, '2026-01-01', '2026-09-30'),   -- Ensalada de tomate
+    (1,  6.50, '2026-10-01', NULL),
+    (2,  7.50, '2026-01-01', '2026-09-30'),   -- Tortilla de patata
+    (2,  8.00, '2026-10-01', NULL),
+    (3, 17.50, '2026-01-01', '2026-09-30'),   -- Bacalao al pil-pil
+    (3, 18.50, '2026-10-01', NULL),
+    (4, 13.50, '2026-01-01', '2026-09-30'),   -- Arroz meloso
+    (4, 14.00, '2026-10-01', NULL),
+    (5,  4.80, '2026-01-01', '2026-09-30'),   -- Arroz con leche
+    (5,  5.00, '2026-10-01', NULL),
+    (6,  4.50, '2026-01-01', NULL),           -- Flan casero (sin cambios)
+    (7,  2.50, '2026-01-01', NULL),           -- Caña de cerveza (sin cambios)
+    (8,  1.80, '2026-01-01', NULL);           -- Café con leche (sin cambios)
     
 -- numero 0 = barra de cada local
 INSERT INTO mesas (numero, capacidad, local_id) VALUES
@@ -171,6 +193,15 @@ INSERT INTO suministras (producto_id, proveedor_id) VALUES
     (5, 3), (7, 3), (8, 3),     -- arroz, leche, azucar: Despensa Bilbao
     (6, 3), (6, 4),             -- aceite: Despensa Bilbao y Bodega y Cafes Norte
     (9, 4), (10, 4);            -- cerveza, cafe: Bodega y Cafes Norte
+
+-- Relación ternaria proveedor - producto - local: pedidos de reposición
+INSERT INTO pedidos_suministro (proveedor_id, producto_id, local_id, fecha, cantidad, precio_unitario) VALUES
+    (3, 6, 2, '2026-10-20', 10.00,  6.50),   -- aceite: Despensa Bilbao -> Casco Viejo
+    (4, 6, 1, '2026-10-22',  8.00,  6.80),   -- aceite: Bodega y Cafés Norte -> Centro
+    (4, 9, 2, '2026-10-20', 40.00,  1.20),   -- cerveza: Bodega y Cafés Norte -> Casco Viejo
+    (1, 1, 2, '2026-10-18', 15.00,  2.10),   -- tomate: Huerta del Norte -> Casco Viejo
+    (2, 4, 1, '2026-10-25', 10.00, 14.50),   -- bacalao: Pescados Cantábrico -> Centro
+    (4, 10, 1, '2026-10-25', 5.00,  9.80);   -- café: Bodega y Cafés Norte -> Centro
 
 -- INVENTARIO (local, producto, cantidad actual, stock minimo)
 -- Algunos productos estan por debajo del minimo a proposito,

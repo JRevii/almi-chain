@@ -7,10 +7,12 @@
    ); 
 
    CREATE TABLE locales (
-    id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY, 
-    nombre varchar (60) NOT NULL,
-    telefono varchar (20),
-    direccion varchar (150) NOT NULL
+    id            integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    nombre        varchar(60)  NOT NULL,
+    calle         varchar(100) NOT NULL,
+    numero        varchar(10)  NOT NULL,
+    codigo_postal char(5)      NOT NULL CHECK (codigo_postal ~ '^[0-9]{5}$'),
+    ciudad        varchar(60)  NOT NULL
    );
 
 -- Espejo de Odoo 
@@ -117,6 +119,35 @@
     num_personas integer NOT NULL CHECK (num_personas > 0), 
     PRIMARY KEY (mesa_id, cliente_id, fecha, hora),
     UNIQUE (mesa_id, fecha, hora)
+   );
+
+   -- Atributo multivaluado: un local puede tener varios teléfonos
+   CREATE TABLE telefonos_local (
+    local_id integer     NOT NULL REFERENCES locales(id),
+    telefono varchar(20) NOT NULL,
+    PRIMARY KEY (local_id, telefono)
+   );
+
+-- Historial de precios de los platos (fecha_hasta vacía = precio vigente)
+   CREATE TABLE historial_precios (
+    plato_id    integer      NOT NULL REFERENCES platos(id),
+    precio      numeric(8,2) NOT NULL CHECK (precio >= 0),
+    fecha_desde date         NOT NULL,
+    fecha_hasta date,
+    PRIMARY KEY (plato_id, fecha_desde),
+    CHECK (fecha_hasta IS NULL OR fecha_hasta > fecha_desde)
+   );
+
+-- Relación ternaria proveedor - producto - local
+   CREATE TABLE pedidos_suministro (
+    proveedor_id    integer       NOT NULL,
+    producto_id     integer       NOT NULL,
+    local_id        integer       NOT NULL REFERENCES locales(id),
+    fecha           date          NOT NULL,
+    cantidad        numeric(10,2) NOT NULL CHECK (cantidad > 0),
+    precio_unitario numeric(8,2)  NOT NULL CHECK (precio_unitario >= 0),
+    PRIMARY KEY (proveedor_id, producto_id, local_id, fecha),
+    FOREIGN KEY (producto_id, proveedor_id) REFERENCES suministras(producto_id, proveedor_id)
    );
 
 
