@@ -12,9 +12,9 @@ Los scripts `.sql` están en `scripts/Scripts_postgre/`.
 
 | Fichero | Qué es | Quién lo ejecuta |
 |---|---|---|
-| `00_reset.sql` | Borra las 14 tablas **y sus datos**. Solo para desarrollo y pruebas | `almichain_owner` |
+| `00_reset.sql` | Borra las 17 tablas **y sus datos**. Solo para desarrollo y pruebas | `almichain_owner` |
 | `01_roles_y_bd.sql` | Crea el rol dueño y la base de datos | Administrador (`postgres`) |
-| `02_tablas.sql` | Crea las 14 tablas con claves primarias, claves externas y restricciones (DDL) | `almichain_owner` |
+| `02_tablas.sql` | Crea las 17 tablas con claves primarias, claves externas y restricciones (DDL) | `almichain_owner` |
 | `03_permisos.sql` | Crea el rol de uso diario y le da solo permisos de datos | Administrador (`postgres`) |
 | `04_datos.sql` | Datos de ejemplo (ficticios). **Vacía las tablas al empezar** | `almichain_owner` |
 | `05_consultas.sql` | Las 9 consultas útiles para el restaurante | `almichain_app` |
@@ -62,11 +62,12 @@ Para repetir todo desde cero: `00_reset.sql`, `02_tablas.sql`, `03_permisos.sql`
 
 ## Modelo de datos
 
-14 tablas:
+17 tablas:
 
-- **Propias:** `locales`, `mesas`, `categorias`, `proveedores`.
+- **Propias:** `locales`, `telefonos_local`, `mesas`, `categorias`, `proveedores`, `historial_precios`.
 - **Espejo de Odoo** (llevan `odoo_id`): `platos`, `productos`, `clientes`, `empleados`, `ventas`, `lineas_ventas`.
 - **Relaciones N:M** (PK compuesta): `recetas`, `suministras`, `inventarios`, `reservas`.
+- **Relación ternaria** (proveedor, producto y local): `pedidos_suministro`.
 
 Decisiones de diseño que cumplen la 3FN:
 
@@ -75,6 +76,11 @@ Decisiones de diseño que cumplen la 3FN:
 - `UNIQUE (local_id, numero)` en `mesas`: el número no se repite dentro del mismo local. La barra de cada local es la mesa 0.
 - `UNIQUE (mesa_id, fecha, hora)` en `reservas`: una mesa no se puede reservar dos veces a la misma hora.
 - `stock_minimo` está en `inventarios` (varía por local) y no en `productos`.
+- **Relación ternaria `pedidos_suministro`:** qué proveedor sirve qué producto a qué local y cuándo. Su PK es (`proveedor_id`, `producto_id`, `local_id`, `fecha`) y la clave externa (`producto_id`, `proveedor_id`) apunta a `suministras`, así que solo se puede pedir a un proveedor un producto que suministre.
+- **Historial de precios `historial_precios`:** guarda cada precio de un plato con su periodo (`fecha_desde` y `fecha_hasta`, vacía si es el vigente). `platos.precio` es el precio actual.
+- **Atributo multivaluado:** un local puede tener varios teléfonos, por eso están en la tabla `telefonos_local` y no en `locales`.
+- **Atributo compuesto:** la dirección del local se guarda partida en `calle`, `numero`, `codigo_postal` y `ciudad`.
+- **Atributo derivado:** el total de una venta no se guarda; se calcula con las líneas.
 
 Diagramas:
 
