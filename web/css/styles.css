@@ -303,3 +303,14 @@ input:focus-visible, select:focus-visible { border-color: var(--hv); }
 
   .map { min-height: 320px; }
 }
+
+/* 9. TABLET (601–900 px): un paso intermedio entre móvil y escritorio.
+   Se mantiene el menú ☰ de móvil, pero se aprovecha el ancho extra:
+   la carta vuelve a 3 columnas, los locales van en 2 y las fotos no ocupan toda la pantalla. */
+@media (min-width: 601px) and (max-width: 900px) {
+  .hero__cta .btn { flex: 0 1 auto; }
+  .two-col img { max-width: 480px; margin: 0 auto; }
+  .menu { grid-template-columns: repeat(3, 1fr); }
+  .gallery { grid-template-columns: repeat(3, 44%); }
+  .locales { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px; }
+}
