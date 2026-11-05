@@ -22,7 +22,7 @@ El enunciado pide una web **unidireccional** (solo informa), **atractiva y respo
 |---|---|
 | HTML, CSS y JS "a mano", sin frameworks | Es una web pequeña. Así carga rápido y el equipo puede explicar cada línea, que es lo que se evalúa |
 | Una sola página con anclas (`#carta`, `#reservas`…) | Toda la información cabe en una página y la navegación es inmediata |
-| Diseño *mobile first* y CSS Grid | Primero el móvil (la mayoría de los clientes buscan desde el móvil); con una *media query* a 900 px se pasa a varias columnas |
+| Diseño *mobile first* y CSS Grid | Primero el móvil (la mayoría de los clientes buscan desde el móvil). Dos *media queries*: por debajo de 900 px una columna y menú ☰, y entre 601 y 900 px (tablet) se recuperan varias columnas donde caben |
 | Paleta negro + latón | Transmite calidad; el latón sobre negro tiene 8,5:1 de contraste (WCAG AA pide 4,5:1) |
 | Fuentes Cormorant Garamond + Jost **servidas desde nuestro servidor** | Si se cargaran desde Google, el navegador del cliente enviaría su IP a Google (RGPD). Así además carga más rápido |
 | Leaflet + OpenStreetMap para el mapa | Gratis, sin clave de API y de código abierto. Google Maps pide una clave de API y tarjeta de crédito |
@@ -39,7 +39,7 @@ El enunciado pide una web **unidireccional** (solo informa), **atractiva y respo
 5. **Escribir `css/styles.css`**: primero las variables de color (`:root`), después la base y luego cada sección. Al final, la *media query* para móvil y la de `prefers-reduced-motion`.
 6. **Escribir `js/main.js`**: menú móvil, slideshow, opiniones, formulario de muestra, mapa con geolocalización y animaciones.
 7. **Probar en local:** `cd web && python3 -m http.server 8000` y abrir `http://localhost:8000`. La geolocalización funciona en `localhost` porque el navegador lo trata como contexto seguro.
-   📸 *Captura:* `capturas/web_01_escritorio_completa.png` y `web_02_movil_completa.png`.
+   📸 *Captura:* `capturas/web_01_escritorio_completa.png`, `web_02_movil_completa.png` y `web_04_tablet_768_completa.png` (ventana a 768 px de ancho).
 8. **Validar el HTML.** Pasar `index.html` por el validador del W3C (https://validator.w3.org/nu/, opción "File upload").
    📸 *Captura:* resultado "Document checking completed. No errors or warnings to show."
 9. **Pasar Lighthouse** (Chrome → F12 → Lighthouse), en móvil y en escritorio.
@@ -59,6 +59,7 @@ El enunciado pide una web **unidireccional** (solo informa), **atractiva y respo
 | Prueba | Resultado esperado | Resultado obtenido | Evidencia |
 |---|---|---|---|
 | La web se ve bien a 1440 px y a 390 px | Sin desbordes ni texto cortado | ✅ | `capturas/web_01…`, `web_02…` |
+| La web se ve bien en tablet (768 px) | Sin desbordes ni texto cortado. Carta en 3 columnas y locales en 2 | ✅ 05/11. Sin el corte de tablet se veía como un móvil estirado (fotos enormes y carta en una columna), así que se añadió el `@media` de 601 a 900 px | `capturas/web_04_tablet_768_completa.png` |
 | Menú móvil: abrir, Tab, Esc | Se abre, el foco queda dentro y se cierra con Esc | ✅ | `capturas/web_03_menu_movil.png` |
 | Slideshow: clic, flechas ↑↓ y Pausar | Cambia el plato y la foto; se puede parar | ✅ | — (hacer vídeo corto) |
 | Formulario de muestra | No envía nada y muestra el aviso | ✅ | — |
@@ -85,7 +86,7 @@ El enunciado pide una web **unidireccional** (solo informa), **atractiva y respo
 - **Variables** (`--bg`, `--ac`…): toda la paleta en un sitio. Cambiar el color de la marca es cambiar una línea.
 - **`clamp()`** en los tamaños de letra: `clamp(2.75rem, 5.5vw, 5rem)` significa "como mínimo 2,75 rem, como máximo 5 rem, y entre medias el 5,5 % del ancho de la pantalla". El texto se adapta sin necesidad de *media queries*.
 - **El arco** es `border-radius: 999px 999px 0 0` (esquinas superiores totalmente redondas). **El marco interior** es `outline: 1px solid; outline-offset: -12px` (un borde dibujado 12 px hacia dentro). No hacen falta imágenes extra.
-- **Responsive:** por debajo de 900 px las rejillas pasan a una columna, el menú se convierte en botón y la galería se desliza en horizontal (`scroll-snap`).
+- **Responsive:** por debajo de 900 px las rejillas pasan a una columna, el menú se convierte en botón y la galería se desliza en horizontal (`scroll-snap`). Entre 601 y 900 px (tablet) hay un segundo `@media` que, sobre lo anterior, vuelve a poner la carta en 3 columnas y los locales en 2, centra las fotos con un ancho máximo de 480 px y deja los botones de la portada uno al lado del otro.
 - **`prefers-reduced-motion`:** si el sistema del usuario pide menos movimiento, se quitan las animaciones y el slideshow no avanza solo.
 - **Mapa oscuro** con `filter: invert(1) hue-rotate(180deg)` sobre las teselas: invierte los colores y recoloca los tonos para que el mapa sea oscuro sin contratar otro servicio.
 

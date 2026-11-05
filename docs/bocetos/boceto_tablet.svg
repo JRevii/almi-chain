@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="1660" viewBox="0 0 820 1660" font-family="DejaVu Sans, Arial" font-size="13">
+<rect width="820" height="1660" fill="#fff"/>
+<text x="410" y="24" text-anchor="middle" font-size="15" font-weight="bold">Boceto tablet · 768 px (entre 601 y 900 px) · Almi-Chain</text>
+<rect x="20" y="40" width="780" height="1600" rx="18" fill="none" stroke="#333" stroke-width="2"/>
+<g stroke="#555" fill="#f2f2f2">
+<!-- cabecera -->
+<rect x="44" y="60" width="732" height="56"/>
+<rect x="60" y="70" width="110" height="36" fill="#ddd"/>
+<rect x="712" y="70" width="48" height="36" fill="#fff"/>
+<!-- inicio -->
+<rect x="44" y="128" width="732" height="300"/>
+<path d="M290 360 V220 A120 80 0 0 1 530 220 V360 Z" fill="#ddd"/>
+<line x1="290" y1="220" x2="530" y2="360"/><line x1="530" y1="220" x2="290" y2="360"/>
+<rect x="60" y="370" width="300" height="22" fill="#fff"/>
+<rect x="60" y="398" width="120" height="24" rx="4" fill="#ccc"/>
+<rect x="192" y="398" width="90" height="24" fill="#fff"/>
+<!-- nosotros -->
+<rect x="44" y="440" width="732" height="200"/>
+<path d="M310 560 V490 A100 40 0 0 1 510 490 V560 Z" fill="#ddd"/>
+<line x1="310" y1="490" x2="510" y2="560"/><line x1="510" y1="490" x2="310" y2="560"/>
+<rect x="60" y="572" width="700" height="56" fill="#fff"/>
+<!-- platos estrella -->
+<rect x="44" y="652" width="732" height="300"/>
+<rect x="60" y="680" width="700" height="150" fill="#ddd"/>
+<line x1="60" y1="680" x2="760" y2="830"/><line x1="760" y1="680" x2="60" y2="830"/>
+<rect x="60" y="840" width="700" height="60" fill="#fff"/>
+<rect x="330" y="912" width="32" height="28" fill="#fff"/><rect x="370" y="912" width="80" height="28" fill="#fff"/><rect x="458" y="912" width="32" height="28" fill="#fff"/>
+<!-- carta -->
+<rect x="44" y="964" width="732" height="130"/>
+<rect x="60" y="990" width="224" height="92" fill="#fff"/>
+<rect x="298" y="990" width="224" height="92" fill="#fff"/>
+<rect x="536" y="990" width="224" height="92" fill="#fff"/>
+<!-- galería -->
+<rect x="44" y="1106" width="732" height="150"/>
+<rect x="60" y="1132" width="300" height="112" fill="#ddd"/>
+<rect x="376" y="1132" width="300" height="112" fill="#ddd"/>
+<rect x="692" y="1132" width="84" height="112" fill="#ddd"/>
+<!-- reservas -->
+<rect x="44" y="1268" width="732" height="120"/>
+<rect x="60" y="1296" width="342" height="28" fill="#fff"/><rect x="418" y="1296" width="342" height="28" fill="#fff"/>
+<rect x="60" y="1332" width="700" height="24" fill="#fff"/>
+<rect x="60" y="1362" width="700" height="18" rx="4" fill="#ccc"/>
+<!-- locales y mapa -->
+<rect x="44" y="1400" width="732" height="160"/>
+<rect x="60" y="1426" width="342" height="30" fill="#fff"/><rect x="418" y="1426" width="342" height="30" fill="#fff"/>
+<rect x="60" y="1462" width="342" height="30" fill="#fff"/><rect x="418" y="1462" width="342" height="30" fill="#fff"/>
+<rect x="60" y="1500" width="700" height="52" fill="#dfe9df"/>
+<!-- pie -->
+<rect x="44" y="1572" width="732" height="52" fill="#444"/>
+</g>
+<g fill="#000">
+<text x="115" y="93" text-anchor="middle">LOGO</text>
+<text x="736" y="93" text-anchor="middle" font-size="16">☰</text>
+<text x="450" y="93" text-anchor="middle" fill="#777" font-size="11">se mantiene el menú ☰ del móvil</text>
+<text x="60" y="150" font-weight="bold">Inicio</text>
+<text x="410" y="300" text-anchor="middle" fill="#555" font-size="11">foto en arco, centrada (máx. 480 px)</text>
+<text x="70" y="386">Eslogan / h1</text>
+<text x="120" y="415" text-anchor="middle" font-size="11">Reservar</text>
+<text x="237" y="415" text-anchor="middle" font-size="11">Ver carta →</text>
+<text x="420" y="415" fill="#777" font-size="11">botones uno al lado del otro, no a lo ancho</text>
+<text x="60" y="462" font-weight="bold">Nosotros</text>
+<text x="410" y="530" text-anchor="middle" fill="#555" font-size="11">foto limitada a 480 px</text>
+<text x="410" y="604" text-anchor="middle" fill="#777">texto a todo el ancho</text>
+<text x="410" y="672" text-anchor="middle" font-weight="bold">Platos estrella (slideshow)</text>
+<text x="410" y="874" text-anchor="middle" fill="#777">lista de 4 platos con su precio</text>
+<text x="346" y="931" text-anchor="middle">‹</text><text x="410" y="931" text-anchor="middle" font-size="11">Pausar</text><text x="474" y="931" text-anchor="middle">›</text>
+<text x="410" y="983" text-anchor="middle" font-weight="bold">Carta resumida · 3 columnas, como en escritorio</text>
+<text x="172" y="1040" text-anchor="middle">Entrantes</text><text x="410" y="1040" text-anchor="middle">Principales</text><text x="648" y="1040" text-anchor="middle">Postres</text>
+<text x="410" y="1125" text-anchor="middle" font-weight="bold">Galería · 2 fotos y media visibles, se desliza →</text>
+<text x="410" y="1287" text-anchor="middle" font-weight="bold">Reservas (muestra, no envía)</text>
+<text x="70" y="1315" fill="#777">Fecha</text><text x="428" y="1315" fill="#777">Hora</text>
+<text x="70" y="1349" fill="#777">Personas · Local</text>
+<text x="410" y="1375" text-anchor="middle" font-size="11">Solicitar reserva</text>
+<text x="410" y="1419" text-anchor="middle" font-weight="bold">Horario y locales · 2 columnas + mapa</text>
+<text x="70" y="1446">Bilbao Centro</text><text x="428" y="1446">Getxo</text>
+<text x="70" y="1482">Barakaldo</text><text x="428" y="1482">Durango</text>
+<text x="410" y="1530" text-anchor="middle">Mapa Leaflet · 📍 ¿Cuál me pilla más cerca?</text>
+<text x="160" y="1603" text-anchor="middle" fill="#fff">Logo</text>
+<text x="600" y="1603" text-anchor="middle" fill="#fff">© Almi-Chain · redes</text>
+</g>
+</svg>
