@@ -100,7 +100,7 @@ La profesora solo pide el esquema en Packet Tracer, y ya lo ha validado (prueba 
 | --- | --- | --- | --- |
 | 1 | `ipconfig` en el móvil, cerca del AP-Repetidor | IP `10.13.20.1xx` y puerta de enlace `10.13.20.1` | Opcional |
 | 2 | Desde el móvil, `ping 203.0.113.10` y abrir `http://203.0.113.10` en el navegador | Responde y carga la web: hay salida a internet | Opcional |
-| 3 | Desde el móvil, `ping 10.13.10.10` | **Falla**: la Wi-Fi de clientes está aislada | ✅ 05/11 · `Request timed out`: el móvil de clientes no llega al servidor · [captura](packet-tracer/capturas/pt_03_movil_no_llega_al_servidor.png) |
+| 3 | Desde el móvil, `ping 10.13.10.10` | **Falla**: la Wi-Fi de clientes está aislada | ✅ 05/11 · 4 enviados, 0 recibidos (`100% loss`): el móvil de clientes no llega al servidor · [captura](packet-tracer/capturas/pt_03_movil_no_llega_al_servidor.png) |
 | 4 | Desde el TPV 1, `ping 10.13.10.10` y `ping 203.0.113.10` | Responden los dos | Opcional |
 | 5 | Desde el PC anfitrión, `ssh -l admin 10.13.10.1` | Pide la contraseña y entra | Opcional |
 | 6 | Desde el portátil del cliente, `ssh -l admin 10.13.20.1` | **Rechazado** | Opcional |
