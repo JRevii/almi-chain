@@ -226,13 +226,13 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="a_proveedor_2" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f5f9ff;strokeColor=#6c8ebf;fontSize=11;" value="telefono" vertex="1">
-          <mxGeometry height="38" width="120" x="2130" y="341" as="geometry" />
+          <mxGeometry height="38" width="120" x="2400" y="190" as="geometry" />
         </mxCell>
         <mxCell id="a_proveedor_2_l" edge="1" parent="1" source="a_proveedor_2" style="endArrow=none;html=1;strokeWidth=1;" target="proveedor">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="a_proveedor_3" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f5f9ff;strokeColor=#6c8ebf;fontSize=11;" value="correo" vertex="1">
-          <mxGeometry height="38" width="120" x="2310" y="341" as="geometry" />
+          <mxGeometry height="38" width="120" x="2400" y="250" as="geometry" />
         </mxCell>
         <mxCell id="a_proveedor_3_l" edge="1" parent="1" source="a_proveedor_3" style="endArrow=none;html=1;strokeWidth=1;" target="proveedor">
           <mxGeometry relative="1" as="geometry" />
@@ -297,14 +297,14 @@
         <mxCell id="a_local_1_l" edge="1" parent="1" source="a_local_1" style="endArrow=none;html=1;strokeWidth=1;" target="local">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="a_local_2" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f5f9ff;strokeColor=#6c8ebf;fontSize=11;" value="telefono" vertex="1">
-          <mxGeometry height="38" width="120" x="1870" y="746" as="geometry" />
+        <mxCell id="a_local_2" parent="1" style="ellipse;shape=doubleEllipse;whiteSpace=wrap;html=1;fillColor=#f5f9ff;strokeColor=#6c8ebf;fontSize=11;" value="telefono (multivaluado)" vertex="1">
+          <mxGeometry height="44" width="150" x="1870" y="743" as="geometry" />
         </mxCell>
         <mxCell id="a_local_2_l" edge="1" parent="1" source="a_local_2" style="endArrow=none;html=1;strokeWidth=1;" target="local">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="a_local_3" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f5f9ff;strokeColor=#6c8ebf;fontSize=11;" value="direccion" vertex="1">
-          <mxGeometry height="38" width="120" x="1870" y="816" as="geometry" />
+        <mxCell id="a_local_3" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f5f9ff;strokeColor=#6c8ebf;fontSize=11;" value="direccion (compuesto)" vertex="1">
+          <mxGeometry height="44" width="150" x="1870" y="813" as="geometry" />
         </mxCell>
         <mxCell id="a_local_3_l" edge="1" parent="1" source="a_local_3" style="endArrow=none;html=1;strokeWidth=1;" target="local">
           <mxGeometry relative="1" as="geometry" />
@@ -441,7 +441,7 @@
         <mxCell id="a_r_reserva_2_l" edge="1" parent="1" source="a_r_reserva_2" style="endArrow=none;html=1;strokeWidth=1;" target="r_reserva">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="titulo" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=20;fontStyle=1;" value="Modelo E/R - Almi-Chain (fase 3: entidades, relaciones y atributos)" vertex="1">
+        <mxCell id="titulo" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=20;fontStyle=1;" value="Modelo E/R - Almi-Chain (fase 4: ternaria, historial de precios y atributos especiales)" vertex="1">
           <mxGeometry height="40" width="900" x="60" y="20" as="geometry" />
         </mxCell>
         <mxCell id="lg0" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;align=left;spacingLeft=8;fontSize=12;" value="Entidad propia (solo en mi BD)" vertex="1">
@@ -459,7 +459,42 @@
         <mxCell id="lg_nota" parent="1" style="text;html=1;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=12;" value="Atributo subrayado = clave primaria (PK). Atributo en cursiva = odoo_id (UNIQUE NOT NULL). Las claves externas (FK) no se dibujan: salen de las relaciones al pasar a modelo relacional." vertex="1">
           <mxGeometry height="40" width="1300" x="60" y="1670" as="geometry" />
         </mxCell>
-      </root>
+      <mxCell id="r_pedido" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=9;fontStyle=1;" value="PEDIDO_SUMINISTRO" vertex="1"><mxGeometry height="100" width="170" x="1905" y="430" as="geometry" /></mxCell>
+<mxCell id="lk_p1" edge="1" parent="1" source="proveedor" style="endArrow=none;html=1;strokeWidth=2;fontSize=15;fontStyle=1;labelBackgroundColor=none;" target="r_pedido" value="N"><mxGeometry relative="1" x="-0.55" as="geometry"><mxPoint y="-14" as="offset" /></mxGeometry></mxCell>
+<mxCell id="lk_p2" edge="1" parent="1" source="producto" style="endArrow=none;html=1;strokeWidth=2;fontSize=15;fontStyle=1;labelBackgroundColor=none;" target="r_pedido" value="M"><mxGeometry relative="1" x="-0.55" as="geometry"><mxPoint y="-14" as="offset" /></mxGeometry></mxCell>
+<mxCell id="lk_p3" edge="1" parent="1" source="local" style="endArrow=none;html=1;strokeWidth=2;fontSize=15;fontStyle=1;labelBackgroundColor=none;" target="r_pedido" value="P"><mxGeometry relative="1" x="-0.55" as="geometry"><mxPoint y="-14" as="offset" /></mxGeometry></mxCell>
+<mxCell id="a_r_pedido_0" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8f3fa;strokeColor=#9673a6;fontSize=11;fontStyle=4;" value="fecha" vertex="1"><mxGeometry height="38" width="120" x="2090" y="545" as="geometry" /></mxCell>
+<mxCell id="a_r_pedido_0_l" edge="1" parent="1" source="a_r_pedido_0" style="endArrow=none;html=1;strokeWidth=1;" target="r_pedido"><mxGeometry relative="1" as="geometry" /></mxCell>
+<mxCell id="a_r_pedido_1" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8f3fa;strokeColor=#9673a6;fontSize=11;" value="cantidad" vertex="1"><mxGeometry height="38" width="120" x="2090" y="490" as="geometry" /></mxCell>
+<mxCell id="a_r_pedido_1_l" edge="1" parent="1" source="a_r_pedido_1" style="endArrow=none;html=1;strokeWidth=1;" target="r_pedido"><mxGeometry relative="1" as="geometry" /></mxCell>
+<mxCell id="a_r_pedido_2" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8f3fa;strokeColor=#9673a6;fontSize=11;" value="precio_unitario" vertex="1"><mxGeometry height="38" width="140" x="2080" y="435" as="geometry" /></mxCell>
+<mxCell id="a_r_pedido_2_l" edge="1" parent="1" source="a_r_pedido_2" style="endArrow=none;html=1;strokeWidth=1;" target="r_pedido"><mxGeometry relative="1" as="geometry" /></mxCell>
+<mxCell id="historial" parent="1" style="shape=ext;double=1;rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=13;" value="HISTORIAL_PRECIO" vertex="1"><mxGeometry height="60" width="170" x="700" y="880" as="geometry" /></mxCell>
+<mxCell id="r_historial" parent="1" style="shape=rhombus;double=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" value="tiene historial" vertex="1"><mxGeometry height="80" width="120" x="575" y="790" as="geometry" /></mxCell>
+<mxCell id="lk_h1" edge="1" parent="1" source="plato" style="endArrow=none;html=1;strokeWidth=2;fontSize=15;fontStyle=1;labelBackgroundColor=none;" target="r_historial" value="1"><mxGeometry relative="1" x="-0.55" as="geometry"><mxPoint y="-14" as="offset" /></mxGeometry></mxCell>
+<mxCell id="lk_h2" edge="1" parent="1" source="historial" style="endArrow=none;html=1;strokeWidth=2;fontSize=15;fontStyle=1;labelBackgroundColor=none;" target="r_historial" value="N"><mxGeometry relative="1" x="-0.55" as="geometry"><mxPoint y="-14" as="offset" /></mxGeometry></mxCell>
+<mxCell id="a_historial_0" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f5f9ff;strokeColor=#6c8ebf;fontSize=11;fontStyle=4;" value="fecha_desde" vertex="1"><mxGeometry height="38" width="120" x="610" y="1010" as="geometry" /></mxCell>
+<mxCell id="a_historial_0_l" edge="1" parent="1" source="a_historial_0" style="endArrow=none;html=1;strokeWidth=1;" target="historial"><mxGeometry relative="1" as="geometry" /></mxCell>
+<mxCell id="a_historial_1" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f5f9ff;strokeColor=#6c8ebf;fontSize=11;" value="precio" vertex="1"><mxGeometry height="38" width="120" x="765" y="1010" as="geometry" /></mxCell>
+<mxCell id="a_historial_1_l" edge="1" parent="1" source="a_historial_1" style="endArrow=none;html=1;strokeWidth=1;" target="historial"><mxGeometry relative="1" as="geometry" /></mxCell>
+<mxCell id="a_historial_2" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f5f9ff;strokeColor=#6c8ebf;fontSize=11;" value="fecha_hasta" vertex="1"><mxGeometry height="38" width="120" x="900" y="1010" as="geometry" /></mxCell>
+<mxCell id="a_historial_2_l" edge="1" parent="1" source="a_historial_2" style="endArrow=none;html=1;strokeWidth=1;" target="historial"><mxGeometry relative="1" as="geometry" /></mxCell>
+<mxCell id="a_local_dir_0" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f5f9ff;strokeColor=#6c8ebf;fontSize=11;" value="calle" vertex="1"><mxGeometry height="36" width="110" x="2060" y="790" as="geometry" /></mxCell>
+<mxCell id="a_local_dir_0_l" edge="1" parent="1" source="a_local_dir_0" style="endArrow=none;html=1;strokeWidth=1;" target="a_local_3"><mxGeometry relative="1" as="geometry" /></mxCell>
+<mxCell id="a_local_dir_1" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f5f9ff;strokeColor=#6c8ebf;fontSize=11;" value="numero" vertex="1"><mxGeometry height="36" width="110" x="2060" y="840" as="geometry" /></mxCell>
+<mxCell id="a_local_dir_1_l" edge="1" parent="1" source="a_local_dir_1" style="endArrow=none;html=1;strokeWidth=1;" target="a_local_3"><mxGeometry relative="1" as="geometry" /></mxCell>
+<mxCell id="a_local_dir_2" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f5f9ff;strokeColor=#6c8ebf;fontSize=11;" value="codigo_postal" vertex="1"><mxGeometry height="36" width="130" x="2060" y="890" as="geometry" /></mxCell>
+<mxCell id="a_local_dir_2_l" edge="1" parent="1" source="a_local_dir_2" style="endArrow=none;html=1;strokeWidth=1;" target="a_local_3"><mxGeometry relative="1" as="geometry" /></mxCell>
+<mxCell id="a_local_dir_3" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f5f9ff;strokeColor=#6c8ebf;fontSize=11;" value="ciudad" vertex="1"><mxGeometry height="36" width="110" x="2060" y="940" as="geometry" /></mxCell>
+<mxCell id="a_local_dir_3_l" edge="1" parent="1" source="a_local_dir_3" style="endArrow=none;html=1;strokeWidth=1;" target="a_local_3"><mxGeometry relative="1" as="geometry" /></mxCell>
+<mxCell id="a_venta_total" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff9f0;strokeColor=#d79b00;fontSize=11;dashed=1;" value="total (derivado)" vertex="1"><mxGeometry height="40" width="140" x="1190" y="1100" as="geometry" /></mxCell>
+<mxCell id="a_venta_total_l" edge="1" parent="1" source="a_venta_total" style="endArrow=none;html=1;strokeWidth=1;" target="venta"><mxGeometry relative="1" as="geometry" /></mxCell>
+<mxCell id="lg4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;align=left;spacingLeft=8;fontSize=12;" value="Relación ternaria (3 entidades)" vertex="1"><mxGeometry height="40" width="300" x="60" y="1720" as="geometry" /></mxCell>
+<mxCell id="lg5" parent="1" style="shape=ext;double=1;rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;align=left;spacingLeft=8;fontSize=12;" value="Entidad débil (doble borde)" vertex="1"><mxGeometry height="40" width="250" x="390" y="1720" as="geometry" /></mxCell>
+<mxCell id="lg6" parent="1" style="ellipse;shape=doubleEllipse;whiteSpace=wrap;html=1;fillColor=#f5f9ff;strokeColor=#6c8ebf;fontSize=11;" value="Atributo multivaluado (doble elipse)" vertex="1"><mxGeometry height="40" width="260" x="670" y="1720" as="geometry" /></mxCell>
+<mxCell id="lg7" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff9f0;strokeColor=#d79b00;dashed=1;fontSize=11;" value="Atributo derivado (discontinuo)" vertex="1"><mxGeometry height="40" width="250" x="960" y="1720" as="geometry" /></mxCell>
+<mxCell id="lg8" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f5f9ff;strokeColor=#6c8ebf;fontSize=11;" value="Atributo compuesto (con subatributos)" vertex="1"><mxGeometry height="40" width="270" x="1240" y="1720" as="geometry" /></mxCell>
+</root>
     </mxGraphModel>
   </diagram>
 </mxfile>
