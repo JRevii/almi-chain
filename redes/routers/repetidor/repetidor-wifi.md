@@ -1,6 +1,6 @@
 # Router y repetidor Wi-Fi
 
-Responsables: Iñigo y Yeray. Estado: repetidor conectado, pruebas pendientes.
+Responsables: Iñigo y Yeray. Estado: repetidor conectado, pruebas hechas.
 
 ## 1. Objetivo
 
