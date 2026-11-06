@@ -36,6 +36,9 @@ El Gantt es la **planificación inicial** (26/10 – 13/11). Cambios respecto al
 | Sendoa Guerrero | Técnico | Servidor, RAID y copias |
 | Alex Marquez | Técnico | Base de datos y ERP |
 
-## Pasos para reproducir
+## Cómo se lleva el seguimiento
 
-_Pendiente._
+1. **Planificar:** el Gantt reparte las tareas por persona y fecha, y el contrato (Anexo I) fija el responsable y el apoyo de cada una.
+2. **Seguir el día a día:** cada tarea es una tarjeta de Trello que pasa de lista en lista hasta «Hecho».
+3. **Entregar el trabajo:** cada cambio va en una rama de GitHub y entra en `main` con una Pull Request revisada ([`CONTRIBUTING.md`](../CONTRIBUTING.md)). El historial deja constancia de quién hizo cada cosa y cuándo.
+4. **Documentar:** cada parte tiene su guía con pruebas y capturas, y el [documento final](../docs/documento_final.md) las resume.

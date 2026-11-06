@@ -1,6 +1,6 @@
 # Router y repetidor Wi-Fi
 
-Responsables: Iñigo y Yeray. Estado: repetidor conectado, pruebas hechas.
+Responsables: Iñigo y Yeray. Estado: repetidor conectado y con salida a internet. Pruebas hechas; el aislamiento no se cumple con estos routers (ver el apartado 7).
 
 ## 1. Objetivo
 
@@ -40,7 +40,15 @@ Estado final: modo Range Extender, radio activada, canal 6 (el mismo que el rout
 
 ## 7. Pruebas
 
-Pendientes de realizar: conexión y ping desde el móvil, velocidad con y sin repetidor, cobertura y aislamiento (un móvil conectado al repetidor no debe llegar a los equipos de la LAN del router). Los resultados se añadirán a esta guía con sus capturas.
+| # | Prueba | Resultado | Captura |
+| --- | --- | --- | --- |
+| 1 | Conectar un móvil a la Wi-Fi a través del repetidor | ✅ Conectado a `TP-Link-Revi` | [07](capturas/07-movil-conectado-repetidor.jpg) |
+| 2 | Navegar a internet desde ese móvil | ✅ Carga `es.wikipedia.org` | [09](capturas/09-internet-desde-repetidor.jpg) |
+| 3 | Aislamiento: desde ese móvil, llegar a un equipo de la red del aula (`192.168.1.175`) | ❌ **No está aislado:** el ping responde (3/3, 0 % de pérdida, 4 ms). Los puertos 80 y 443 no responden, pero es porque ese equipo no ofrece web, no por el aislamiento | [08](capturas/08-ping-desde-repetidor.jpg) |
+
+**Por qué falla el aislamiento.** La opción *Allow Guests To Access My Local Network = Disable* solo separa a los invitados de los equipos conectados **dentro** de la LAN del router. Los equipos del reto (el servidor de Odoo, `192.168.1.50`, y el resto) están en la red del aula, no en la LAN propia del router, y el aislamiento de invitados de este router no filtra el tráfico hacia esa red. Con estos routers domésticos y esta conexión no se puede aislar.
+
+**Cómo se resuelve en el diseño.** En el local real, empleados y clientes van en redes distintas y una ACL en el router principal bloquea el paso de clientes a empleados. Está comprobado en Packet Tracer: el móvil de la Wi-Fi de clientes no llega al servidor, con un 100 % de pérdida ([prueba 3 de `redes/README.md`](../../README.md#6-pruebas)). Para montarlo con equipos físicos haría falta un router con VLAN y ACL, como el TP-Link ER605 del [presupuesto](../../../docs/presupuesto/fichas_hw_sw.md).
 
 ## 8. Riesgos y desviaciones
 
@@ -49,7 +57,7 @@ Pendientes de realizar: conexión y ping desde el móvil, velocidad con y sin re
 - El nombre de la red de clientes no es el del plano (`AlmiChain-Clientes`).
 - El repetidor tiene una IP del rango 192.168.1.x, distinto del plano (10.13.10.x).
 - Canal 6 compartido con redes de otros grupos, lo que puede bajar la velocidad.
-- Sin la prueba de aislamiento no se puede afirmar que el repetidor mantenga a los clientes separados de los equipos.
+- **El aislamiento no se cumple con estos routers** (prueba 3): el móvil del repetidor llega a los equipos de la red del aula. Queda como desviación, y la solución es la del diseño (redes separadas con ACL, ver el apartado 7).
 
 ## 9. Cómo repetirlo
 
@@ -58,12 +66,7 @@ Pendientes de realizar: conexión y ping desde el móvil, velocidad con y sin re
 3. Cambiar la contraseña de administrador del repetidor y desactivar WPS.
 4. Hacer las pruebas y guardar las capturas.
 
-Prueba de aislamiento del repetidor:
-
-Dispositivo conectado correctamente al repetidor.
-Acceso a Internet verificado.
-Ping a equipo de la LAN (192.168.1.175) fallido.
-Se confirma que los clientes del repetidor no tienen acceso a la red interna.
+Las capturas de las pruebas (apartado 7):
 
 | Captura | Qué muestra |
 | --- | --- |
