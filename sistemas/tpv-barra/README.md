@@ -45,7 +45,7 @@ El usuario estándar, el quiosco, el certificado y la impresión se configuran i
 | 1 | IP fija del TPV | `10.13.10.21` en la red de empleados | ✅ | [captura](capturas/03-ip-fija.png) |
 | 2 | Entrar con `tpv` | Edge se abre solo en el punto de venta, a pantalla completa | ✅ | [captura](capturas/07-quiosco-edge.png) · [plano de mesas](capturas/06-acceso-asignado.png) |
 | 3 | Odoo por HTTPS desde el TPV | Sin aviso de certificado | ✅ | [captura](capturas/05-certificado-confianza.png) |
-| 4 | Pruebas de restricción (tecla Windows, Alt+Tab, Alt+F4, Ctrl+Shift+Esc…) | No se puede salir del quiosco | ✅ tabla por rellenar en [§8](tpv-quiosco.md#8-pruebas-de-restricción) | — |
+| 4 | Pruebas de restricción (tecla Windows, Alt+Tab, Alt+F4, Ctrl+Shift+Esc…) | No se puede salir del quiosco | ✅ 06/11 · ninguna de las 7 combinaciones saca del quiosco | [§8](tpv-quiosco.md#8-pruebas-de-restricción) |
 | 5 | Impresora reconocida en la VM | Aparece en el Administrador de dispositivos | ✅ | [captura](capturas/09c-administrador-dispositivos.png) |
 | 6 | **Venta en el TPV → ticket impreso** | El ticket sale por la impresora | ✅ 27/10, con el diálogo de imprimir de por medio | [vídeo](capturas/imp_01_venta_e_impresion.mp4) · [diálogo](capturas/21-odoo-prueba-ticket.png) |
 | 7 | Ticket impreso legible | En el papel se leen los caracteres especiales y el código | ✅ 27/10 · en el ticket impreso del vídeo se leen el **€** («1,82 €»), los signos **¿?** («¿Necesita una factura?») y el **código QR**. El PDF de prueba con ñ y código de barras queda como comprobación extra para la Epson térmica | [vídeo](capturas/imp_01_venta_e_impresion.mp4) (final) |

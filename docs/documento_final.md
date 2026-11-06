@@ -158,7 +158,7 @@ Resumen de las pruebas de cada parte. El detalle, los comandos y las capturas es
 | Gerente | Arranque dual con GRUB, BitLocker y LUKS | Se elige el sistema y el disco pide su clave antes del inicio de sesión | ✅ | [dual boot §9](../sistemas/gerente-dualboot/README.md#9-resultado-final) |
 | Gerente | Servicios y puertos hacia la red | Ningún puerto abierto hacia la red y cortafuegos activo, también tras reiniciar | ✅ 04/11 · de 1 puerto a 0 | [dual boot §11.1](../sistemas/gerente-dualboot/README.md#111-servicios-reducidos-y-cortafuegos-04112026) |
 | TPV | IP fija, quiosco de Edge y Odoo por HTTPS sin avisos | Edge abre solo el punto de venta y el certificado es de confianza | ✅ | [TPV, pruebas 1–3](../sistemas/tpv-barra/README.md#pruebas) |
-| TPV | Salir del quiosco con atajos de teclado | No se puede salir | ⏳ pendiente | [TPV, prueba 4](../sistemas/tpv-barra/README.md#pruebas) |
+| TPV | Salir del quiosco con atajos de teclado | No se puede salir | ✅ 06/11 · ninguna de las 7 combinaciones saca del quiosco | [TPV, prueba 4](../sistemas/tpv-barra/README.md#pruebas) |
 | Impresora | Venta en el TPV → ticket impreso solo, y legible | Se imprime al validar el pago; se leen €, ¿? y el QR | ✅ 27/10 · validado por el profesor | [TPV, pruebas 5–8](../sistemas/tpv-barra/README.md#pruebas) |
 | Recreativa | Rendimiento con 1 núcleo y 1 GB | Juego fluido sin swap | ✅ CPU 20,3 %, MAME 364 MB, `mame -bench` 1353–1613 % · validado por el profesor | [medidas](../recreativa/medidas/resultados.md) |
 | Arcade stick | Cada control, y en MAME, Chrome y RetroArch sin drivers | Cada entrada marca su tecla y los juegos responden | ✅ validado por el profesor | [arcade stick §7](../arcade-stick/README.md#7-pruebas) |
