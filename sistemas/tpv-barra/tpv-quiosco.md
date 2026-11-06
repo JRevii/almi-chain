@@ -107,13 +107,13 @@ Se hacen con el usuario `tpv` dentro del quiosco.
 
 | Prueba | Esperado | Resultado |
 |---|---|---|
-| Tecla Windows | No aparece el menú Inicio | COMPLETAR |
-| Alt + Tab | No hay otra aplicación | COMPLETAR |
-| Alt + F4 | No cierra, o se reabre solo | COMPLETAR |
-| Ctrl + Shift + Esc | No abre el administrador de tareas | COMPLETAR |
-| Ctrl + L / Ctrl + T | No hay barra ni pestañas | COMPLETAR |
-| Instalar un programa | Pide credenciales de administrador | COMPLETAR |
-| Cambiar de usuario o cerrar sesión desde dentro | Solo con Ctrl-Alt-Supr | COMPLETAR |
+- Tecla Windows | No aparece el menú Inicio 
+- Alt + Tab | No hay otra aplicación 
+- Alt + F4 | No cierra
+- Ctrl + Shift + Esc | No abre el administrador de tareas 
+- Ctrl + L / Ctrl + T | No hay barra ni pestañas 
+- Instalar un programa | No deja instalar nada
+- Cambiar de usuario o cerrar sesión desde dentro | Solo con Ctrl-Supr
 
 
 ## 9. Riesgos y desviaciones
