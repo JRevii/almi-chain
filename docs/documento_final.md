@@ -121,13 +121,15 @@ El despliegue es **infraestructura como código**: un solo `terraform apply` cre
 
 **Responsables:** Sendoa (servidor), Alejandro (configuración de Odoo) e Iñigo y Yeray (factura automática) · **Fuente:** [`erp/README.md`](../erp/README.md)
 
-*Resumen pendiente: Odoo Community + PostgreSQL en Docker, módulos, usuarios por rol, importación de datos y factura automática al vender en el TPV.*
+**Configuración de Odoo (Alejandro).** Usamos **Odoo 19 Community** con seis ámbitos: Facturación, CRM, Empleados, Marketing, Inventario y TPV. La carta, los ingredientes, los clientes y los empleados se cargaron desde ficheros CSV con **ID externo**, así que volver a importar actualiza los registros en lugar de duplicarlos, y antes de importar se pulsa «Probar», que avisa de los errores. También se exportaron datos a CSV y XLSX. Hay tres usuarios por rol: **Gerente Almi** (facturación, marketing y empleados) y **Barra 1** y **Barra 2**, que solo pueden usar el TPV (sin Ventas, Contabilidad ni Contactos, y sin poder exportar), para cumplir el mínimo privilegio. El CRM tiene un flujo de cuatro etapas (Nuevo, Calificado, Propuesta y Ganado) con cuatro oportunidades de ejemplo, y en Marketing hay una lista de correo de clientes y una campaña en borrador, sin enviar. Las contraseñas se asignan a mano y no están en el repositorio. Las capturas de cada paso están en [`erp/capturas/`](../erp/capturas).
+
+*Pendiente (Sendoa, Iñigo y Yeray): Odoo Community + PostgreSQL en Docker y factura automática al vender en el TPV.*
 
 ## 11. Base de datos
 
 **Responsable:** Alejandro · **Fuente:** [`bd/README.md`](../bd/README.md)
 
-*Resumen pendiente: modelo E/R, modelo relacional normalizado, scripts SQL y consultas.*
+La base de datos de los locales es independiente de la de Odoo y guarda lo que Odoo no cubre en nuestra configuración: locales, mesas, reservas, recetas, proveedores y el stock mínimo por local. Partimos de un **modelo E/R** con atributos derivado (el total de una venta), multivaluado (los teléfonos de un local) y compuesto (la dirección), una **relación ternaria** entre proveedor, producto y local (`pedidos_suministro`) y un **historial de precios** de los platos. Se pasó a un modelo relacional de **17 tablas en 3FN**, con la normalización justificada paso a paso. Las tablas «espejo» (platos, clientes, empleados, ventas...) llevan una columna `odoo_id` con el identificador real de Odoo, así que la unión es por diseño y por carga de datos, no una sincronización en vivo. Los scripts SQL (reset, roles, tablas, permisos, datos y consultas) se ejecutan en orden, con **dos roles de mínimo privilegio**: `almichain_owner`, que solo modifica la estructura, y `almichain_app`, que solo lee y escribe datos; no son superusuarios y las contraseñas no están en ningún fichero. Las conexiones van cifradas con TLS 1.3. Con los datos de ejemplo se probaron **11 consultas** (ventas por local y día, platos más vendidos, precio de un plato en una fecha, pedidos por proveedor y local...) con el rol `almichain_app`, y las capturas están en [`bd/capturas/`](../bd/capturas). Además, la [justificación de Odoo y PostgreSQL](../bd/Justificacion_Odoo_PostgreSQL.pdf) explica por qué se eligieron.
 
 ## 12. Disco redundante y copias de seguridad
 
@@ -168,7 +170,7 @@ Resumen de las pruebas de cada parte. El detalle, los comandos y las capturas es
 | Servidor | Contenedores, puertos, UFW, `nmap`, HTTPS y gestor de BD desactivado | Solo 22, 80 y 443 hacia la LAN; PostgreSQL y Odoo sin publicar | ✅ 26/10 | [ERP, pruebas 1–6](../erp/README.md#pruebas) |
 | ERP | Venta en el TPV → factura automática | El ticket sale solo con logo e IVA 10 % | ✅ validado por el profesor | [ERP, prueba 9](../erp/README.md#pruebas) |
 | ERP | Importar CSV y exportar a XLSX; CRM, Marketing y usuarios por rol | Sin errores | ✅ 06/11 | [ERP, prueba 10 y configuración](../erp/README.md#pruebas) |
-| Base de datos | Scripts 00–05 y las 9 consultas | Sin errores y los resultados esperados | ✅ 17 tablas, 32 líneas de venta | [BD, consultas](../bd/README.md#consultas) |
+| Base de datos | Scripts 00–05 y las 11 consultas | Sin errores y los resultados esperados | ✅ 17 tablas, 32 líneas de venta | [BD, consultas](../bd/README.md#consultas) |
 | RAID 1 | Fallo de un disco | Odoo sigue funcionando y el RAID se reconstruye | ✅ 26/10 · en menos de 2 min | [copias, pruebas 11–12](../backups/README.md#3-pruebas) |
 | Copias | Copia automática con cron y restauración | «Copia terminada» y `RESTAURACIÓN CORRECTA` | ✅ 27/10 y 03/11 | [copias, pruebas 13–14](../backups/README.md#3-pruebas) |
 | Copia en S3 | Copia remota, restauración desde S3 y fallo sin credenciales | Restaura desde la nube y avisa si el lab está apagado | ✅ 29/10 | [copias, pruebas 16–19](../backups/README.md#pruebas) |
