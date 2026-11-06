@@ -109,3 +109,21 @@ JOIN locales l ON l.id = i.local_id
 JOIN productos p ON p.id = i.producto_id
 WHERE p.nombre = 'Bacalao'
 ORDER BY l.nombre; 
+
+-- 10. Precio de un plato en una fecha concreta (historial_precios)
+SELECT p.nombre AS plato, h.precio, h.fecha_desde, h.fecha_hasta
+FROM historial_precios h
+JOIN platos p ON p.id = h.plato_id
+WHERE p.nombre LIKE 'Tortilla%'
+  AND DATE '2026-09-15' BETWEEN h.fecha_desde AND COALESCE(h.fecha_hasta, 'infinity');
+
+-- 11. Pedidos a cada proveedor por local (pedidos_suministro)
+SELECT l.nombre AS local,
+       pr.nombre AS proveedor,
+       count(*) AS pedidos,
+       sum(ps.cantidad * ps.precio_unitario) AS importe
+FROM pedidos_suministro ps
+JOIN proveedores pr ON pr.id = ps.proveedor_id
+JOIN locales l ON l.id = ps.local_id
+GROUP BY l.nombre, pr.nombre
+ORDER BY l.nombre, pr.nombre;
