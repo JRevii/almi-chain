@@ -17,7 +17,7 @@ Los scripts `.sql` están en `scripts/Scripts_postgre/`.
 | `02_tablas.sql` | Crea las 17 tablas con claves primarias, claves externas y restricciones (DDL) | `almichain_owner` |
 | `03_permisos.sql` | Crea el rol de uso diario y le da solo permisos de datos | Administrador (`postgres`) |
 | `04_datos.sql` | Datos de ejemplo (ficticios). **Vacía las tablas al empezar** | `almichain_owner` |
-| `05_consultas.sql` | Las 9 consultas útiles para el restaurante | `almichain_app` |
+| `05_consultas.sql` | Las 11 consultas útiles para el restaurante | `almichain_app` |
 | `er-conceptual.png`, `er-fisico.png`, `er-entidades-relaciones.drawio` | Diagramas del modelo (E/R conceptual y modelo físico) | |
 
 Documentación asociada (en esta misma carpeta): requisitos, atributos y claves, modelo relacional con la normalización y capturas de las pruebas (`capturas/`).
@@ -113,8 +113,10 @@ Resultados esperados con los datos de ejemplo:
 | 7 | Productos con poco stock | 5 filas |
 | 8 | Proveedores de un producto | Aceite de oliva: 2 proveedores |
 | 9 | Stock de un producto por local | Bacalao: Almi Centro 3,00 y Almi Casco Viejo 6,00 |
+| 10 | Precio de un plato en una fecha concreta (`historial_precios`) | Tortilla de patata el 15/09/2026: 7,50 (vigente del 01/01 al 30/09) |
+| 11 | Pedidos a cada proveedor por local (`pedidos_suministro`) | 5 filas. Almi Centro, Bodega y Cafés Norte: 2 pedidos, 103,40 |
 
-Capturas de las 9 consultas, ejecutadas con el rol `almichain_app`:
+Capturas de las 11 consultas, ejecutadas con el rol `almichain_app`:
 
 ![Consulta 1: ventas e ingresos por local y día](capturas/consulta-01.png)
 
@@ -133,6 +135,10 @@ Capturas de las 9 consultas, ejecutadas con el rol `almichain_app`:
 ![Consulta 8: proveedores de un producto (aceite de oliva)](capturas/consulta-08.png)
 
 ![Consulta 9: stock de un producto por local (bacalao)](capturas/consulta-09.png)
+
+![Consulta 10: precio de un plato en una fecha concreta](capturas/consulta-10.png)
+
+![Consulta 11: pedidos a cada proveedor por local](capturas/consulta-11.png)
 
 ## Documentación
 
