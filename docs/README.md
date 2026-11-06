@@ -31,3 +31,10 @@ Orden para montar todo desde cero. Cada guía es independiente y explica sus pas
 9. **Web en AWS:** `terraform apply` siguiendo [`infra/despliegue_aws.md`](infra/despliegue_aws.md).
 
 Las contraseñas y claves no están en el repositorio: se generan al instalar y se guardan en KeePassXC.
+
+### Leer y exportar la documentación
+
+1. Abrir [`documento_final.md`](documento_final.md) en GitHub. Es el documento principal, con un resumen de cada parte.
+2. Cada apartado enlaza la guía de su carpeta (web, red, ERP, base de datos…), donde están los pasos para montarlo y las capturas.
+3. Para entregarlo en Word o PDF, dentro de la carpeta `docs/`: `pandoc documento_final.md -o documento_final.docx`.
+4. Los diagramas se editan con draw.io y se exportan en PNG a [`diagramas/`](diagramas).
