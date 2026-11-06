@@ -71,7 +71,9 @@ El equipo del gerente es una VM de VirtualBox con firmware **EFI, TPM 2.0 y arra
 
 **Responsables:** Iñigo (TPV) y Jon (impresora) · **Fuentes:** [`sistemas/tpv-barra/README.md`](../sistemas/tpv-barra/README.md) y [`sistemas/tpv-barra/tpv-quiosco.md`](../sistemas/tpv-barra/tpv-quiosco.md)
 
-*Resumen pendiente: modo quiosco, usuario estándar, certificado del servidor e impresión desde Odoo.*
+*Pendiente (Iñigo): modo quiosco, usuario estándar y certificado del servidor.*
+
+**Impresora de tickets (Jon).** La impresora va por USB a la VM del TPV. Con el controlador USB 3.0 de VirtualBox, Windows daba el error *Código 10*, y se resolvió pasando a **USB 1.1 (OHCI)**. El driver lo instala solo el administrador, nunca el usuario `tpv`, y la impresora queda como **predeterminada**. En Odoo está activada la **impresión automática del recibo**: al validar el pago, el ticket se imprime solo, con el logo de Almi-Chain y el IVA al 10 %. El profesor la validó el 27/10 como impresión y factura automáticas, y está grabada en vídeo. En el aula se usa la Samsung ML-2165 (láser A4), y en la compra real dos Epson TM-T20III térmicas de 80 mm, que se configuran igual.
 
 ## 6. Red: WAN, plano, Wi-Fi y repetidor
 
@@ -83,7 +85,11 @@ El equipo del gerente es una VM de VirtualBox con firmware **EFI, TPM 2.0 y arra
 | Esquema de conectividad, plano y Packet Tracer | [`redes/README.md`](../redes/README.md) |
 | Router y repetidor Wi-Fi (en lugar de WDS) | [`redes/routers/repetidor/repetidor-wifi.md`](../redes/routers/repetidor/repetidor-wifi.md) |
 
-*Resumen pendiente: por qué esa fibra, las dos redes aisladas y por qué repetidor y no WDS.*
+*Pendiente (Yeray): por qué esa fibra.*
+
+**Diseño de la red en Packet Tracer (Jon).** El local tiene un router propio (R1) detrás de la fibra y **dos redes separadas**: la de **empleados** (`10.13.10.0/24`, por cable: servidor, TPV, gerente y recreativa) y la Wi-Fi de **clientes** (`10.13.20.0/24`). R1 hace NAT, reparte IP por DHCP y tiene una **ACL** que deja a los clientes salir a internet pero no entrar en la red de empleados. El router solo se administra por **SSH v2** y solo desde la red de empleados. Los switches no se administran en remoto y sus puertos libres están apagados. La Wi-Fi usa **WPA2-PSK con AES**, con el mismo SSID y canal en el punto de acceso principal y en el repetidor. Las IP están configuradas en cada equipo del proyecto. La profesora lo validó el 26/10. En la prueba de aislamiento, el móvil de clientes no llega al servidor (100 % de pérdida) y sí sale a internet.
+
+*Pendiente (Iñigo y Yeray): routers físicos del aula, repetidor en lugar de WDS y por qué el aislamiento no se cumple con ellos (ver `repetidor-wifi.md`, apartado 7).*
 
 ## 7. Máquina recreativa
 
@@ -123,7 +129,7 @@ El despliegue es **infraestructura como código**: un solo `terraform apply` cre
 
 **Responsable:** Alejandro · **Fuente:** [`bd/README.md`](../bd/README.md)
 
-La base de datos de los locales es independiente de la de Odoo y guarda lo que Odoo no cubre en nuestra configuración: locales, mesas, reservas, recetas, proveedores y el stock mínimo por local. Partimos de un **modelo E/R** con atributos derivado (el total de una venta), multivaluado (los teléfonos de un local) y compuesto (la dirección), una **relación ternaria** entre proveedor, producto y local (`pedidos_suministro`) y un **historial de precios** de los platos. Se pasó a un modelo relacional de **17 tablas en 3FN**, con la normalización justificada paso a paso. Las tablas «espejo» (platos, clientes, empleados, ventas...) llevan una columna `odoo_id` con el identificador real de Odoo, así que la unión es por diseño y por carga de datos, no una sincronización en vivo. Los scripts SQL (reset, roles, tablas, permisos, datos y consultas) se ejecutan en orden, con **dos roles de mínimo privilegio**: `almichain_owner`, que solo modifica la estructura, y `almichain_app`, que solo lee y escribe datos; no son superusuarios y las contraseñas no están en ningún fichero. Las conexiones van cifradas con TLS 1.3. Con los datos de ejemplo se probaron **9 consultas** (ventas por local y día, platos más vendidos, stock por local...) con el rol `almichain_app`, y las capturas están en [`bd/capturas/`](../bd/capturas). Además, la [justificación de Odoo y PostgreSQL](../bd/Justificacion_Odoo_PostgreSQL.pdf) explica por qué se eligieron.
+La base de datos de los locales es independiente de la de Odoo y guarda lo que Odoo no cubre en nuestra configuración: locales, mesas, reservas, recetas, proveedores y el stock mínimo por local. Partimos de un **modelo E/R** con atributos derivado (el total de una venta), multivaluado (los teléfonos de un local) y compuesto (la dirección), una **relación ternaria** entre proveedor, producto y local (`pedidos_suministro`) y un **historial de precios** de los platos. Se pasó a un modelo relacional de **17 tablas en 3FN**, con la normalización justificada paso a paso. Las tablas «espejo» (platos, clientes, empleados, ventas...) llevan una columna `odoo_id` con el identificador real de Odoo, así que la unión es por diseño y por carga de datos, no una sincronización en vivo. Los scripts SQL (reset, roles, tablas, permisos, datos y consultas) se ejecutan en orden, con **dos roles de mínimo privilegio**: `almichain_owner`, que solo modifica la estructura, y `almichain_app`, que solo lee y escribe datos; no son superusuarios y las contraseñas no están en ningún fichero. Las conexiones van cifradas con TLS 1.3. Con los datos de ejemplo se probaron **11 consultas** (ventas por local y día, platos más vendidos, stock por local, el precio de un plato en una fecha y los pedidos a cada proveedor por local...) con el rol `almichain_app`, y las capturas están en [`bd/capturas/`](../bd/capturas). Además, la [justificación de Odoo y PostgreSQL](../bd/Justificacion_Odoo_PostgreSQL.pdf) explica por qué se eligieron.
 
 ## 12. Disco redundante y copias de seguridad
 
@@ -143,7 +149,43 @@ Cada tecnología se eligió comparándola con otras opciones: AWS frente a Azure
 
 **Responsables:** Iñigo y todos
 
-*Pendiente: tabla resumen con cada prueba (qué se prueba, resultado esperado, resultado y enlace a la evidencia), sacada de las tablas de pruebas de cada guía, y comprobación del mínimo privilegio en cada parte.*
+Resumen de las pruebas de cada parte. El detalle, los comandos y las capturas están en la guía enlazada en cada fila.
+
+### 14.1 Pruebas de funcionamiento
+
+| Parte | Qué se prueba | Resultado esperado | Resultado | Evidencia |
+| --- | --- | --- | --- | --- |
+| Gerente | Arranque dual con GRUB, BitLocker y LUKS | Se elige el sistema y el disco pide su clave antes del inicio de sesión | ✅ | [dual boot §9](../sistemas/gerente-dualboot/README.md#9-resultado-final) |
+| Gerente | Servicios y puertos hacia la red | Ningún puerto abierto hacia la red y cortafuegos activo, también tras reiniciar | ✅ 04/11 · de 1 puerto a 0 | [dual boot §11.1](../sistemas/gerente-dualboot/README.md#111-servicios-reducidos-y-cortafuegos-04112026) |
+| TPV | IP fija, quiosco de Edge y Odoo por HTTPS sin avisos | Edge abre solo el punto de venta y el certificado es de confianza | ✅ | [TPV, pruebas 1–3](../sistemas/tpv-barra/README.md#pruebas) |
+| TPV | Salir del quiosco con atajos de teclado | No se puede salir | ⏳ pendiente | [TPV, prueba 4](../sistemas/tpv-barra/README.md#pruebas) |
+| Impresora | Venta en el TPV → ticket impreso solo, y legible | Se imprime al validar el pago; se leen €, ¿? y el QR | ✅ 27/10 · validado por el profesor | [TPV, pruebas 5–8](../sistemas/tpv-barra/README.md#pruebas) |
+| Recreativa | Rendimiento con 1 núcleo y 1 GB | Juego fluido sin swap | ✅ CPU 20,3 %, MAME 364 MB, `mame -bench` 1353–1613 % · validado por el profesor | [medidas](../recreativa/medidas/resultados.md) |
+| Arcade stick | Cada control, y en MAME, Chrome y RetroArch sin drivers | Cada entrada marca su tecla y los juegos responden | ✅ validado por el profesor | [arcade stick §7](../arcade-stick/README.md#7-pruebas) |
+| Red (Packet Tracer) | Aislamiento: el móvil de clientes hace ping al servidor | Falla | ✅ 05/11 · 100 % de pérdida · proyecto validado por la profesora el 26/10 | [redes §6, pruebas 3 y 9](../redes/README.md#6-pruebas) |
+| Red (routers del aula) | Móvil por el repetidor: conexión, internet y aislamiento | Navega y no llega a los equipos del aula | 🟡 Navega ✅. El ping a un equipo del aula **responde**: el router doméstico no aísla de la red del aula. El diseño sí lo cumple | [repetidor §7](../redes/routers/repetidor/repetidor-wifi.md#7-pruebas) |
+| Web | Responsiva (1440, 768 y 390 px), menú, slideshow, formulario y geolocalización | Funciona en las tres anchuras | ✅ | [web §6](web/guia_web.md#6-pruebas-y-evidencias) |
+| Web | Validador W3C y Lighthouse de la web publicada | 0 errores y ≥ 90 | ✅ 0 errores · 99–100 | [web §6](web/guia_web.md#6-pruebas-y-evidencias) |
+| AWS | HTTPS, cabeceras de seguridad y reproducibilidad (`destroy` + `apply`) | Candado válido y la web vuelve igual | ✅ vuelve en 1 min 45 s | [AWS §6](infra/despliegue_aws.md#6-pruebas-y-evidencias) |
+| Servidor | Contenedores, puertos, UFW, `nmap`, HTTPS y gestor de BD desactivado | Solo 22, 80 y 443 hacia la LAN; PostgreSQL y Odoo sin publicar | ✅ 26/10 | [ERP, pruebas 1–6](../erp/README.md#pruebas) |
+| ERP | Venta en el TPV → factura automática | El ticket sale solo con logo e IVA 10 % | ✅ validado por el profesor | [ERP, prueba 9](../erp/README.md#pruebas) |
+| ERP | Importar CSV y exportar a XLSX; CRM, Marketing y usuarios por rol | Sin errores | ✅ 06/11 | [ERP, prueba 10 y configuración](../erp/README.md#pruebas) |
+| Base de datos | Scripts 00–05 y las 11 consultas | Sin errores y los resultados esperados | ✅ 17 tablas, 32 líneas de venta | [BD, consultas](../bd/README.md#consultas) |
+| RAID 1 | Fallo de un disco | Odoo sigue funcionando y el RAID se reconstruye | ✅ 26/10 · en menos de 2 min | [copias, pruebas 11–12](../backups/README.md#3-pruebas) |
+| Copias | Copia automática con cron y restauración | «Copia terminada» y `RESTAURACIÓN CORRECTA` | ✅ 27/10 y 03/11 | [copias, pruebas 13–14](../backups/README.md#3-pruebas) |
+| Copia en S3 | Copia remota, restauración desde S3 y fallo sin credenciales | Restaura desde la nube y avisa si el lab está apagado | ✅ 29/10 | [copias, pruebas 16–19](../backups/README.md#pruebas) |
+
+### 14.2 Mínimo privilegio en cada parte
+
+| Parte | Cuenta de uso diario | Quién administra | Comprobado |
+| --- | --- | --- | --- |
+| Gerente | `gerente`: estándar en Windows y sin `sudo` en Ubuntu | `tecnico` | UAC pide las credenciales del técnico |
+| TPV | `tpv`: estándar y encerrado en el quiosco | Administrador local | El cajero de Odoo no puede crear productos |
+| Recreativa | `recreativa`: sin `sudo` | `adminrec` | SSH rechaza a `recreativa` y a root |
+| Servidor | Servicios en contenedores | `adminsrv` con clave SSH, fuera del grupo `docker` | Root y contraseña rechazados por SSH |
+| Odoo | Barra 1 y Barra 2: solo punto de venta | Gerente y administrador | Permisos en la ficha de cada usuario |
+| PostgreSQL | `almichain_app`: solo leer y escribir datos | `almichain_owner` | `DROP TABLE` y `CREATE TABLE` fallan con `almichain_app` |
+| Secretos | Ninguna contraseña ni clave en el repositorio | KeePassXC y `/root/secretos` (solo root) | Revisado en cada guía |
 
 ## 15. Conclusiones
 
