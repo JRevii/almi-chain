@@ -30,7 +30,6 @@ Después de instalar Windows se instalaron los Guest Additions, se activó el po
 | Cuenta | Tipo | Para qué |
 |---|---|---|
 | TPV-admin | Administrador | Instalar y configurar. No se usa a diario |
-| tpvadmin2 | Administrador | Segunda cuenta de seguridad durante el montaje. COMPLETAR: indicar si se creó, y quitarla al terminar |
 | tpv | Estándar | El que queda encerrado en el quiosco |
 
 Cada cuenta tiene una contraseña distinta, generada en KeePassXC. Ninguna se sube al repositorio.
