@@ -18,4 +18,7 @@ Documento final del reto y diagramas de arquitectura (en `diagramas/`).
 
 ## Pasos para reproducir
 
-_Pendiente._
+1. Abrir [`documento_final.md`](documento_final.md) en GitHub. Es el documento principal, con un resumen de cada parte.
+2. Cada apartado enlaza la guía de su carpeta (web, red, ERP, base de datos…), donde están los pasos para montarlo y las capturas.
+3. Para entregarlo en Word o PDF, dentro de la carpeta `docs/`: `pandoc documento_final.md -o documento_final.docx`.
+4. Los diagramas se editan con draw.io y se exportan en PNG a [`diagramas/`](diagramas).
