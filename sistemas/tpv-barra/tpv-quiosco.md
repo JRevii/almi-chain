@@ -46,8 +46,8 @@ Pasos:
 
 1. Pedir a quien administra el servidor solo el certificado público de la CA, un archivo `.crt`. Nunca la clave privada (`.key`).
 2. Abrirlo y comprobar en Detalles que el Asunto es `Almi-Chain CA`, que la fecha de validez es futura y que lleva la restricción "Tipo de asunto = Entidad de certificación".
-3. Comparar la huella digital con la que obtiene el administrador en el servidor. Windows muestra la SHA-1, así que se usa `openssl x509 -in ca.crt -noout -fingerprint -sha1`. COMPLETAR: indicar si coincidió.
-4. Con el administrador: Instalar certificado, Equipo local, y colocarlo en "Entidades de certificación raíz de confianza". La huella  de el certficado coincide.
+3. Comparar la huella digital con la que obtiene el administrador en el servidor. Windows muestra la SHA-1, así que se usa `openssl x509 -in ca.crt -noout -fingerprint -sha1`. ✅ La huella coincide.
+4. Con el administrador: Instalar certificado, Equipo local, y colocarlo en "Entidades de certificación raíz de confianza".
 5. Cerrar Edge y abrir `https://192.168.1.50`: el aviso desaparece y sale el candado.
 
 Antes y después:
@@ -107,14 +107,13 @@ Se hacen con el usuario `tpv` dentro del quiosco.
 
 | Prueba | Esperado | Resultado |
 |---|---|---|
-- Tecla Windows | No aparece el menú Inicio 
-- Alt + Tab | No hay otra aplicación 
-- Alt + F4 | No cierra
-- Ctrl + Shift + Esc | No abre el administrador de tareas 
-- Ctrl + L / Ctrl + T | No hay barra ni pestañas 
-- Instalar un programa | No deja instalar nada
-- Cambiar de usuario o cerrar sesión desde dentro | Solo con Ctrl-Supr
-
+| Tecla Windows | No aparece el menú Inicio | ✅ No aparece el menú Inicio |
+| Alt + Tab | No hay otra aplicación | ✅ No hay otra aplicación |
+| Alt + F4 | No cierra, o se reabre solo | ✅ No cierra |
+| Ctrl + Shift + Esc | No abre el administrador de tareas | ✅ No lo abre |
+| Ctrl + L / Ctrl + T | No hay barra ni pestañas | ✅ No hay barra ni pestañas |
+| Instalar un programa | Pide credenciales de administrador | ✅ No deja instalar nada |
+| Cambiar de usuario o cerrar sesión desde dentro | Solo con Ctrl+Alt+Supr | ✅ Solo con Ctrl+Alt+Supr |
 
 ## 9. Riesgos y desviaciones
 
