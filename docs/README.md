@@ -18,6 +18,22 @@ Documento final del reto y diagramas de arquitectura (en `diagramas/`).
 
 ## Pasos para reproducir
 
+Orden para montar todo desde cero. Cada guía es independiente y explica sus pasos, comandos y pruebas.
+
+1. **Red:** diseño y direccionamiento en [`../redes/README.md`](../redes/README.md). Routers del aula en [`../redes/routers/repetidor/repetidor-wifi.md`](../redes/routers/repetidor/repetidor-wifi.md).
+2. **Servidor (Odoo, PostgreSQL y HTTPS):** scripts `01` a `04` de [`../erp/README.md`](../erp/README.md).
+3. **RAID y copias:** script `05` y pruebas en [`../backups/README.md`](../backups/README.md). Copia en S3 con [`../infra/terraform-copias/README.md`](../infra/terraform-copias/README.md).
+4. **Base de datos del local:** scripts `00` a `05`, en orden, desde [`../bd/README.md`](../bd/README.md).
+5. **Configuración de Odoo:** impuestos, carta, usuarios por rol, CRM y Marketing en [`../erp/README.md`](../erp/README.md).
+6. **TPV e impresora:** [`../sistemas/tpv-barra/tpv-quiosco.md`](../sistemas/tpv-barra/tpv-quiosco.md), con el servidor ya funcionando.
+7. **Equipo del gerente:** [`../sistemas/gerente-dualboot/README.md`](../sistemas/gerente-dualboot/README.md).
+8. **Recreativa y arcade stick:** [`../recreativa/README.md`](../recreativa/README.md) y [`../arcade-stick/README.md`](../arcade-stick/README.md).
+9. **Web en AWS:** `terraform apply` siguiendo [`infra/despliegue_aws.md`](infra/despliegue_aws.md).
+
+Las contraseñas y claves no están en el repositorio: se generan al instalar y se guardan en KeePassXC.
+
+### Leer y exportar la documentación
+
 1. Abrir [`documento_final.md`](documento_final.md) en GitHub. Es el documento principal, con un resumen de cada parte.
 2. Cada apartado enlaza la guía de su carpeta (web, red, ERP, base de datos…), donde están los pasos para montarlo y las capturas.
 3. Para entregarlo en Word o PDF, dentro de la carpeta `docs/`: `pandoc documento_final.md -o documento_final.docx`.
