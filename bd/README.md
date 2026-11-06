@@ -82,9 +82,9 @@ Decisiones de diseño que cumplen la 3FN:
 - **Atributo compuesto:** la dirección del local se guarda partida en `calle`, `numero`, `codigo_postal` y `ciudad`.
 - **Atributo derivado:** el total de una venta no se guarda; se calcula con las líneas.
 
-Diagramas:
+Diagramas (el E/R conceptual se puede editar abriendo [er-entidades-relaciones.drawio](er-entidades-relaciones.drawio) en draw.io):
 
-![Modelo E/R conceptual](er-conceptual.png)
+![Modelo E/R conceptual: incluye la relación ternaria PEDIDO_SUMINISTRO, el historial de precios y los atributos derivado, multivaluado y compuesto](er-conceptual.png)
 
 ![Modelo físico generado desde pgAdmin](er-fisico.png)
 
