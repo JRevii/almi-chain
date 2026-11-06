@@ -96,7 +96,7 @@ Pasos:
 3. Con el administrador se comprueba en el Administrador de dispositivos y se instala el driver (los controladores se instalan solo con el administrador, nunca con `tpv`).
 4. Se pone como impresora predeterminada, desactivando que Windows la gestione, y se imprime una página de prueba.
 
-**Problema encontrado:** con el controlador USB 3.0 (xHCI) el dispositivo "Compatibilidad con impresoras USB" daba el error "Código 10: este dispositivo no puede iniciar". **Solución:** cambiar el controlador de la VM a USB 1.1 (OHCI), que no necesita el Extension Pack y basta para una impresora. COMPLETAR: confirmar que con ese cambio quedó funcionando.
+**Problema encontrado:** con el controlador USB 3.0 (xHCI) el dispositivo "Compatibilidad con impresoras USB" daba el error "Código 10: este dispositivo no puede iniciar". **Solución:** cambiar el controlador de la VM a USB 1.1 (OHCI), que no necesita el Extension Pack y basta para una impresora. ✅ Con ese cambio quedó funcionando: la impresora aparece sin errores en el Administrador de dispositivos ([captura](capturas/09c-administrador-dispositivos.png)) e imprime los tickets desde Odoo ([vídeo](capturas/imp_01_venta_e_impresion.mp4)).
 
 Impresión desde el TPV (27/10): al validar el pago, Odoo abre el **diálogo de impresión** de Edge con la Samsung ML-2160 Series seleccionada, y al pulsar *Imprimir* sale el ticket ([vídeo](capturas/imp_01_venta_e_impresion.mp4)). El profesor lo validó el 27/10 como impresión automática. Quitar también el diálogo queda como mejora opcional en el [README](README.md#impresora-de-tickets).
 
