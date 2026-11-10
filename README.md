@@ -22,6 +22,31 @@ Proyecto en equipo del Centro de Estudios ALMI: infraestructura informática com
 | `bd/` | Modelo E/R, modelo relacional y scripts SQL | Base de datos |
 | `backups/` | Disco redundante (RAID), plan de copias local y remoto (AWS S3) y pruebas de restauración | Copias de seguridad |
 
+## Dónde está cada tarea del reto
+
+Las 16 tareas de la hoja de seguimiento, con el documento que la explica y dónde están sus pruebas.
+
+| # | Tarea | Documento | Pruebas y evidencias |
+| --- | --- | --- | --- |
+| 1 | Identificar y documentar el hardware necesario | [Fichas de hardware y software](docs/presupuesto/fichas_hw_sw.md) (apartados 1–7) | [Presupuesto en Excel](docs/presupuesto/presupuesto_local_plano.xlsx): 4.624,43 € + IVA = 5.595,56 €, con enlace de compra en cada fila |
+| 2 | Identificar, documentar e instalar el software necesario | [Fichas, apartado 8](docs/presupuesto/fichas_hw_sw.md#8-software-todo-de-coste-0) | La instalación de cada programa está en la guía de su equipo (columna «Instalación» de esa tabla) |
+| 3 | Web en AWS | [Guía de la web](docs/web/guia_web.md) · [Despliegue en AWS](docs/infra/despliegue_aws.md) | [Pruebas de la web](docs/web/guia_web.md#6-pruebas-y-evidencias) · [pruebas de AWS](docs/infra/despliegue_aws.md#6-pruebas-y-evidencias) |
+| 4 | ERP + TPV | [ERP](erp/README.md) · [TPV](sistemas/tpv-barra/README.md) | [Pruebas del ERP](erp/README.md#pruebas) |
+| 5 | Arcade stick con Arduino | [Arcade stick](arcade-stick/README.md) | [Pruebas](arcade-stick/README.md#7-pruebas) |
+| 6 | Configurar una impresora | [TPV, impresora](sistemas/tpv-barra/README.md#impresora-de-tickets) | [Pruebas 5–8 del TPV](sistemas/tpv-barra/README.md#pruebas) |
+| 7 | Instalación de SO con arranque dual | [Dual boot](sistemas/gerente-dualboot/README.md) | [Resultado final](sistemas/gerente-dualboot/README.md#9-resultado-final) |
+| 8 | Elección de la conectividad WAN | [Línea WAN](redes/routers/wan/README.md) | [Comparativa (PDF)](docs/Comparativa%20y%20contratación%20de%20la%20línea%20WAN.pdf) |
+| 9 | Diseño y esquema de conectividad | [Redes](redes/README.md) | [Packet Tracer](redes/packet-tracer/almichain.pkt) · [pruebas](redes/README.md#6-pruebas) |
+| 10 | Ampliación de la cobertura Wi-Fi | [Repetidor](redes/routers/repetidor/repetidor-wifi.md) | [Pruebas](redes/routers/repetidor/repetidor-wifi.md#7-pruebas) |
+| 11 | Restricción de cuentas y equipos | [Gerente](sistemas/gerente-dualboot/README.md#11-seguridad-aplicada) · [TPV](sistemas/tpv-barra/README.md#mínimo-privilegio) · [recreativa](recreativa/README.md#6-seguridad-mínimos-privilegios) | [Mínimo privilegio en cada parte](docs/documento_final.md#142-mínimo-privilegio-en-cada-parte) |
+| 12 | Optimizar y monitorizar la recreativa | [Recreativa](recreativa/README.md) | [Medidas](recreativa/medidas/resultados.md) |
+| 13 | Plan de copias de seguridad | [Copias](backups/README.md) | [Pruebas 13–19](backups/README.md#3-pruebas) |
+| 14 | Disco redundante | [Copias, RAID 1](backups/README.md#1-raid-1) | [Pruebas 11–12](backups/README.md#3-pruebas) |
+| 15 | Diseño del modelo E/R y tablas | [Base de datos](bd/README.md) | [Diagrama E/R](bd/er-conceptual.png) · [modelo relacional](bd/02-modelo-relacional.pdf) · [requisitos](bd/00-requisitos.pdf) |
+| 16 | Implementación de la base de datos | [Base de datos, orden de ejecución](bd/README.md) | [Scripts SQL](bd/scripts/Scripts_postgre) · [modelo físico](bd/er-fisico.png) · [capturas de las 11 consultas](bd/capturas) |
+
+Resumen de todas las pruebas: [documento final, apartado 14](docs/documento_final.md#14-revisión-de-seguridad-y-pruebas). Validaciones del profesor: [`gestion/`](gestion/README.md#validaciones-del-profesor).
+
 **Arquitectura:** [`docs/diagramas/esquema_definitivo.png`](docs/diagramas/esquema_definitivo.png) · **Planificación y anexos:** [`gestion/`](gestion)
 
 Cada carpeta tiene su propio `README.md` con los pasos para reproducir esa parte desde cero.

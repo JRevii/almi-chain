@@ -172,20 +172,20 @@ Así queda la red según el plano: la fibra entra en el **rack** del despacho de
 
 ## 8. Software (todo de coste 0)
 
-| Software | Dónde | Licencia | Por qué |
-|---|---|---|---|
-| Windows 11 Pro / Windows 11 IoT Enterprise LTSC | Gerente, TPV | Incluida con el equipo (OEM) | Con soporte, a diferencia de Windows 10 (en el reto, la VM del TPV usa Windows 10 Pro) |
-| Ubuntu Desktop 26.04 LTS / Ubuntu Server 24.04 LTS | Gerente / servidor | Libre (GPL) | Soporte de 5 años (hasta 2031 y 2029) |
-| Odoo Community | Servidor | Libre (LGPL) | ERP y TPV en uno (lo justifica Alejandro) |
-| PostgreSQL | Servidor | Libre (licencia PostgreSQL) | Base de datos que usa Odoo |
-| Docker / Docker Compose | Servidor | Libre (Apache 2.0) | Despliegue reproducible |
-| Nginx, Certbot | Servidor, AWS | Libre | HTTPS |
-| mdadm, restic, UFW | Servidor | Libre | RAID, copias cifradas, cortafuegos |
-| KeePassXC | Gerente, administración | Libre (GPL) | Gestor de contraseñas: nada de contraseñas en papel ni en GitHub |
-| antiX, MAME | Recreativa | Libre (GPL) | Ligero / emulador |
-| Arduino IDE | Para programar el stick | Libre | |
-| Terraform | Para AWS | Gratis (BSL) | Infraestructura como código |
-| VirtualBox | Solo en el laboratorio | Libre (GPL) | No se usa en la compra real |
+| Software | Dónde | Licencia | Por qué | Instalación |
+|---|---|---|---|---|
+| Windows 11 Pro / Windows 11 IoT Enterprise LTSC | Gerente, TPV | Incluida con el equipo (OEM) | Con soporte, a diferencia de Windows 10 (en el reto, la VM del TPV usa Windows 10 Pro) | [Gerente §4](../../sistemas/gerente-dualboot/README.md#4-instalación-de-windows-11) · [TPV](../../sistemas/tpv-barra/tpv-quiosco.md) |
+| Ubuntu Desktop 26.04 LTS / Ubuntu Server 24.04 LTS | Gerente / servidor | Libre (GPL) | Soporte de 5 años (hasta 2031 y 2029) | [Gerente §6](../../sistemas/gerente-dualboot/README.md#6-instalación-de-ubuntu) · [servidor, `01-base.sh`](../../erp/README.md) |
+| Odoo Community | Servidor | Libre (LGPL) | ERP y TPV en uno (lo justifica Alejandro) | [ERP, `04-odoo-docker.sh`](../../erp/README.md) |
+| PostgreSQL | Servidor | Libre (licencia PostgreSQL) | Base de datos que usa Odoo | [ERP](../../erp/README.md) · [BD](../../bd/README.md) |
+| Docker / Docker Compose | Servidor | Libre (Apache 2.0) | Despliegue reproducible | [ERP, `04-odoo-docker.sh`](../../erp/README.md) |
+| Nginx, Certbot | Servidor, AWS | Libre | HTTPS | [ERP](../../erp/README.md) · [AWS](../infra/despliegue_aws.md) |
+| mdadm, restic, UFW | Servidor | Libre | RAID, copias cifradas, cortafuegos | [Copias y RAID](../../backups/README.md) |
+| KeePassXC | Gerente, administración | Libre (GPL) | Gestor de contraseñas: nada de contraseñas en papel ni en GitHub | Paquete del sistema (`apt install keepassxc`) |
+| antiX, MAME | Recreativa | Libre (GPL) | Ligero / emulador | [Recreativa](../../recreativa/README.md) |
+| Arduino IDE | Para programar el stick | Libre | | [Arcade stick](../../arcade-stick/README.md) |
+| Terraform | Para AWS | Gratis (BSL) | Infraestructura como código | [AWS](../infra/despliegue_aws.md) · [copias en S3](../../infra/terraform-copias/README.md) |
+| VirtualBox | Solo en el laboratorio | Libre (GPL) | No se usa en la compra real | — |
 
 ## 9. Costes recurrentes
 
