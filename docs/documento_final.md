@@ -197,6 +197,6 @@ Resumen de las pruebas de cada parte. El detalle, los comandos y las capturas es
 
 ## 16. Anexos
 
-- Anexo I: contrato de equipo → [`gestion/`](../gestion)
+- Anexo I: contrato de equipo, firmado por los seis → [`gestion/anexos/Anexo_I_Contrato_de_Equipo.pdf`](../gestion/anexos/Anexo_I_Contrato_de_Equipo.pdf)
 - Anexo II: documento de los 11 pasos → [`gestion/`](../gestion)
 - Reparto y Gantt → [`diagramas/reparto_y_gantt.png`](diagramas/reparto_y_gantt.png)
