@@ -25,6 +25,12 @@ Lo que el profesor (o la profesora de Redes) ha revisado y dado por bueno, con l
 
 | Fecha | Criterio o parte | Resultado |
 | --- | --- | --- |
+| **10/11** | **Instalación de SO y arranque dual** (Windows 11 + Ubuntu, cifrados) · profesor de Sistemas | ✅ **Validado** |
+| **10/11** | **Restricción de cuentas y equipos** (mínimo privilegio en el gerente, el TPV y la recreativa) · profesor de Sistemas | ✅ **Validado** |
+| **10/11** | **Optimización y monitorización de la máquina recreativa** · profesor de Sistemas | ✅ **Validado** |
+| **10/11** | **Plan de copias de seguridad** (local y en AWS S3, con restauración en directo) · profesor de Sistemas | ✅ **Validado** |
+| **10/11** | **Disco redundante (RAID 1)** · profesor de Sistemas | ✅ **Validado** |
+| **10/11** | **Configuración de la impresora** · profesor de Sistemas | ✅ **Validado** |
 | **10/11** | **Diseño web** | ✅ **5** |
 | **10/11** | **Implementación web** (HTTPS, dominio y AWS con Terraform) | ✅ **5** |
 | **10/11** | **ERP (Odoo)** | ✅ **5** |
