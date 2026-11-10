@@ -1,6 +1,6 @@
 # TPV de barra (Windows 10 Pro con modo quiosco)
 
-Responsable: Iñigo. Estado: funcionando contra el Odoo del servidor, pendiente de pasar a la red del plano.
+Responsable: Iñigo. Estado: funcionando contra el Odoo del servidor. En el aula, el TPV y el servidor están en la red del aula (`192.168.1.x`) y no en la red de empleados del plano (`10.13.10.x`); es una desviación justificada, ver [§9](#9-riesgos-y-desviaciones).
 
 ## 1. Objetivo
 
