@@ -3,7 +3,7 @@
 Base de datos PostgreSQL de la cadena de restaurantes Almi-Chain: locales, mesas, empleados, platos, ingredientes, proveedores, clientes, ventas, inventario y reservas. Convive con Odoo (ver [Relación con Odoo](#relación-con-odoo)).
 
 - **Gestor:** PostgreSQL 16
-- **Herramienta gráfica usada para el diseño físico:** pgAdmin 4
+- **Herramienta gráfica usada para el diseño físico:** pgAdmin 4 (el diagrama del modelo físico se genera con Graphviz desde el catálogo de la base de datos, para que salgan todas las relaciones)
 - **Normalización:** 3FN (justificada en el documento del modelo relacional)
 
 ## Contenido de la carpeta
@@ -18,7 +18,8 @@ Los scripts `.sql` están en `scripts/Scripts_postgre/`.
 | `03_permisos.sql` | Crea el rol de uso diario y le da solo permisos de datos | Administrador (`postgres`) |
 | `04_datos.sql` | Datos de ejemplo (ficticios). **Vacía las tablas al empezar** | `almichain_owner` |
 | `05_consultas.sql` | Las 11 consultas útiles para el restaurante | `almichain_app` |
-| `er-conceptual.png`, `er-fisico.png`, `er-entidades-relaciones.drawio` | Diagramas del modelo (E/R conceptual y modelo físico) | |
+| `er-conceptual.png`, `er-entidades-relaciones.drawio` | Diagrama E/R conceptual y su fuente editable | |
+| `er-fisico.png`, `er-fisico.dot` | Modelo físico con las 17 tablas y sus relaciones, generado desde el catálogo de PostgreSQL. Se regenera con `dot -Tpng er-fisico.dot -o er-fisico.png` | |
 
 Documentación asociada (en esta misma carpeta): requisitos, atributos y claves, modelo relacional con la normalización y capturas de las pruebas (`capturas/`).
 
@@ -86,7 +87,7 @@ Diagramas (el E/R conceptual se puede editar abriendo [er-entidades-relaciones.d
 
 ![Modelo E/R conceptual: incluye la relación ternaria PEDIDO_SUMINISTRO, el historial de precios y los atributos derivado, multivaluado y compuesto](er-conceptual.png)
 
-![Modelo físico generado desde pgAdmin](er-fisico.png)
+![Modelo físico: las 17 tablas con sus columnas, tipos, PK, FK y relaciones (pata de gallo en el lado «muchos»)](er-fisico.png)
 
 ## Relación con Odoo
 

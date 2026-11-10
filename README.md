@@ -9,7 +9,7 @@ Proyecto en equipo del Centro de Estudios ALMI: infraestructura informática com
 | Carpeta | Contenido | Tarea del reto |
 | --- | --- | --- |
 | `docs/` | Documentación general y diagramas de arquitectura | Documentación reproducible |
-| `gestion/` | Anexos (I, II, IX), Gantt/Kanban, actas | Seguimiento del trabajo |
+| `gestion/` | Anexos (I, II, IX) y Gantt/Kanban | Seguimiento del trabajo |
 | `sistemas/gerente-dualboot/` | Equipo del gerente: Windows 11 Pro + Ubuntu (dual boot) | Implantación de SO |
 | `sistemas/tpv-barra/` | TPV de barra en Windows (una VM; el segundo TPV es un clon) + impresora de tickets, mínimos privilegios | Equipos, permisos, impresora |
 | `recreativa/` | VM con MAME optimizada (1 núcleo, 1 GB RAM) y pruebas de rendimiento | Máquina recreativa |

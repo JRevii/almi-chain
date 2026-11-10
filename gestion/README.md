@@ -1,6 +1,6 @@
 # Gestión del proyecto
 
-Anexos I (contrato de equipo), II (11 pasos) y IX, enlace al tablero Kanban/Gantt y actas de reunión.
+Anexos I (contrato de equipo), II (11 pasos) y IX, y enlace al tablero Kanban/Gantt.
 
 ## Anexos
 

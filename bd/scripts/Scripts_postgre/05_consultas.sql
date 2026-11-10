@@ -121,7 +121,7 @@ WHERE p.nombre LIKE 'Tortilla%'
 SELECT l.nombre AS local,
        pr.nombre AS proveedor,
        count(*) AS pedidos,
-       sum(ps.cantidad * ps.precio_unitario) AS importe
+       round(sum(ps.cantidad * ps.precio_unitario), 2) AS importe
 FROM pedidos_suministro ps
 JOIN proveedores pr ON pr.id = ps.proveedor_id
 JOIN locales l ON l.id = ps.local_id
