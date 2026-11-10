@@ -19,6 +19,25 @@ Anexos I (contrato de equipo), II (11 pasos) y IX, y enlace al tablero Kanban/Ga
 | [04_trello_tarjeta_wan](capturas/04_trello_tarjeta_wan.png) | Una tarjeta por dentro: la de la línea WAN |
 | [05_trello_etiquetas](capturas/05_trello_etiquetas.png) | Etiquetas usadas |
 
+## Validaciones del profesor
+
+Lo que el profesor (o la profesora de Redes) ha revisado y dado por bueno, con la fecha.
+
+| Fecha | Criterio o parte | Resultado |
+| --- | --- | --- |
+| **10/11** | **Diseño web** | ✅ **5** |
+| **10/11** | **Implementación web** (HTTPS, dominio y AWS con Terraform) | ✅ **5** |
+| **10/11** | **ERP (Odoo)** | ✅ **5** |
+| **10/11** | **Copias de la BD**, con copia remota a S3 y restauración desde la nube hechas en directo delante del profesor ([prueba 18](../backups/README.md#pruebas)) | ✅ **5** |
+| **10/11** | **Digitalización: tecnologías habilitadoras** | ✅ **5** |
+| **10/11** | **Digitalización: arcade stick** | ✅ **5** |
+| 29/10 | Medidas de rendimiento de la recreativa ([resultados](../recreativa/medidas/resultados.md)) | ✅ Suficientes como constancia |
+| 27/10 | Venta en el TPV → ticket impreso solo, como impresión y factura automáticas ([TPV, prueba 8](../sistemas/tpv-barra/README.md#pruebas)) | ✅ Válido |
+| 26/10 | Packet Tracer: esquema, plano y configuración (profesora de Redes) ([prueba 9](../redes/README.md#6-pruebas)) | ✅ Correcto |
+| 26/10 | Windows 11 en lugar de Windows 10 en el equipo del gerente ([dual boot](../sistemas/gerente-dualboot/README.md)) | ✅ Válido |
+| — | Repetidor (*Range Extender*) en lugar de WDS, porque el firmware del TL-WR841N no tiene WDS ([repetidor](../redes/routers/repetidor/repetidor-wifi.md)) | ✅ Indicado por el profesor |
+| — | Montaje y funcionamiento del arcade stick ([prueba 1](../arcade-stick/README.md#7-pruebas)) | ✅ Funciona |
+
 ## Planificación
 
 ![Reparto de tareas y Gantt](../docs/diagramas/reparto_y_gantt.png)
