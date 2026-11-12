@@ -5,7 +5,7 @@ Contratación de la línea WAN, esquema de conectividad en Packet Tracer, plano 
 | Archivo | Qué es |
 | --- | --- |
 | [`packet-tracer/almichain.pkt`](packet-tracer/almichain.pkt) | Proyecto de Packet Tracer (vista lógica + vista física) con las IP configuradas en cada equipo. **Es la versión que ha validado la profesora**; las anteriores quedan en el historial de Git |
-| [`packet-tracer/topologia_validada.png`](packet-tracer/topologia_validada.png) | Topología del proyecto validado: equipos, modelos, IP y puertos de cada cable |
+| [`packet-tracer/topologia_validada.png`](packet-tracer/topologia_validada.png) | Captura de la vista lógica del proyecto validado, con las IP de cada equipo |
 | [`packet-tracer/plano_local.png`](packet-tracer/plano_local.png) | Plano del local: ubicación de equipos, cableado y cobertura Wi-Fi. Es la imagen de fondo de la vista física |
 | [`packet-tracer/config/`](packet-tracer/config) | Configuración de los dos routers Cisco y del switch, sacada del proyecto validado y lista para pegar en la CLI |
 | [`packet-tracer/capturas/`](packet-tracer/capturas) | Capturas de las pruebas en el simulador |
@@ -13,7 +13,7 @@ Contratación de la línea WAN, esquema de conectividad en Packet Tracer, plano 
 | [`routers/router-y-repetidor.md`](routers/router-y-repetidor.md) | Routers físicos del aula: red de clientes y repetidor Wi-Fi (Iñigo y Yeray) |
 | [`../docs/Comparativa y contratación de la línea WAN.pdf`](<../docs/Comparativa y contratación de la línea WAN.pdf>) | Comparativa de ofertas de fibra y elección de la línea WAN (Yeray) |
 
-![Topología del proyecto validado](packet-tracer/topologia_validada.png)
+![Vista lógica del proyecto validado en Packet Tracer](packet-tracer/topologia_validada.png)
 
 ## 1. Qué representa el proyecto
 
