@@ -25,6 +25,8 @@ Lo que el profesor (o la profesora de Redes) ha revisado y dado por bueno, con l
 
 | Fecha | Criterio o parte | Resultado |
 | --- | --- | --- |
+| **12/11** | **Ampliación de la cobertura Wi-Fi**: router y repetidor con la red de clientes aislada del servidor · profesora de Redes ([routers](../redes/routers/router-y-repetidor.md)) | ✅ **Validado** |
+| **12/11** | **Diseño y esquema de conectividad**: versión final del Packet Tracer · profesora de Redes ([`almichain.pkt`](../redes/packet-tracer/almichain.pkt)) | ✅ **Validado** |
 | **10/11** | **Instalación de SO y arranque dual** (Windows 11 + Ubuntu, cifrados) · profesor de Sistemas | ✅ **Validado** |
 | **10/11** | **Restricción de cuentas y equipos** (mínimo privilegio en el gerente, el TPV y la recreativa) · profesor de Sistemas | ✅ **Validado** |
 | **10/11** | **Optimización y monitorización de la máquina recreativa** · profesor de Sistemas | ✅ **Validado** |
