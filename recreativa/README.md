@@ -154,7 +154,7 @@ Como front-end se usa la **interfaz propia de MAME**, que arranca sola al encend
 | Incidencia: falla la instalación de SSH (`dpkg` y `_ssh`) | [rec_15](capturas/rec_15_incidencia_ssh_dpkg.png) |
 | Dependencias de OpenSSH y arranque con sysvinit (`cat /proc/1/comm`) | [rec_16](capturas/rec_16_ssh_dependencias_sysvinit.png) |
 
-El funcionamiento y el rendimiento los validó el profesor (ver [`medidas/resultados.md`](medidas/resultados.md#4-validación)); el juego con el arcade stick está en [`../arcade-stick/`](../arcade-stick/README.md#7-pruebas). Las capturas de mínimo privilegio son las `rec_24` a `rec_28` del apartado 6.
+El funcionamiento y el rendimiento los validó el profesor (ver [`medidas/resultados.md`](medidas/resultados.md#4-validación)); el juego con el arcade stick está en [`../arcade-stick/`](../arcade-stick/README.md#8-pruebas). Las capturas de mínimo privilegio son las `rec_24` a `rec_28` del apartado 6.
 
 ## Relacionado
 

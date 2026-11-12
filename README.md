@@ -36,7 +36,7 @@ Las 16 tareas de la hoja de seguimiento, con el documento que la explica y dónd
 | 2 | Identificar, documentar e instalar el software necesario | [Fichas, apartado 8](docs/presupuesto/fichas_hw_sw.md#8-software-todo-de-coste-0) | La instalación de cada programa está en la guía de su equipo (columna «Instalación» de esa tabla) |
 | 3 | Web en AWS | [Guía de la web](docs/web/guia_web.md) · [Despliegue en AWS](docs/infra/despliegue_aws.md) | [Pruebas de la web](docs/web/guia_web.md#6-pruebas-y-evidencias) · [pruebas de AWS](docs/infra/despliegue_aws.md#6-pruebas-y-evidencias) |
 | 4 | ERP + TPV | [ERP](erp/README.md) · [TPV](sistemas/tpv-barra/README.md) | [Pruebas del ERP](erp/README.md#pruebas) |
-| 5 | Arcade stick con Arduino | [Arcade stick](arcade-stick/README.md) | [Pruebas](arcade-stick/README.md#7-pruebas) |
+| 5 | Arcade stick con Arduino | [Arcade stick](arcade-stick/README.md) | [Pruebas](arcade-stick/README.md#8-pruebas) |
 | 6 | Configurar una impresora | [TPV, impresora](sistemas/tpv-barra/README.md#impresora-de-tickets) | [Pruebas 5–8 del TPV](sistemas/tpv-barra/README.md#pruebas) |
 | 7 | Instalación de SO con arranque dual | [Dual boot](sistemas/gerente-dualboot/README.md) | [Resultado final](sistemas/gerente-dualboot/README.md#9-resultado-final) |
 | 8 | Elección de la conectividad WAN | [Línea WAN](redes/routers/wan/README.md) | [Comparativa (PDF)](docs/Comparativa%20y%20contratación%20de%20la%20línea%20WAN.pdf) |

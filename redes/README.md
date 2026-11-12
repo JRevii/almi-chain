@@ -27,6 +27,8 @@ El proyecto tiene cinco zonas, las mismas que el [esquema general del reto](../d
 
 Como las IP públicas reales cambian, internet se simula con el rango `203.0.113.0/24`, reservado para documentación.
 
+**Packet Tracer y presupuesto.** El proyecto de Packet Tracer reproduce el **laboratorio** con el que hemos montado el reto: las cuatro máquinas virtuales salen por el adaptador puente de VirtualBox, que en el simulador es el switch `Puente-VirtualBox`, y los dos routers Wi-Fi son los del aula. El [presupuesto](../docs/presupuesto/fichas_hw_sw.md#5-red) dimensiona el **local real** con el mismo diseño: el router R1-AlmiChain, el switch de empleados (`SW-Empleados`, que hace el papel de `Puente-VirtualBox`), un switch para la Wi-Fi (`SW-WiFi`) y los dos puntos de acceso. Las redes, las IP, la ACL de aislamiento y la seguridad son las mismas en los dos casos.
+
 ## 2. Direccionamiento
 
 | Red | Rango | Puerta de enlace | Uso |
