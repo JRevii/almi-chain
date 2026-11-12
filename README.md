@@ -22,6 +22,10 @@ Proyecto en equipo del Centro de Estudios ALMI: infraestructura informática com
 | `bd/` | Modelo E/R, modelo relacional y scripts SQL | Base de datos |
 | `backups/` | Disco redundante (RAID), plan de copias local y remoto (AWS S3) y pruebas de restauración | Copias de seguridad |
 
+## Manual técnico (entrega)
+
+**[`docs/Almi-Chain_Manual_tecnico.pdf`](docs/Almi-Chain_Manual_tecnico.pdf)**: el manual completo en PDF (128 páginas), con portada, índice y, para cada parte, el resumen y la guía paso a paso con sus capturas, comandos y pruebas. Se genera a partir de las guías de este repositorio.
+
 ## Dónde está cada tarea del reto
 
 Las 16 tareas de la hoja de seguimiento, con el documento que la explica y dónde están sus pruebas.
