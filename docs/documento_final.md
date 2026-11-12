@@ -4,6 +4,8 @@
 |---|---|---|
 | ASIR 1º · Centro de Estudios ALMI | Jon, Sendoa, Yeray, Iñigo, Alejandro y Jose | 13/11/2026 |
 
+> **Versión en PDF (manual técnico completo):** [`Almi-Chain_Manual_tecnico.pdf`](Almi-Chain_Manual_tecnico.pdf).
+
 ## Índice
 
 1. [Introducción y arquitectura](#1-introducción-y-arquitectura)
