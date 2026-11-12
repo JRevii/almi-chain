@@ -15,6 +15,7 @@ Documento final del reto y diagramas de arquitectura (en `diagramas/`).
 | [`presupuesto/fichas_hw_sw.md`](presupuesto/fichas_hw_sw.md) | Fichas de hardware y software de un local |
 | [`presupuesto/presupuesto_local_plano.xlsx`](presupuesto/presupuesto_local_plano.xlsx) | Presupuesto de un local según el plano de cableado y Wi-Fi |
 | [`digitalizacion/digitalizacion.md`](digitalizacion/digitalizacion.md) | Tecnologías habilitadoras digitales, comparativa de alternativas y cómo transforman el restaurante |
+| [`presentacion/Almi-Chain_presentacion_Jose.pdf`](presentacion/Almi-Chain_presentacion_Jose.pdf) · [`.pptx`](presentacion/Almi-Chain_presentacion_Jose.pptx) | Diapositivas de Jose para la presentación (bocetos, web, presupuesto y Digitalización), con notas del orador |
 
 ## Pasos para reproducir
 
