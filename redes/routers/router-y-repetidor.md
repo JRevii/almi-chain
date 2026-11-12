@@ -31,8 +31,6 @@ Los papeles se intercambiaron respecto a la primera configuración: el aparato q
 
 El reto pedía un segundo router enlazado por WDS. El panel de este modelo no tiene WDS: ofrece los modos Wireless Router, WISP, Access Point y Range Extender, y el menú Wireless solo tiene Basic Settings, WPS, Wireless Security, MAC Filtering, Wireless Advanced y Wireless Statistics. Se consultó al profesor, que indicó que el aparato hiciera de repetidor.
 
-![Modos disponibles](repetidor/capturas/02-router2-modos.png)
-![Sin opción WDS](repetidor/capturas/04-router2-sin-wds.png)
 
 ## 4. Router
 
