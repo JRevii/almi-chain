@@ -63,6 +63,8 @@ El Gantt es la **planificación inicial** (26/10 – 13/11). Cambios respecto al
 | Sendoa Guerrero | Técnico | Servidor, RAID y copias |
 | Alex Marquez | Técnico | Base de datos y ERP |
 
+Como coordinador, Jon tenía sus propias tareas (las de la tabla) y, además, se encargaba de que el trabajo avanzara: resolver dudas, echar una mano a los compañeros cuando se atascaban y revisar que lo que se subía a GitHub estuviera completo. Cada parte es de su responsable, que es quien la ha hecho y quien la defiende.
+
 ## Cómo se lleva el seguimiento
 
 1. **Planificar:** el Gantt reparte las tareas por persona y fecha, y el contrato (Anexo I) fija el responsable y el apoyo de cada una.
