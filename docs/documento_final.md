@@ -41,17 +41,17 @@ El esquema reparte la solución en cuatro zonas. **En la nube (AWS Academy)** es
 
 **Responsable:** Yeray · **Fuente:** [`gestion/README.md`](../gestion/README.md)
 
-- Contrato de equipo (Anexo I), Gantt, Trello y actas.
+- Contrato de equipo (Anexo I), documento de los 11 pasos (Anexo II), Gantt y Trello.
 - Reparto de tareas: [`diagramas/reparto_y_gantt.png`](diagramas/reparto_y_gantt.png)
 - Normas del repositorio: [`CONTRIBUTING.md`](../CONTRIBUTING.md)
 
-*Resumen pendiente.*
+Somos seis, con los roles del contrato de equipo (Anexo I), firmado por todos el 26/10: Jon coordina, Yeray es el secretario, Iñigo el portavoz, Jose lleva la documentación, y Sendoa y Alejandro son técnicos. Cada tarea tiene un responsable, un apoyo y una dificultad en puntos, y se planificó en un Gantt de tres semanas (del 26/10 al 13/11). El día a día se siguió en Trello. Todo el trabajo está en GitHub: cada cambio entra con una rama y una pull request revisada, así que queda registrado quién hizo cada cosa y cuándo. Los profesores han validado las tareas según se terminaban (ver la tabla de validaciones en [`gestion/`](../gestion/README.md#validaciones-del-profesor)). Cambios sobre el plan: repetidor en lugar de WDS, Windows 11 en el gerente y la factura automática, que pasó de Sendoa a Yeray e Iñigo. La metodología de los 11 pasos está en el Anexo II.
 
 ## 3. Necesidades de comunicación
 
 **Responsable:** Iñigo · **Fuente:** [`necesidades/necesidades-comunicacion.md`](necesidades/necesidades-comunicacion.md)
 
-*Resumen pendiente: inventario de equipos, redes (empleados y clientes) y tráfico.*
+El local tiene dos redes. En la de **empleados** (`10.13.10.0/24`, por cable y con IP fijas) están el servidor, los dos TPV, el PC del gerente y la recreativa. La Wi-Fi de **clientes** (`10.13.20.0/24`, por DHCP) va aparte, con el router principal y el repetidor. La impresora de tickets va por USB al TPV, sin red, y la web está en AWS, fuera del local. Para cada equipo se indica con quién habla, por qué puerto y si va cifrado: los TPV y el gerente usan Odoo por HTTPS (443), el técnico administra por SSH solo con clave, y los clientes solo salen a internet. También se define el tráfico que **no** debe existir: de la Wi-Fi de clientes a la red de empleados, PostgreSQL y Odoo accesibles desde fuera del servidor, y SSH desde la red de clientes. El riesgo principal es que la recreativa, de uso público, comparte red con los TPV, y se mitiga dejándola sin ningún servicio escuchando.
 
 ## 4. Equipos: presupuesto y fichas de hardware y software
 
@@ -71,7 +71,7 @@ El equipo del gerente es una VM de VirtualBox con firmware **EFI, TPM 2.0 y arra
 
 **Responsables:** Iñigo (TPV) y Jon (impresora) · **Fuentes:** [`sistemas/tpv-barra/README.md`](../sistemas/tpv-barra/README.md) y [`sistemas/tpv-barra/tpv-quiosco.md`](../sistemas/tpv-barra/tpv-quiosco.md)
 
-*Pendiente (Iñigo): modo quiosco, usuario estándar y certificado del servidor.*
+**TPV (Iñigo).** En el aula, el TPV es una VM con Windows 10 Pro; en la compra real llevaría Windows 11 IoT Enterprise LTSC. El cajero entra con la cuenta `tpv`, que es **estándar** y queda encerrada en un **quiosco de Edge** (acceso asignado de Windows): a pantalla completa, sin barra de direcciones ni pestañas, y abriendo solo el punto de venta de Odoo. Odoo va por **HTTPS** con el certificado de nuestra CA instalado como de confianza, así que no sale ningún aviso. En Odoo, el cajero solo tiene permiso de punto de venta: si intenta crear un producto, Odoo se lo deniega. En la prueba de restricción, ninguna de las siete combinaciones probadas (tecla Windows, Alt+Tab, Alt+F4, Ctrl+Shift+Esc, entre otras) saca del quiosco. Se trabajó con instantáneas, porque la primera vez no se pudo salir del quiosco y hubo que rehacer la VM.
 
 **Impresora de tickets (Jon).** La impresora va por USB a la VM del TPV. Con el controlador USB 3.0 de VirtualBox, Windows daba el error *Código 10*, y se resolvió pasando a **USB 1.1 (OHCI)**. El driver lo instala solo el administrador, nunca el usuario `tpv`, y la impresora queda como **predeterminada**. En Odoo está activada la **impresión automática del recibo**: al validar el pago, el ticket se imprime solo, con el logo de Almi-Chain y el IVA al 10 %. El profesor la validó el 27/10 como impresión y factura automáticas, y está grabada en vídeo. En el aula se usa la Samsung ML-2165 (láser A4), y en la compra real dos Epson TM-T20III térmicas de 80 mm, que se configuran igual.
 
@@ -85,7 +85,7 @@ El equipo del gerente es una VM de VirtualBox con firmware **EFI, TPM 2.0 y arra
 | Esquema de conectividad, plano y Packet Tracer | [`redes/README.md`](../redes/README.md) |
 | Router y repetidor Wi-Fi (en lugar de WDS) | [`redes/routers/repetidor/repetidor-wifi.md`](../redes/routers/repetidor/repetidor-wifi.md) |
 
-*Pendiente (Yeray): por qué esa fibra.*
+**Línea WAN (Yeray).** Se compararon Movistar, Vodafone y MásMóvil para empresas, y se eligió **Vodafone con fibra de 1 Gb simétrica**. El primer año cuesta casi lo mismo que MásMóvil, y a partir del mes 13 es la más barata (35 €/mes con IVA), con la instalación sin coste y un router Wi-Fi 6 incluido. Que sea simétrica importa porque cada noche se suben las copias de seguridad a AWS. La permanencia es de 12 meses. No se contrata IP fija porque ningún servicio del local se ofrece a internet: la web está en AWS.
 
 **Diseño de la red en Packet Tracer (Jon).** El local tiene un router propio (R1) detrás de la fibra y **dos redes separadas**: la de **empleados** (`10.13.10.0/24`, por cable: servidor, TPV, gerente y recreativa) y la Wi-Fi de **clientes** (`10.13.20.0/24`). R1 hace NAT, reparte IP por DHCP y tiene una **ACL** que deja a los clientes salir a internet pero no entrar en la red de empleados. El router solo se administra por **SSH v2** y solo desde la red de empleados. Los switches no se administran en remoto y sus puertos libres están apagados. La Wi-Fi usa **WPA2-PSK con AES**, con el mismo SSID y canal en el punto de acceso principal y en el repetidor. Las IP están configuradas en cada equipo del proyecto. La profesora lo validó el 26/10. En la prueba de aislamiento, el móvil de clientes no llega al servidor (100 % de pérdida) y sí sale a internet.
 
@@ -123,7 +123,9 @@ El despliegue es **infraestructura como código**: un solo `terraform apply` cre
 
 **Configuración de Odoo (Alejandro).** Usamos **Odoo 19 Community** con seis ámbitos: Facturación, CRM, Empleados, Marketing, Inventario y TPV. La carta, los ingredientes, los clientes y los empleados se cargaron desde ficheros CSV con **ID externo**, así que volver a importar actualiza los registros en lugar de duplicarlos, y antes de importar se pulsa «Probar», que avisa de los errores. También se exportaron datos a CSV y XLSX. Hay tres usuarios por rol: **Gerente Almi** (facturación, marketing y empleados) y **Barra 1** y **Barra 2**, que solo pueden usar el TPV (sin Ventas, Contabilidad ni Contactos, y sin poder exportar), para cumplir el mínimo privilegio. El CRM tiene un flujo de cuatro etapas (Nuevo, Calificado, Propuesta y Ganado) con cuatro oportunidades de ejemplo, y en Marketing hay una lista de correo de clientes y una campaña en borrador, sin enviar. Las contraseñas se asignan a mano y no están en el repositorio. Las capturas de cada paso están en [`erp/capturas/`](../erp/capturas).
 
-*Pendiente (Sendoa, Iñigo y Yeray): Odoo Community + PostgreSQL en Docker y factura automática al vender en el TPV.*
+**Servidor (Sendoa).** Es una VM con Ubuntu Server 24.04 LTS que ejecuta con **Docker Compose** tres contenedores: Odoo 19, PostgreSQL 16 y Nginx. Solo **Nginx** se publica (puertos 80 y 443): redirige de HTTP a HTTPS y usa el certificado de nuestra CA. Odoo y PostgreSQL no tienen ningún puerto abierto, y se comprobó con `nmap`. El cortafuegos (UFW) solo deja pasar 22, 80 y 443 desde la red local; SSH solo admite claves, y el gestor de bases de datos de Odoo está desactivado. Los datos están en un RAID 1 y se copian cada noche (apartado 12). Se instala con cinco scripts numerados, así que se puede repetir desde cero.
+
+**Factura automática (Iñigo y Yeray).** Al validar el pago en el TPV, Odoo imprime el ticket solo, con el logo de Almi-Chain y el IVA al 10 %. El profesor lo validó como factura automática. Como mejora, queda documentado el código de una regla de Odoo para emitir también la factura con número.
 
 ## 11. Base de datos
 
