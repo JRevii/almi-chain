@@ -123,6 +123,8 @@ Así queda la red según el plano: la fibra entra en el **rack** del despacho de
 | AP principal | TP-Link Archer C6 AC1200 en modo punto de acceso | Wi-Fi de clientes en el comedor, WPA2-AES, canal 6 | 45,00 € |
 | AP repetidor | TP-Link Archer C6 AC1200 | **Repetidor** (modo *Range Extender*) al otro lado del comedor, solo con corriente. Repite la Wi-Fi de clientes sin cable | 45,00 € |
 
+**Relación con Packet Tracer:** el [proyecto de Packet Tracer](../../redes/README.md) reproduce el laboratorio del reto con este mismo diseño. Allí el switch de empleados se llama `Puente-VirtualBox`, porque las máquinas del laboratorio salen por el adaptador puente de VirtualBox, y los dos puntos de acceso son los routers Wi-Fi del aula. Las redes, las IP y la seguridad son las mismas.
+
 **Por qué un router propio:** el router del operador no deja hacer ACL ni separar bien las dos redes. Con R1 controlamos nosotros la red, y si cambiamos de operador solo cambia la ONT.
 
 **Por qué dos switches:** así los equipos de empleados y el Wi-Fi de clientes van por cables y switches distintos. Un cliente del Wi-Fi no puede llegar al servidor ni a los TPV.
