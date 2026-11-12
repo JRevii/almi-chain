@@ -1,6 +1,6 @@
 # Router y repetidor Wi-Fi
 
-Responsables: Iñigo y Yeray.
+Responsables: Iñigo y Yeray. Estado: ✅ **validado por la profesora de Redes el 12/11**.
 
 ## 1. Objetivo y diseño
 
@@ -67,27 +67,36 @@ Todo se configura por cable.
 
 1. Reset de fábrica y contraseña de administración generada, distinta de la del router.
 2. WPS desactivado antes de pasar a modo repetidor. En modo Range Extender el menú de Wireless no muestra la opción WPS, así que no se puede volver a comprobar desde el panel.
+
+![WPS desactivado en el repetidor](repetidor/capturas/r2_04_wps_desactivado.png)
 3. Quick Setup, Range Extender. En el escaneo salen muchas redes de otros grupos con nombres casi iguales, así que se elige la red comprobando que su BSSID es el del router (C0:C9:E3:B3:9B:BA, entero, hasta el último byte) y no solo por el nombre.
+
+![Elección de la red por su BSSID](repetidor/capturas/r2_02_range_extender.png)
 4. Se escribe la clave de la Wi-Fi del router (la misma, no una nueva) pegándola desde KeePassXC, y se deja el mismo nombre de red.
 5. Tras reiniciar, se comprueba en Status el modo Range Extender, el canal 6 y la conexión con el router.
 
 ## 6. Prueba de aislamiento
 
-Con el PC por cable al router, como cliente de la red 192.168.0.x, se lanzan estos comandos contra el servidor de Odoo (192.168.1.50):
+La regla de Access Control del router impide que los clientes de la Wi-Fi lleguen al servidor de Odoo (`192.168.1.50`), y el resto de internet sigue funcionando.
 
-ping -c 3 192.168.1.50
-curl -k -m 5 -o /dev/null -w “%{http_code}\n” https://192.168.1.50
+| # | Prueba | Resultado esperado | Resultado | Captura |
+| --- | --- | --- | --- | --- |
+| 1 | PC conectado al router (IP `192.168.0.100`): `ping 8.8.8.8` | Responde (hay internet) | ✅ 0 % de pérdida | [p1_pruebas](repetidor/capturas/p1_pruebas_repetidor.png) |
+| 2 | Mismo PC: `ping 192.168.0.1` | Responde (la red local funciona) | ✅ 0 % de pérdida | [p1_pruebas](repetidor/capturas/p1_pruebas_repetidor.png) |
+| 3 | Mismo PC: `ping 192.168.1.50` | Falla (servidor aislado) | ✅ 100 % de pérdida, «Destination Host Unreachable» | [p1_pruebas](repetidor/capturas/p1_pruebas_repetidor.png) |
+| 4 | Mismo PC: `curl https://192.168.1.50` | No conecta | ✅ «Couldn't connect to server» | [p1_pruebas](repetidor/capturas/p1_pruebas_repetidor.png) |
+| 5 | Móvil conectado a `AlmiChain-Clientes` | Conectado | ✅ | [p1_movil](repetidor/capturas/p1_movil_conectado.PNG) |
+| 6 | Móvil: Odoo (`192.168.1.50`, puerto 443) | No conecta | ✅ TCP 443 bloqueado al 100 %. La app marca 1 de 3 respuestas en el ping ICMP; la prueba 3, con `ping` desde el PC, confirma que el servidor no responde | [p2_aislamiento](repetidor/capturas/p2_aislamiento_movil.PNG) |
+| 7 | Móvil: navegar por internet | Carga | ✅ | [p3_buscador](repetidor/capturas/p3_buscador_funcionable.PNG) |
 
-
-Con la regla activa, el servidor no debe ser accesible: el ping debe perder todos los paquetes y la petición web debe terminar por tiempo de espera. La captura recoge el resultado obtenido.
-
-![Prueba de aislamiento](router/capturas/r1_07_prueba_aislamiento.png)
+![Pruebas desde el PC](repetidor/capturas/p1_pruebas_repetidor.png)
 
 ## 7. Incidencias
 
 - Error 80002 (Unknown error) al guardar cambios de Wi-Fi desde el móvil: la Wi-Fi se reinicia al guardar y se corta la conexión con el panel. Solución: configurar siempre por cable.
 - El reset de fábrica reactiva el WPS y vuelve a la contraseña de fábrica: hay que desactivarlo y cambiarla.
 - En la primera configuración, el servidor seguía siendo accesible desde la red de clientes (respondían el ping y la web). Se corrigió la regla de Access Control y se repitió la prueba.
+- Con la regla ya bien, se cortó también internet: en *Default Filtering Rules* estaba marcado **Deny**, que bloquea todo lo que no está en una regla. Se cambió a **Allow** y la regla «Bloquear Aula» se dejó en Deny: así solo se bloquea la red del aula.
 - Una contraseña inicial débil llegó a escribirse en un chat. Se cambió tras el reset y no se reutiliza.
 
 ## 8. Riesgos y desviaciones
@@ -96,6 +105,7 @@ Con la regla activa, el servidor no debe ser accesible: el ping debe perder todo
 - No hay red de empleados y red de clientes separadas en el router: toda su Wi-Fi es de clientes, y los equipos y el servidor siguen en la red del aula (192.168.1.x). El plano preveía 10.13.10.x y 10.13.20.x.
 - La regla solo protege al rango del DHCP del router. Un equipo con IP fija fuera de ese rango no cae en ella.
 - Solo se prueba el ping y HTTPS al servidor. Otros puertos no se han comprobado.
+- No hay captura de la contraseña de administración ni de la pantalla de *Wireless Security* (WPA2-PSK con AES): se configuraron, pero no se capturaron.
 - Firmware de 2018 sin parches de seguridad en los dos aparatos.
 - El nombre AlmiChain-Clientes se parece al de redes de otros grupos, por eso se compara la MAC y no el nombre.
 - Canal 6 compartido con otras redes del aula, lo que puede bajar la velocidad.
@@ -104,6 +114,6 @@ Con la regla activa, el servidor no debe ser accesible: el ping debe perder todo
 
 1. Reset de los dos aparatos. Contraseña de administración distinta en cada uno, generadas en KeePassXC.
 2. Router: modo Wireless Router, WAN Dynamic IP, Wi-Fi con WPA2-PSK y AES en canal 6 fijo, WPS desactivado, gestión remota cerrada y DHCP 192.168.0.100-199.
-3. Router: regla de Access Control (host, destino y regla) para bloquear la red del aula, y probarla con ping y curl.
+3. Router: regla de Access Control (host, destino y regla) para bloquear la red del aula, con *Default Filtering Rules* en **Allow**, y probarla con ping y curl.
 4. Repetidor: WPS desactivado, Quick Setup, Range Extender, red elegida por su BSSID y la misma clave.
 5. Guardar las capturas y los backups de los aparatos en KeePassXC (nunca en GitHub).
