@@ -1,5 +1,7 @@
 # Mejora del arcade stick: luces, altavoz y botón START lateral
 
+> **Esta mejora es la versión final del mando.** La guía completa, con todo integrado, está en el [README del arcade stick](../README.md). Este archivo es el diario de la mejora.
+
 Ampliación del [arcade stick](../README.md) hecha el 3 y el 4 de noviembre de 2026. Todo se monta en la tapa de la caja:
 
 - un LED RGB a la izquierda

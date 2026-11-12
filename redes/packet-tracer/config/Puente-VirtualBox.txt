@@ -1,0 +1,49 @@
+! =====================================================================
+! Puente-VirtualBox · Cisco 2960 · switch de la red de empleados
+! Representa el adaptador puente de VirtualBox: une el PC anfitrión y las
+! cuatro máquinas virtuales (Odoo, TPV, gerente y recreativa) con R1.
+! Es la configuración del proyecto validado (redes/packet-tracer/almichain.pkt).
+! Dónde: Puente-VirtualBox > pestaña CLI > Enter > "enable" > "configure terminal" > pegar
+! ANTES DE PEGAR: cambia CLAVE_ENABLE y CLAVE_ADMIN por claves tuyas.
+! =====================================================================
+hostname Puente-VirtualBox
+service password-encryption
+enable secret CLAVE_ENABLE
+username admin secret CLAVE_ADMIN
+no ip domain-lookup
+banner motd ^Acceso restringido a personal autorizado^
+!
+! --- Puertos en uso: Fa0/1 Odoo · Fa0/2 TPV · Fa0/3 gerente · Fa0/4 recreativa · Fa0/5 PC anfitrión ---
+! Port-security "sticky": cada puerto aprende la MAC de su equipo y, si se
+! conecta otro, descarta su tráfico y lo registra (violation restrict).
+interface range FastEthernet0/1 - 5
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky
+ switchport port-security violation restrict
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ no shutdown
+!
+! --- Puertos libres: apagados ---
+interface range FastEthernet0/6 - 24
+ description Sin uso
+ shutdown
+interface GigabitEthernet0/2
+ description Sin uso
+ shutdown
+!
+interface GigabitEthernet0/1
+ description Hacia R1-AlmiChain
+ no shutdown
+!
+! --- Sin administración remota: solo por consola ---
+line con 0
+ login local
+ exec-timeout 5 0
+line vty 0 15
+ login
+ transport input none
+!
+end
+write memory

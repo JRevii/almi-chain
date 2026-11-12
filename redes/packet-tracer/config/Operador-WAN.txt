@@ -1,0 +1,32 @@
+! =====================================================================
+! Operador-WAN · Cisco 2911 · simula el router de la fibra del operador
+! Es la configuración del proyecto validado (redes/packet-tracer/almichain.pkt).
+! Da a R1 su IP de WAN por DHCP (192.168.1.100 en adelante) y lo une con
+! el "internet" simulado (203.0.113.0/24: web en EC2, DuckDNS, Let's Encrypt,
+! GitHub y Trello).
+! Dónde: Operador-WAN > pestaña CLI > Enter > "enable" > "configure terminal" > pegar
+! =====================================================================
+hostname Operador-WAN
+no ip domain-lookup
+!
+interface GigabitEthernet0/0
+ description Hacia Internet
+ ip address 203.0.113.1 255.255.255.0
+ no shutdown
+!
+interface GigabitEthernet0/1
+ description Fibra hacia R1-AlmiChain (WAN del restaurante)
+ ip address 192.168.1.1 255.255.255.0
+ no shutdown
+!
+interface GigabitEthernet0/2
+ shutdown
+!
+ip dhcp excluded-address 192.168.1.1 192.168.1.99
+ip dhcp pool WAN
+ network 192.168.1.0 255.255.255.0
+ default-router 192.168.1.1
+ dns-server 203.0.113.11
+!
+end
+write memory

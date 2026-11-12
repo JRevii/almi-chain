@@ -41,7 +41,7 @@ Lo que el profesor (o la profesora de Redes) ha revisado y dado por bueno, con l
 | **10/11** | **Digitalización: arcade stick** | ✅ **5** |
 | 29/10 | Medidas de rendimiento de la recreativa ([resultados](../recreativa/medidas/resultados.md)) | ✅ Suficientes como constancia |
 | 27/10 | Venta en el TPV → ticket impreso solo, como impresión y factura automáticas ([TPV, prueba 8](../sistemas/tpv-barra/README.md#pruebas)) | ✅ Válido |
-| 26/10 | Packet Tracer: esquema, plano y configuración (profesora de Redes) ([prueba 9](../redes/README.md#6-pruebas)) | ✅ Correcto |
+| 26/10 | Packet Tracer: esquema, plano y configuración (profesora de Redes) ([prueba 9](../redes/README.md#7-pruebas)) | ✅ Correcto |
 | 26/10 | Windows 11 en lugar de Windows 10 en el equipo del gerente ([dual boot](../sistemas/gerente-dualboot/README.md)) | ✅ Válido |
 | — | Repetidor (*Range Extender*) en lugar de WDS, porque el firmware del TL-WR841N no tiene WDS ([repetidor](../redes/routers/router-y-repetidor.md)) | ✅ Indicado por el profesor |
 | — | Montaje y funcionamiento del arcade stick ([prueba 1](../arcade-stick/README.md#7-pruebas)) | ✅ Funciona |
