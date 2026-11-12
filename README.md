@@ -24,7 +24,7 @@ Proyecto en equipo del Centro de Estudios ALMI: infraestructura informática com
 
 ## Manual técnico (entrega)
 
-**[`docs/Almi-Chain_Manual_tecnico.pdf`](docs/Almi-Chain_Manual_tecnico.pdf)**: el manual completo en PDF (128 páginas), con portada, índice y, para cada parte, el resumen y la guía paso a paso con sus capturas, comandos y pruebas. Se genera a partir de las guías de este repositorio.
+**[`docs/Almi-Chain_Manual_tecnico.pdf`](docs/Almi-Chain_Manual_tecnico.pdf)**: el manual completo en PDF (127 páginas): portada, índice, y para cada parte un cuadro «Dónde está en GitHub», el resumen y la guía paso a paso con sus capturas, comandos y pruebas. Empieza por la red (Packet Tracer). Se genera a partir de las guías de este repositorio.
 
 ## Dónde está cada tarea del reto
 
