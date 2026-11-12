@@ -7,7 +7,7 @@ Anexos I (contrato de equipo), II (11 pasos) y IX, y enlace al tablero Kanban/Ga
 | Anexo | Documento | Estado |
 | --- | --- | --- |
 | I · Contrato de equipo | [`anexos/Anexo_I_Contrato_de_Equipo.pdf`](anexos/Anexo_I_Contrato_de_Equipo.pdf): roles, reparto de tareas (responsable y apoyo), normas, consecuencias y código de conducta | ✅ 26/10, firmado por los seis |
-| II · Documento de 11 pasos | — | ⏳ |
+| II · Documento de 11 pasos | [`anexos/Anexo_II_11_pasos.xlsx`](anexos/Anexo_II_11_pasos.xlsx): la plantilla de los 11 pasos del reto introductorio rellenada con este reto (activación del equipo, plantear, identificar, parámetros, información, alternativas, selección, planificación, ejecución, presentación y reflexión) | ✅ 12/11 |
 | IX · Seguimiento (Gantt/Kanban) y control de versiones | Gantt planificado: [`../docs/diagramas/reparto_y_gantt.png`](../docs/diagramas/reparto_y_gantt.png) · tablero de Trello: [Lista de tareas](https://trello.com/b/6ad9c97e065249af633349a0/lista-de-tareas) · control de versiones: este repositorio (ramas y PR, ver [`CONTRIBUTING.md`](../CONTRIBUTING.md)) | ✅ 27/10 · [captura del tablero](capturas/trello_tablero.png) |
 
 ### Capturas del tablero de Trello
