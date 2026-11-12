@@ -83,13 +83,13 @@ El equipo del gerente es una VM de VirtualBox con firmware **EFI, TPM 2.0 y arra
 |---|---|
 | Comparativa y contratación de la línea WAN | [`redes/routers/wan/README.md`](../redes/routers/wan/README.md) |
 | Esquema de conectividad, plano y Packet Tracer | [`redes/README.md`](../redes/README.md) |
-| Router y repetidor Wi-Fi (en lugar de WDS) | [`redes/routers/repetidor/repetidor-wifi.md`](../redes/routers/repetidor/repetidor-wifi.md) |
+| Router y repetidor Wi-Fi (en lugar de WDS) | [`redes/routers/router-y-repetidor.md`](../redes/routers/router-y-repetidor.md) |
 
 **Línea WAN (Yeray).** Se compararon Movistar, Vodafone y MásMóvil para empresas, y se eligió **Vodafone con fibra de 1 Gb simétrica**. El primer año cuesta casi lo mismo que MásMóvil, y a partir del mes 13 es la más barata (35 €/mes con IVA), con la instalación sin coste y un router Wi-Fi 6 incluido. Que sea simétrica importa porque cada noche se suben las copias de seguridad a AWS. La permanencia es de 12 meses. No se contrata IP fija porque ningún servicio del local se ofrece a internet: la web está en AWS.
 
 **Diseño de la red en Packet Tracer (Jon).** El local tiene un router propio (R1) detrás de la fibra y **dos redes separadas**: la de **empleados** (`10.13.10.0/24`, por cable: servidor, TPV, gerente y recreativa) y la Wi-Fi de **clientes** (`10.13.20.0/24`). R1 hace NAT, reparte IP por DHCP y tiene una **ACL** que deja a los clientes salir a internet pero no entrar en la red de empleados. El router solo se administra por **SSH v2** y solo desde la red de empleados. Los switches no se administran en remoto y sus puertos libres están apagados. La Wi-Fi usa **WPA2-PSK con AES**, con el mismo SSID y canal en el punto de acceso principal y en el repetidor. Las IP están configuradas en cada equipo del proyecto. La profesora lo validó el 26/10. En la prueba de aislamiento, el móvil de clientes no llega al servidor (100 % de pérdida) y sí sale a internet.
 
-*Pendiente (Iñigo y Yeray): routers físicos del aula, repetidor en lugar de WDS y por qué el aislamiento no se cumple con ellos (ver `repetidor-wifi.md`, apartado 7).*
+*Pendiente (Iñigo y Yeray): routers físicos del aula, repetidor en lugar de WDS y prueba de aislamiento (ver `router-y-repetidor.md`).*
 
 ## 7. Máquina recreativa
 
@@ -165,7 +165,7 @@ Resumen de las pruebas de cada parte. El detalle, los comandos y las capturas es
 | Recreativa | Rendimiento con 1 núcleo y 1 GB | Juego fluido sin swap | ✅ CPU 20,3 %, MAME 364 MB, `mame -bench` 1353–1613 % · validado por el profesor | [medidas](../recreativa/medidas/resultados.md) |
 | Arcade stick | Cada control, y en MAME, Chrome y RetroArch sin drivers | Cada entrada marca su tecla y los juegos responden | ✅ validado por el profesor | [arcade stick §7](../arcade-stick/README.md#7-pruebas) |
 | Red (Packet Tracer) | Aislamiento: el móvil de clientes hace ping al servidor | Falla | ✅ 05/11 · 100 % de pérdida · proyecto validado por la profesora el 26/10 | [redes §6, pruebas 3 y 9](../redes/README.md#6-pruebas) |
-| Red (routers del aula) | Móvil por el repetidor: conexión, internet y aislamiento | Navega y no llega a los equipos del aula | 🟡 Navega ✅. El ping a un equipo del aula **responde**: el router doméstico no aísla de la red del aula. El diseño sí lo cumple | [repetidor §7](../redes/routers/repetidor/repetidor-wifi.md#7-pruebas) |
+| Red (routers del aula) | Móvil por el repetidor: conexión, internet y aislamiento | Navega y no llega a los equipos del aula | ⏳ Routers reconfigurados el 12/11; pendientes las capturas nuevas | [routers](../redes/routers/router-y-repetidor.md#6-prueba-de-aislamiento) |
 | Web | Responsiva (1440, 768 y 390 px), menú, slideshow, formulario y geolocalización | Funciona en las tres anchuras | ✅ | [web §6](web/guia_web.md#6-pruebas-y-evidencias) |
 | Web | Validador W3C y Lighthouse de la web publicada | 0 errores y ≥ 90 | ✅ 0 errores · 99–100 | [web §6](web/guia_web.md#6-pruebas-y-evidencias) |
 | AWS | HTTPS, cabeceras de seguridad y reproducibilidad (`destroy` + `apply`) | Candado válido y la web vuelve igual | ✅ vuelve en 1 min 45 s | [AWS §6](infra/despliegue_aws.md#6-pruebas-y-evidencias) |
