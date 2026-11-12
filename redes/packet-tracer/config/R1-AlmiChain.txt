@@ -1,82 +1,87 @@
 ! =====================================================================
-! R1-AlmiChain · Cisco ISR4331 · router principal del local
-! Dónde: R1 > pestaña CLI > pulsa Enter > escribe "enable" y "configure terminal"
-! ANTES DE PEGAR: cambia CLAVE_ENABLE y CLAVE_ADMIN por claves tuyas
-! (y guárdalas en KeePassXC; no las subas a GitHub)
+! R1-AlmiChain · Cisco ISR4331 · router principal del restaurante
+! Es la configuración del proyecto validado (redes/packet-tracer/almichain.pkt),
+! sacada de su "show running-config".
+! Dónde: R1-AlmiChain > pestaña CLI > Enter > "enable" > "configure terminal" > pegar
+! ANTES DE PEGAR: cambia CLAVE_ENABLE y CLAVE_ADMIN por claves de 10 caracteres
+! o más (lo exige "security passwords min-length 10"). En el .pkt ya están
+! puestas y cifradas; no se suben en claro a GitHub.
 ! =====================================================================
 hostname R1-AlmiChain
-enable secret CLAVE_ENABLE
 service password-encryption
+security passwords min-length 10
+enable secret CLAVE_ENABLE
+username admin privilege 15 secret CLAVE_ADMIN
 no ip domain-lookup
 ip domain-name almichain.local
-username admin privilege 15 secret CLAVE_ADMIN
-banner motd # Acceso restringido. Solo personal autorizado de Almi-Chain. #
+banner motd ^Acceso restringido a personal autorizado^
 !
 ! --- Interfaces ---
 interface GigabitEthernet0/0/0
- description WAN - router del operador (fibra)
+ description WAN - Operador
  ip address dhcp
  ip nat outside
  no shutdown
 !
 interface GigabitEthernet0/0/1
- description LAN empleados (servidor, TPV, gerente, recreativa)
+ description LAN empleados
  ip address 10.13.10.1 255.255.255.0
  ip nat inside
  no shutdown
 !
 interface GigabitEthernet0/0/2
- description Wi-Fi de clientes (AP principal y AP repetidor)
+ description LAN clientes (aislada)
  ip address 10.13.20.1 255.255.255.0
  ip nat inside
- ip access-group WIFI-CLIENTES in
+ ip access-group CLIENTES-AISLADOS in
  no shutdown
 !
-! Ruta por defecto hacia el operador (por si el DHCP de la WAN no la instala)
-ip route 0.0.0.0 0.0.0.0 192.168.1.1
-!
-! --- DHCP: .1 a .99 reservadas para IP fijas ---
+! --- DHCP: .1 a .99 y .200 a .254 quedan para IP fijas ---
 ip dhcp excluded-address 10.13.10.1 10.13.10.99
+ip dhcp excluded-address 10.13.10.200 10.13.10.254
+ip dhcp excluded-address 10.13.20.1 10.13.20.99
+ip dhcp excluded-address 10.13.20.200 10.13.20.254
+!
 ip dhcp pool EMPLEADOS
  network 10.13.10.0 255.255.255.0
  default-router 10.13.10.1
- dns-server 1.1.1.1
-!
-ip dhcp excluded-address 10.13.20.1 10.13.20.99
+ dns-server 203.0.113.11
 ip dhcp pool CLIENTES
  network 10.13.20.0 255.255.255.0
  default-router 10.13.20.1
- dns-server 1.1.1.1
+ dns-server 203.0.113.11
 !
-! --- Seguridad: la Wi-Fi de clientes no ve la red de empleados ---
-ip access-list extended WIFI-CLIENTES
- remark Permitir DHCP para que los moviles reciban IP
+! --- NAT: las dos LAN salen a internet con la IP de la WAN ---
+ip access-list standard NAT-LAN
+ permit 10.13.10.0 0.0.0.255
+ permit 10.13.20.0 0.0.0.255
+ip nat inside source list NAT-LAN interface GigabitEthernet0/0/0 overload
+!
+! --- Aislamiento de la red de clientes ---
+ip access-list extended CLIENTES-AISLADOS
+ remark Permitir que los clientes pidan IP por DHCP
  permit udp any any eq bootps
- remark Bloquear el acceso de clientes a la LAN de empleados
+ remark Clientes no pueden llegar a la red de empleados
  deny ip 10.13.20.0 0.0.0.255 10.13.10.0 0.0.0.255
- remark Todo lo demas (internet) permitido
- permit ip 10.13.20.0 0.0.0.255 any
+ remark Clientes no pueden administrar el router
+ deny tcp any any eq 22
+ remark Todo lo demas (Internet) permitido
+ permit ip any any
 !
-! --- NAT: las dos redes salen a internet con la IP de la WAN ---
-access-list 1 remark Redes internas con salida a internet
-access-list 1 permit 10.13.10.0 0.0.0.255
-access-list 1 permit 10.13.20.0 0.0.0.255
-ip nat inside source list 1 interface GigabitEthernet0/0/0 overload
-!
-! --- Administración: solo por SSH y solo desde la LAN de empleados ---
+! --- Administración: solo SSH v2 y solo desde la red de empleados ---
+ip access-list standard SSH-ADMIN
+ permit 10.13.10.0 0.0.0.255
 crypto key generate rsa general-keys modulus 2048
 ip ssh version 2
-access-list 10 remark Solo la LAN de empleados administra el router
-access-list 10 permit 10.13.10.0 0.0.0.255
 !
 line con 0
- login local
  exec-timeout 5 0
+ login local
 line vty 0 4
+ access-class SSH-ADMIN in
+ exec-timeout 5 0
  login local
  transport input ssh
- access-class 10 in
- exec-timeout 5 0
 !
 end
 write memory

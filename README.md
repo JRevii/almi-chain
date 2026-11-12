@@ -22,9 +22,9 @@ Proyecto en equipo del Centro de Estudios ALMI: infraestructura informática com
 | `bd/` | Modelo E/R, modelo relacional y scripts SQL | Base de datos |
 | `backups/` | Disco redundante (RAID), plan de copias local y remoto (AWS S3) y pruebas de restauración | Copias de seguridad |
 
-## Manual técnico (entrega)
+## Documentación Reto 1 (entrega)
 
-**[`docs/Almi-Chain_Manual_tecnico.pdf`](docs/Almi-Chain_Manual_tecnico.pdf)**: el manual completo en PDF (127 páginas): portada, índice, y para cada parte un cuadro «Dónde está en GitHub», el resumen y la guía paso a paso con sus capturas, comandos y pruebas. Empieza por la red (Packet Tracer). Se genera a partir de las guías de este repositorio.
+**[`docs/Documentacion_Reto_1.pdf`](docs/Documentacion_Reto_1.pdf)**: la documentación completa en PDF, escrita como un manual. Tiene portada, índice con páginas y marcadores, y para cada parte un cuadro «Dónde está en GitHub», el resumen y la guía paso a paso con sus capturas, comandos y pruebas, cada una con su ruta en el repositorio. Empieza por la red (Packet Tracer). Se genera a partir de las guías de este repositorio, así que recoge siempre su última versión.
 
 ## Dónde está cada tarea del reto
 
@@ -40,7 +40,7 @@ Las 16 tareas de la hoja de seguimiento, con el documento que la explica y dónd
 | 6 | Configurar una impresora | [TPV, impresora](sistemas/tpv-barra/README.md#impresora-de-tickets) | [Pruebas 5–8 del TPV](sistemas/tpv-barra/README.md#pruebas) |
 | 7 | Instalación de SO con arranque dual | [Dual boot](sistemas/gerente-dualboot/README.md) | [Resultado final](sistemas/gerente-dualboot/README.md#9-resultado-final) |
 | 8 | Elección de la conectividad WAN | [Línea WAN](redes/routers/wan/README.md) | [Comparativa (PDF)](docs/Comparativa%20y%20contratación%20de%20la%20línea%20WAN.pdf) |
-| 9 | Diseño y esquema de conectividad | [Redes](redes/README.md) | [Packet Tracer](redes/packet-tracer/almichain.pkt) · [pruebas](redes/README.md#6-pruebas) |
+| 9 | Diseño y esquema de conectividad | [Redes](redes/README.md) | [Packet Tracer](redes/packet-tracer/almichain.pkt) · [pruebas](redes/README.md#7-pruebas) |
 | 10 | Ampliación de la cobertura Wi-Fi | [Repetidor](redes/routers/router-y-repetidor.md) | [Pruebas](redes/routers/router-y-repetidor.md#6-prueba-de-aislamiento) |
 | 11 | Restricción de cuentas y equipos | [Gerente](sistemas/gerente-dualboot/README.md#11-seguridad-aplicada) · [TPV](sistemas/tpv-barra/README.md#mínimo-privilegio) · [recreativa](recreativa/README.md#6-seguridad-mínimos-privilegios) | [Mínimo privilegio en cada parte](docs/documento_final.md#142-mínimo-privilegio-en-cada-parte) |
 | 12 | Optimizar y monitorizar la recreativa | [Recreativa](recreativa/README.md) | [Medidas](recreativa/medidas/resultados.md) |
