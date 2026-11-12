@@ -21,7 +21,7 @@ Documento final del reto y diagramas de arquitectura (en `diagramas/`).
 
 Orden para montar todo desde cero. Cada guía es independiente y explica sus pasos, comandos y pruebas.
 
-1. **Red:** diseño y direccionamiento en [`../redes/README.md`](../redes/README.md). Routers del aula en [`../redes/routers/repetidor/repetidor-wifi.md`](../redes/routers/repetidor/repetidor-wifi.md).
+1. **Red:** diseño y direccionamiento en [`../redes/README.md`](../redes/README.md). Routers del aula en [`../redes/routers/router-y-repetidor.md`](../redes/routers/router-y-repetidor.md).
 2. **Servidor (Odoo, PostgreSQL y HTTPS):** scripts `01` a `04` de [`../erp/README.md`](../erp/README.md).
 3. **RAID y copias:** script `05` y pruebas en [`../backups/README.md`](../backups/README.md). Copia en S3 con [`../infra/terraform-copias/README.md`](../infra/terraform-copias/README.md).
 4. **Base de datos del local:** scripts `00` a `05`, en orden, desde [`../bd/README.md`](../bd/README.md).

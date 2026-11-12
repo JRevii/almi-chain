@@ -9,7 +9,7 @@ Contratación de la línea WAN, esquema de conectividad, plano de red y cableado
 | [`packet-tracer/plano_local.png`](packet-tracer/plano_local.png) | Plano del local: ubicación de equipos, cableado y cobertura Wi-Fi. Es la imagen de fondo de la vista física |
 | [`packet-tracer/config/`](packet-tracer/config) | Configuración de cada router y switch, lista para pegar en la CLI |
 | [`routers/wan/`](routers/wan) | Comparativa y elección de la línea WAN (Yeray) |
-| [`routers/repetidor/repetidor-wifi.md`](routers/repetidor/repetidor-wifi.md) | Routers físicos del aula: red de clientes y repetidor Wi-Fi (Iñigo y Yeray) |
+| [`routers/router-y-repetidor.md`](routers/router-y-repetidor.md) | Routers físicos del aula: red de clientes y repetidor Wi-Fi (Iñigo y Yeray) |
 | [`../docs/Comparativa y contratación de la línea WAN.pdf`](<../docs/Comparativa y contratación de la línea WAN.pdf>) | Comparativa de ofertas de fibra y elección de la línea WAN (Yeray) |
 
 ![Esquema de conectividad](packet-tracer/esquema_conectividad.png)
@@ -75,7 +75,7 @@ Las impresoras de tickets y el arcade stick van por USB a su equipo, así que en
 
 ## 4. Ampliación de la Wi-Fi con WDS
 
-> **En los routers físicos del aula se usa un repetidor y no WDS.** El segundo router (TP-Link TL-WR841N v14) no tiene la opción WDS en su firmware, y el profesor indicó que hiciera de repetidor (*Range Extender*). La configuración real, las capturas y las pruebas están en [`routers/repetidor/repetidor-wifi.md`](routers/repetidor/repetidor-wifi.md). Este apartado describe el diseño en Packet Tracer.
+> **En los routers físicos del aula se usa un repetidor y no WDS.** El segundo router (TP-Link TL-WR841N v14) no tiene la opción WDS en su firmware, y el profesor indicó que hiciera de repetidor (*Range Extender*). La configuración real, las capturas y las pruebas están en [`routers/router-y-repetidor.md`](routers/router-y-repetidor.md). Este apartado describe el diseño en Packet Tracer.
 
 El segundo router se coloca al fondo del comedor (ver el plano). Solo lleva corriente, y su conexión con el principal es inalámbrica, por WDS. Para que el WDS funcione:
 - Los dos tienen que estar en el **mismo canal** (6).
@@ -105,5 +105,5 @@ La profesora solo pide el esquema en Packet Tracer, y ya lo ha validado (prueba 
 | 5 | Desde el PC anfitrión, `ssh -l admin 10.13.10.1` | Pide la contraseña y entra | Opcional |
 | 6 | Desde el portátil del cliente, `ssh -l admin 10.13.20.1` | **Rechazado** | Opcional |
 | 7 | En R1: `show ip nat translations`, `show ip dhcp binding` y `show access-lists` | Aparecen las traducciones, las IP repartidas y los bloqueos de la ACL | Opcional |
-| 8 | Routers físicos del aula: un móvil conectado al **repetidor** navega y no llega a la LAN | Navega, recibe IP del router principal y el ping a los equipos de la LAN falla | 🟡 Repetidor validado por el profesor en lugar de WDS. El móvil se conecta y navega ✅, pero **el ping a un equipo del aula responde**: el aislamiento de invitados del router doméstico no separa de la red del aula. En el diseño sí se cumple (prueba 3) · ver [`repetidor-wifi.md`](routers/repetidor/repetidor-wifi.md#7-pruebas) |
+| 8 | Routers físicos del aula: un móvil conectado al **repetidor** navega y no llega a la red del aula | Navega y el ping al servidor (`192.168.1.50`) falla | ⏳ Routers reconfigurados desde cero el 12/11, con una regla de Access Control que bloquea la red del aula. Pendientes las capturas nuevas de la prueba · ver [`router-y-repetidor.md`](routers/router-y-repetidor.md#6-prueba-de-aislamiento) |
 | 9 | **Revisión de la profesora:** proyecto de Packet Tracer (`almichain.pkt`), esquema, plano y configuración | Le parece correcto | ✅ 26/10: validado por la profesora |

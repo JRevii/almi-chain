@@ -11,7 +11,7 @@
 | Servidor (Odoo + PostgreSQL) | Gerente y TPV; administra el técnico | Despacho | Cable, red de empleados (10.13.10.10) |
 | Máquina recreativa | Clientes | Sala | Red de empleados (10.13.10.40) |
 | Router 1 | Toda la red | Despacho | Fibra del operador |
-| Router 2 (repetidor) | Clientes | Sala | Inalámbrico (repetidor; ver [`repetidor-wifi.md`](../../redes/routers/repetidor/repetidor-wifi.md)) |
+| Router 2 (repetidor) | Clientes | Sala | Inalámbrico (repetidor; ver [`router-y-repetidor.md`](../../redes/routers/router-y-repetidor.md)) |
 | Wi-Fi de clientes | Clientes | Local | Wi-Fi, red de clientes aislada |
 | Web corporativa | Público | Nube (AWS) | Internet |
 

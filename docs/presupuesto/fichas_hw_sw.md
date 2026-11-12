@@ -129,7 +129,7 @@ Así queda la red según el plano: la fibra entra en el **rack** del despacho de
 
 **Seguridad:** WPA2-AES (o WPA3 si los dos AP lo admiten), WPS desactivado, contraseñas de administración cambiadas y DHCP desactivado en el repetidor.
 
-**Por qué un repetidor y no WDS:** el enunciado pedía enlazar el segundo router por WDS, pero el router del aula (TP-Link TL-WR841N v14) no tiene esa opción en su firmware, y el profesor indicó usarlo como **repetidor**. El repetidor se conecta por Wi-Fi a la red de clientes del AP principal y vuelve a emitirla, así que amplía la cobertura sin tender cable hasta el otro lado del comedor. Los clientes que se conectan a él siguen en la red de clientes, aislados de los equipos de la empresa. La configuración y las pruebas están en `redes/routers/repetidor/repetidor-wifi.md`.
+**Por qué un repetidor y no WDS:** el enunciado pedía enlazar el segundo router por WDS, pero el router del aula (TP-Link TL-WR841N v14) no tiene esa opción en su firmware, y el profesor indicó usarlo como **repetidor**. El repetidor se conecta por Wi-Fi a la red de clientes del AP principal y vuelve a emitirla, así que amplía la cobertura sin tender cable hasta el otro lado del comedor. Los clientes que se conectan a él siguen en la red de clientes, aislados de los equipos de la empresa. La configuración y las pruebas están en `redes/routers/router-y-repetidor.md`.
 
 > Los precios de R1 y de los switches son orientativos.
 
