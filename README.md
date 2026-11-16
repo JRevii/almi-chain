@@ -4,6 +4,12 @@ Proyecto en equipo del Centro de Estudios ALMI: infraestructura informática com
 
 **Equipo:** Sendoa · Jon · Jose · Iñigo · Yeray · Alejandro
 
+## Presentación
+
+**[▶ Abrir la presentación del Reto 1 (Google Slides)](https://docs.google.com/presentation/d/1GJSqRyNDbQrKWNI4GAelBaSuSm_hmjOMPJERClviH78/edit?usp=sharing)**
+
+19 diapositivas para 15 minutos, empezando por la red en Packet Tracer. Las imágenes están en [`docs/presentacion/imagenes/`](docs/presentacion/imagenes/).
+
 ## Estructura del repositorio
 
 | Carpeta | Contenido | Tarea del reto |
